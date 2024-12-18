@@ -1,14 +1,7 @@
-buildscript {
-	dependencies {
-		classpath 'org.flywaydb:flyway-database-postgresql:10.17.0'
-	}
-}
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
-	id 'org.flywaydb.flyway' version "10.17.0"
 	id "com.github.node-gradle.node" version "3.5.0"
 }
 
@@ -32,23 +25,21 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.testcontainers:postgresql'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-flyway {
-	url = System.getenv('JDBC_URL')
-	user = System.getenv('JDBC_USER_NAME')
-	password = System.getenv('JDBC_PASSWORD')
 }
 
 node {

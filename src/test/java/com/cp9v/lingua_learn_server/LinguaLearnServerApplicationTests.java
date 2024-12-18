@@ -1,12 +1,21 @@
 package com.cp9v.lingua_learn_server;
 
+import com.cp9v.lingua_learn_server.repositories.WordsRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@SpringBootTest
-class LinguaLearnServerApplicationTests {
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-	void contextLoads() {
-	}
+class LinguaLearnServerApplicationTests extends BaseIT {
+
+
+    @Autowired
+    WordsRepository wordsRepository;
+
+    @Test
+    void contextLoads() {
+        var res = wordsRepository.getAll();
+        assertThat(res).isEmpty();
+    }
 
 }
