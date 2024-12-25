@@ -4,3 +4,7 @@ spring:
     username: ${JDBC_USER_NAME}
     password: ${JDBC_PASSWORD}
 
+tg.bot:
+  timeout: 10
+  token: ${TG_BOT_TOKEN}
+

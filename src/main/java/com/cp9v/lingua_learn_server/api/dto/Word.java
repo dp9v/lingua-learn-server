@@ -1,4 +1,4 @@
-package com.cp9v.lingua_learn_server.dto;
+package com.cp9v.lingua_learn_server.api.dto;
 
 import lombok.Builder;
 

@@ -1,6 +1,6 @@
-package com.cp9v.lingua_learn_server.repositories;
+package com.cp9v.lingua_learn_server.api.repositories;
 
-import com.cp9v.lingua_learn_server.dto.Word;
+import com.cp9v.lingua_learn_server.api.dto.Word;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

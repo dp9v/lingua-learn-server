@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server;
 
-import com.cp9v.lingua_learn_server.repositories.WordsRepository;
+import com.cp9v.lingua_learn_server.api.repositories.WordsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
