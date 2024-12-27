@@ -28,7 +28,15 @@ public class FastUpdatesRepository {
         return updates.getFirst();
     }
 
-    public void create(List<FastUpdate> updates) {
+    public List<FastUpdate> getUnprocessedUpdates() {
+        return jdbcTemplate.queryForList(
+                "SELECT bot__fast_updates.* " +
+                        "FROM bot__fast_updates " +
+                        "LEFT JOIN public.bot__updates bu on bot__fast_updates.update_id = bu.update_id " +
+                        "WHERE bu.update_id IS NULL", FastUpdate.class);
+    }
+
+    public void save(List<FastUpdate> updates) {
         jdbcTemplate.batchUpdate(
                 "INSERT INTO bot__fast_updates (update_id, date, json) VALUES (?, ?, ?);",
                 new BatchPreparedStatementSetter() {
@@ -39,7 +47,6 @@ public class FastUpdatesRepository {
                         ps.setTimestamp(2, new Timestamp(update.date * 1000));
                         ps.setObject(3, update.json, Types.OTHER);
                     }
-
                     @Override
                     public int getBatchSize() {
                         return updates.size();

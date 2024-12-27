@@ -1,0 +1,41 @@
+package com.cp9v.lingua_learn_server.bot.client.processors;
+
+import com.cp9v.lingua_learn_server.bot.client.dto.Update;
+import com.cp9v.lingua_learn_server.bot.client.repositories.FastUpdatesRepository;
+import com.cp9v.lingua_learn_server.bot.client.repositories.UpdatesRepository;
+import com.cp9v.lingua_learn_server.bot.client.repositories.UsersRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class FastUpdatesProcessor {
+
+    public final FastUpdatesRepository fastUpdatesRepository;
+    public final UpdatesRepository updatesRepository;
+    public final UsersRepository usersRepository;
+    public final ObjectMapper objectMapper;
+
+    @Scheduled(fixedDelay = 500)
+    public void process() {
+        var updates = fastUpdatesRepository.getUnprocessedUpdates()
+                .stream()
+                .map(u -> objectMapper.convertValue(u, Update.class))
+                .toList();
+
+        saveNewUsers(updates);
+        updatesRepository.save(updates);
+    }
+
+    private void saveNewUsers(List<Update> updates) {
+        var users = updates.stream()
+                .map(u -> u.message.from)
+                .distinct()
+                .toList();
+        usersRepository.saveAllIfNotExist(users);
+    }
+}

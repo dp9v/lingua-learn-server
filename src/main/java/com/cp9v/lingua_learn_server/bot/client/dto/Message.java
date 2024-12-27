@@ -16,7 +16,7 @@ public class Message {
     private static final String TEXT_FIELD = "text";
 
     @JsonProperty(MESSAGE_ID_FIELD)
-    public final int messageId;
+    public final int id;
 
     @JsonProperty(FROM_FIELD)
     public final User from;

@@ -1,4 +1,4 @@
-package com.cp9v.lingua_learn_server.bot.client;
+package com.cp9v.lingua_learn_server.bot.client.processors;
 
 import com.cp9v.lingua_learn_server.bot.client.clients.TgClient;
 import com.cp9v.lingua_learn_server.bot.client.dto.FastUpdate;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class BotPoller {
+public class BotUpdatesProcessor {
 
-    private final FastUpdatesRepository updatesRepository;
+    private final FastUpdatesRepository fastUpdatesRepository;
     private final TgClient tgClient;
     private final ObjectMapper objectMapper;
 
     @SneakyThrows
     @Scheduled(fixedDelay = 1000)
     public void poll() {
-        var offset = updatesRepository.getLastUpdateId();
+        var offset = fastUpdatesRepository.getLastUpdateId();
         var updates = tgClient.getUpdates(offset + 1);
         var fastUpdates = new ArrayList<FastUpdate>();
         for (var update : updates) {
@@ -32,6 +32,6 @@ public class BotPoller {
                     .json(objectMapper.writeValueAsString(update))
                     .build());
         }
-        updatesRepository.create(fastUpdates);
+        fastUpdatesRepository.save(fastUpdates);
     }
 }
