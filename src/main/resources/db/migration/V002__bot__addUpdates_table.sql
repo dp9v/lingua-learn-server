@@ -4,7 +4,7 @@ create table if not exists bot__fast_updates
         constraint bot__fast_updates_pk
             primary key,
     date      timestamp,
-    json      json
+    json      text
 );
 
 create table if not exists bot__Users

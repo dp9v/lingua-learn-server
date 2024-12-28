@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,28 +30,24 @@ public class FastUpdatesRepository {
     }
 
     public List<FastUpdate> getUnprocessedUpdates() {
-        return jdbcTemplate.queryForList(
+        return jdbcTemplate.query(
                 "SELECT bot__fast_updates.* " +
                         "FROM bot__fast_updates " +
                         "LEFT JOIN public.bot__updates bu on bot__fast_updates.update_id = bu.update_id " +
-                        "WHERE bu.update_id IS NULL", FastUpdate.class);
+                        "WHERE bu.update_id IS NULL", FastUpdate::new);
     }
 
     public void save(List<FastUpdate> updates) {
+        var updatesData = updates.stream()
+                .map(u -> new Object[]{
+                        u.updateId,
+                        new Timestamp(u.date * 1000),
+                        u.json
+                })
+                .toList();
         jdbcTemplate.batchUpdate(
                 "INSERT INTO bot__fast_updates (update_id, date, json) VALUES (?, ?, ?);",
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        var update = updates.get(i);
-                        ps.setInt(1, update.updateId);
-                        ps.setTimestamp(2, new Timestamp(update.date * 1000));
-                        ps.setObject(3, update.json, Types.OTHER);
-                    }
-                    @Override
-                    public int getBatchSize() {
-                        return updates.size();
-                    }
-                });
+                updatesData
+        );
     }
 }

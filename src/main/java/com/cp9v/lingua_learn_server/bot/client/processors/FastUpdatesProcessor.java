@@ -1,11 +1,13 @@
 package com.cp9v.lingua_learn_server.bot.client.processors;
 
+import com.cp9v.lingua_learn_server.bot.client.dto.FastUpdate;
 import com.cp9v.lingua_learn_server.bot.client.dto.Update;
 import com.cp9v.lingua_learn_server.bot.client.repositories.FastUpdatesRepository;
 import com.cp9v.lingua_learn_server.bot.client.repositories.UpdatesRepository;
 import com.cp9v.lingua_learn_server.bot.client.repositories.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ public class FastUpdatesProcessor {
     public void process() {
         var updates = fastUpdatesRepository.getUnprocessedUpdates()
                 .stream()
-                .map(u -> objectMapper.convertValue(u, Update.class))
+                .map(this::unmarshal)
                 .toList();
 
         saveNewUsers(updates);
@@ -37,5 +39,10 @@ public class FastUpdatesProcessor {
                 .distinct()
                 .toList();
         usersRepository.saveAllIfNotExist(users);
+    }
+
+    @SneakyThrows
+    private Update unmarshal(FastUpdate update) {
+        return objectMapper.readValue(update.json, Update.class);
     }
 }

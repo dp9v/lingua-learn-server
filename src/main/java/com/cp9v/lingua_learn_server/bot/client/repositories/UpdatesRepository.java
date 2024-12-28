@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -18,7 +19,7 @@ public class UpdatesRepository {
                         u.id,
                         u.message.id,
                         u.message.from.id,
-                        u.message.date * 1000,
+                        new Timestamp(u.message.date * 1000L),
                         u.message.text
                 })
                 .toList();
