@@ -5,6 +5,7 @@ import com.cp9v.lingua_learn_server.bot.dto.Update;
 import com.cp9v.lingua_learn_server.bot.dto.UpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class TgClient {
     private final static String GET_UPDATES_URL = "/getUpdates?offset=%s";
+    private final static String SEND_MESSAGES_URL = "/sendMessage";
 
     private final RestTemplate tgRestTemplate;
 
@@ -24,5 +26,13 @@ public class TgClient {
             throw new RuntimeException("getUpdates failed with status " + response.getStatusCode());
         }
         return Objects.requireNonNull(response.getBody()).result;
+    }
+
+    public String sendMessage(ResponseMessage responseMessage) {
+        var response = tgRestTemplate.postForEntity(SEND_MESSAGES_URL, responseMessage, String.class);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("sendMessage failed with status " + response.getStatusCode());
+        }
+        return response.getBody();
     }
 }

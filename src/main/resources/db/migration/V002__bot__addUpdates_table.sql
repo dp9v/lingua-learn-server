@@ -23,12 +23,14 @@ create table bot__updates
     update_id  integer
         constraint bot__updates_pk
             primary key,
-    message_id integer not null,
-    userid     integer
+    message_id integer               not null,
+    chat_id    integer               not null,
+    user_id     integer
         constraint bot__updates_bot__users_id_fk
             references bot__users,
     date       timestamp,
-    text       text
+    text       text,
+    status     varchar default 'NEW' not null
 );
 
 
