@@ -1,17 +1,12 @@
-package com.cp9v.lingua_learn_server.bot.client.repositories;
+package com.cp9v.lingua_learn_server.bot.repositories;
 
-import com.cp9v.lingua_learn_server.bot.client.dto.FastUpdate;
+import com.cp9v.lingua_learn_server.bot.dto.FastUpdate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor

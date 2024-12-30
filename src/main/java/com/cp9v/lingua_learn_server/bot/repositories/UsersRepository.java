@@ -1,6 +1,6 @@
-package com.cp9v.lingua_learn_server.bot.client.repositories;
+package com.cp9v.lingua_learn_server.bot.repositories;
 
-import com.cp9v.lingua_learn_server.bot.client.dto.User;
+import com.cp9v.lingua_learn_server.bot.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

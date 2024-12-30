@@ -1,8 +1,8 @@
-package com.cp9v.lingua_learn_server.bot.client.processors;
+package com.cp9v.lingua_learn_server.bot.processors;
 
-import com.cp9v.lingua_learn_server.bot.client.clients.TgClient;
-import com.cp9v.lingua_learn_server.bot.client.dto.FastUpdate;
-import com.cp9v.lingua_learn_server.bot.client.repositories.FastUpdatesRepository;
+import com.cp9v.lingua_learn_server.bot.clients.TgClient;
+import com.cp9v.lingua_learn_server.bot.dto.FastUpdate;
+import com.cp9v.lingua_learn_server.bot.repositories.FastUpdatesRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,8 +1,8 @@
-package com.cp9v.lingua_learn_server.bot.client.clients;
+package com.cp9v.lingua_learn_server.bot.clients;
 
-import com.cp9v.lingua_learn_server.bot.client.dto.Update;
-import com.cp9v.lingua_learn_server.bot.client.dto.UpdateResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cp9v.lingua_learn_server.bot.dto.ResponseMessage;
+import com.cp9v.lingua_learn_server.bot.dto.Update;
+import com.cp9v.lingua_learn_server.bot.dto.UpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
