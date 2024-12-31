@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server.bot.processors;
 
-import com.cp9v.lingua_learn_server.bot.clients.TgClient;
+import com.cp9v.lingua_learn_server.bot.client.TgClient;
 import com.cp9v.lingua_learn_server.bot.dto.FastUpdate;
 import com.cp9v.lingua_learn_server.bot.repositories.FastUpdatesRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

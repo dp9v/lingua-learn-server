@@ -18,8 +18,8 @@ public class UsersRepository {
                 .map(u -> new Object[]{u.id, u.isBot, u.firstName, u.lastName, u.username}
                 ).toList();
         jdbcTemplate.batchUpdate("""
-                INSERT INTO bot__users (id, is_bot, first_name, last_name, username) 
-                VALUES (?, ?, ?, ?, ?) 
+                INSERT INTO bot__users (id, is_bot, first_name, last_name, username)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT (id) DO NOTHING""", userData);
     }
 }

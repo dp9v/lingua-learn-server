@@ -1,11 +1,10 @@
-package com.cp9v.lingua_learn_server.bot.clients;
+package com.cp9v.lingua_learn_server.bot.client;
 
-import com.cp9v.lingua_learn_server.bot.dto.ResponseMessage;
-import com.cp9v.lingua_learn_server.bot.dto.Update;
-import com.cp9v.lingua_learn_server.bot.dto.UpdateResponse;
+import com.cp9v.lingua_learn_server.bot.client.dto.ResponseMessage;
+import com.cp9v.lingua_learn_server.bot.client.dto.Update;
+import com.cp9v.lingua_learn_server.bot.client.dto.UpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 

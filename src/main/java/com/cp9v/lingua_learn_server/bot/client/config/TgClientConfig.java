@@ -1,4 +1,4 @@
-package com.cp9v.lingua_learn_server.bot.config;
+package com.cp9v.lingua_learn_server.bot.client.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

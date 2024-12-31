@@ -1,4 +1,4 @@
-package com.cp9v.lingua_learn_server.bot.dto;
+package com.cp9v.lingua_learn_server.bot.client.dto;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;

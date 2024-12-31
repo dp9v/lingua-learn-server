@@ -1,14 +1,13 @@
 package com.cp9v.lingua_learn_server.bot.processors;
 
-import com.cp9v.lingua_learn_server.bot.clients.TgClient;
-import com.cp9v.lingua_learn_server.bot.dto.ResponseMessage;
+import com.cp9v.lingua_learn_server.bot.client.TgClient;
+import com.cp9v.lingua_learn_server.bot.client.dto.ResponseMessage;
 import com.cp9v.lingua_learn_server.bot.repositories.UpdatesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 @Slf4j

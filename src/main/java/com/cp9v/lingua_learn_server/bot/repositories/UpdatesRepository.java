@@ -1,7 +1,7 @@
 package com.cp9v.lingua_learn_server.bot.repositories;
 
 import com.cp9v.lingua_learn_server.bot.dto.FlatUpdate;
-import com.cp9v.lingua_learn_server.bot.dto.Update;
+import com.cp9v.lingua_learn_server.bot.client.dto.Update;
 import com.cp9v.lingua_learn_server.bot.dto.enums.UpdateStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,14 +19,14 @@ public class UpdatesRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public void save(List<Update> updates) {
+    public void save(List<FlatUpdate> updates) {
         var updatesData = updates.stream().map(u -> new Object[]{
-                u.id,
-                u.message.id,
-                u.message.chat.id,
-                u.message.from.id,
-                new Timestamp(u.message.date * 1000L),
-                u.message.text
+                u.updateId,
+                u.messageId,
+                u.chatId,
+                u.userId,
+                Timestamp.valueOf(u.date),
+                u.text
         }).toList();
 
         jdbcTemplate.batchUpdate(
