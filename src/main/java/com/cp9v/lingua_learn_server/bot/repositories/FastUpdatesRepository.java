@@ -16,7 +16,7 @@ public class FastUpdatesRepository {
 
     public int getLastUpdateId() {
         var updates = jdbcTemplate.queryForList(
-                "SELECT update_id FROM bot__fast_updates ORDER BY date DESC LIMIT 1",
+                "SELECT update_id FROM bot__fast_updates ORDER BY date DESC, update_id DESC LIMIT 1",
                 Integer.class);
         if (updates.isEmpty()) {
             return 0;
