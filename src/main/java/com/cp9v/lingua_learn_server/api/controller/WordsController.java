@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server.api.controller;
 
-import com.cp9v.lingua_learn_server.api.dto.Word;
+import com.cp9v.lingua_learn_server.api.models.Word;
 import com.cp9v.lingua_learn_server.api.repositories.WordsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

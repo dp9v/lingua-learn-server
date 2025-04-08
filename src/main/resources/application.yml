@@ -8,3 +8,7 @@ tg.bot:
   timeout: 10
   token: ${TG_BOT_TOKEN}
 
+rsa:
+  lifetime-hours: 1
+  private-key: ${API_PRIVATE_KEY}
+  public-key: ${API_PUBLIC_KEY}
