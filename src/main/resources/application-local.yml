@@ -1,5 +1,5 @@
-rsa:
-  private-key: "-----BEGIN PRIVATE KEY-----
+jwt:
+  secret: "-----BEGIN PRIVATE KEY-----
       MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCp5iz95mzWIWqa
       uMJ1RMguSs9FRTGnVFOHBQ7HACUY1+Ycn8gpgIWhb1qVsQiHNFoBEtVBCUvPFK57
       zj+NQnDPCpe+v67zrFC6VQpBWPZcvrVx0/wh/T8K2iftHr5/ySWRITz7+gPYwYn3
@@ -27,12 +27,3 @@ rsa:
       zJ4yvCGbxCpoe5/ZKhGw85AmAqIaS3472RDP1prSvKrQiFnrSDjgSgERCLG/MQS7
       zMWXO4ZuE26yQESjlglxMNvI
       -----END PRIVATE KEY-----"
-  public-key: "-----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqeYs/eZs1iFqmrjCdUTI
-      LkrPRUUxp1RThwUOxwAlGNfmHJ/IKYCFoW9albEIhzRaARLVQQlLzxSue84/jUJw
-      zwqXvr+u86xQulUKQVj2XL61cdP8If0/Cton7R6+f8klkSE8+/oD2MGJ9wC76qeR
-      ZYytm/Bgx0V36/UzJo4zuy/oDHOZK0uOnPECA5STmprBxoqLTlePaiRmyqXjhXtY
-      kuwFpC8yop7nWmivXMImo3oxdAEgr17bYnCOML+AkKoLjqCAtxNIJvcb7DpdTIE/
-      ullFjlEbTTtfWcArTlErd5E5b/7an8qhRMjPLzljc2WboEQGeJmhkw3LkZ63Wgoq
-      TQIDAQAB
-      -----END PUBLIC KEY-----"
