@@ -1,10 +1,14 @@
 package com.cp9v.lingua_learn_server.api.config;
 
+import com.cp9v.lingua_learn_server.api.components.JwtAuthFilter;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
@@ -29,35 +34,39 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean JwtE
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            AuthenticationProvider authenticationProvider,
+            JwtAuthFilter jwtAuthFilter
+    ) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/api/auth/register").permitAll()
+                    .requestMatchers("/api/auth/login").permitAll()
+                    .anyRequest().authenticated())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     @SneakyThrows
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                   .authorizeHttpRequests(
-                           auth -> auth
-                                   .requestMatchers("/auth/**")
-                                   .permitAll()
-                                   .anyRequest()
-                                   .authenticated())
-                   .sessionManagement(
-                           session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    public AuthenticationManager authenticationManager(HttpSecurity http, AuthenticationProvider authenticationProvider) {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                   .authenticationProvider(authenticationProvider)
                    .build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return email -> userRepository
-                .findByEmail(email)
-                .map(user -> new User(user.email(),
-                                      user.password(),
-                                      List.of(new SimpleGrantedAuthority("ROLE_USER"))))
-                .orElseThrow(() -> new UsernameNotFoundException("User %s not found".formatted(email)));
+    public AuthenticationProvider authenticationProvider(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder
+    ) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
     }
 }
