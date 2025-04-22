@@ -14,7 +14,7 @@ public class WordsRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public List<Word> getAll() {
-        return jdbcTemplate.query("SELECT * FROM words", Word::new);
+        return jdbcTemplate.query("SELECT * FROM public.api__words", Word::new);
     }
 
 }
