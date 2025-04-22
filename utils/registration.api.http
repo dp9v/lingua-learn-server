@@ -3,7 +3,7 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "test@test.test2",
+  "email": "test@test.test3",
   "password": "qwerty",
   "name": "userName",
   "surname": "userSurname"
@@ -14,18 +14,17 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "test@test.test2",
+  "email": "test@test.test3",
   "password": "qwerty"
 }
 
 ### GetUserInfo
 GET http://localhost:8080/api/user/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM2OTIxMCwic3ViIjoidGVzdEB0ZXN0LnRlc3QyIn0.EwPIhEodUnTzEIEalw5RBIl4Pz4W9NxHmqTtAwEPV4wM16fnyshELO7Nl7H81a2_L16UYl07njSHewbrdzHK7aHKslU6JcbzK4JgFjy3QDzz4Rs6WI0tlZ5j0MKyhRV5TxQ4jd-_AYdacDps7Duj7eD96dvlWzPwiMeo7KTyQ_gIDEMiap_h5uEYY_-r0hGZE9dljxFfrW0dye-hELnWfY09Dv23vSWjbKhh_324QjbgsEC6991REHiXwziUfuGooM-0x4Lp3I2p4Sne6xPE-U7xo2h6xBUFABHQLMMkY7vZde8opwe9uSMad1yGaC52QK45-XL-D-OGouqds0yZ8Q
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM3MDM0Mywic3ViIjoidGVzdEB0ZXN0LnRlc3QzIn0.dYR0TdZEcLEzylmYrb21x0xIKh9EwGuQ3hMvI_3iAOnf4WuaQ4AhkqjwZO7ULQDLt3vTfPaBSM6osH81EkwWcDJcrB6eJbMoQ61LRrvSbNEEiCSBFXLPD3ebl_MvPtT4DycCp8IE6INBLlIUQQIrEJEAxDNjrGSmfl1Ve_r-UCWnxmEhZlpjrxpXj7C-nehDg7IYy6JL7gYAmyVbv3YoQOwRmze-rISZv-LI0lGKY_ptmeAINFzUAO2ODYH3ddjdgyuCcDUPEY82rCHM-Er0R6qCGhN6dup-wnq8QJ8ywQj3YEe7oU911CNM73P4xQzkmm-FC1P20u_hUVObwlgdbg
 
 
 ### GetWords
 GET http://localhost:8080/api/words
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM2OTIxMCwic3ViIjoidGVzdEB0ZXN0LnRlc3QyIn0.EwPIhEodUnTzEIEalw5RBIl4Pz4W9NxHmqTtAwEPV4wM16fnyshELO7Nl7H81a2_L16UYl07njSHewbrdzHK7aHKslU6JcbzK4JgFjy3QDzz4Rs6WI0tlZ5j0MKyhRV5TxQ4jd-_AYdacDps7Duj7eD96dvlWzPwiMeo7KTyQ_gIDEMiap_h5uEYY_-r0hGZE9dljxFfrW0dye-hELnWfY09Dv23vSWjbKhh_324QjbgsEC6991REHiXwziUfuGooM-0x4Lp3I2p4Sne6xPE-U7xo2h6xBUFABHQLMMkY7vZde8opwe9uSMad1yGaC52QK45-XL-D-OGouqds0yZ8Q
-
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM3MDM0Mywic3ViIjoidGVzdEB0ZXN0LnRlc3QzIn0.dYR0TdZEcLEzylmYrb21x0xIKh9EwGuQ3hMvI_3iAOnf4WuaQ4AhkqjwZO7ULQDLt3vTfPaBSM6osH81EkwWcDJcrB6eJbMoQ61LRrvSbNEEiCSBFXLPD3ebl_MvPtT4DycCp8IE6INBLlIUQQIrEJEAxDNjrGSmfl1Ve_r-UCWnxmEhZlpjrxpXj7C-nehDg7IYy6JL7gYAmyVbv3YoQOwRmze-rISZv-LI0lGKY_ptmeAINFzUAO2ODYH3ddjdgyuCcDUPEY82rCHM-Er0R6qCGhN6dup-wnq8QJ8ywQj3YEe7oU911CNM73P4xQzkmm-FC1P20u_hUVObwlgdbg
