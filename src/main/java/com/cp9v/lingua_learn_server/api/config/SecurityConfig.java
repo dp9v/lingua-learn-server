@@ -43,27 +43,9 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @SneakyThrows
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http, AuthenticationProvider authenticationProvider) {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                   .authenticationProvider(authenticationProvider)
-//                   .build();
-//    }
-
     @Bean
     @SneakyThrows
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(
-//            UserDetailsService userDetailsService,
-//            PasswordEncoder passwordEncoder
-//    ) {
-//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//        return daoAuthenticationProvider;
-//    }
 }
