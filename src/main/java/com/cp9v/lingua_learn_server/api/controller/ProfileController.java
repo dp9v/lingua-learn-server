@@ -2,6 +2,7 @@ package com.cp9v.lingua_learn_server.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
 
     @GetMapping("/me")
-    public String getUserName(Authentication authentication) {
-        return authentication.getName();
+    public String getUserName() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }
