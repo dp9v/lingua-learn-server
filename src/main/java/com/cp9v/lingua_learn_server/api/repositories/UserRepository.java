@@ -34,4 +34,13 @@ public class UserRepository {
                 user.getSurname());
         log.info("Inserted user with id: {}", res);
     }
+
+    public void save(User user) {
+        var res = jdbcTemplate.update("INSERT INTO api__users (email, password, name, surname) VALUES (?, ?, ?, ?);",
+                                      user.getEmail(),
+                                      user.getPassword(),
+                                      user.getName(),
+                                      user.getSurname());
+        log.info("Inserted user with id: {}", res);
+    }
 }
