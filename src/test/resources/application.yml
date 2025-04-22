@@ -3,3 +3,8 @@ spring:
     name: lingua-learn-server-api
   flyway:
     enabled: true
+
+jwt:
+  private-key: classpath:certs/app-test.key
+  public-key: classpath:certs/app-test.pub
+  ttl: 12H
