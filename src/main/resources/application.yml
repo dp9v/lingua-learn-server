@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: lingua-learn-server-api
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USER_NAME}
@@ -7,8 +9,3 @@ spring:
 tg.bot:
   timeout: 10
   token: ${TG_BOT_TOKEN}
-
-rsa:
-  lifetime-hours: 1
-  private-key: ${API_PRIVATE_KEY}
-  public-key: ${API_PUBLIC_KEY}

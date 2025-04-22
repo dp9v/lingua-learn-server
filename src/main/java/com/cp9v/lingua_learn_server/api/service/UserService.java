@@ -24,6 +24,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void create(UserDto userDto) {
+        userRepository.findByEmail(userDto.email())
+                .ifPresent(u -> {
+                    throw new UsernameNotFoundException("User %s already exist".formatted(userDto.email()));
+                });
         var user = User.builder()
                 .email(userDto.email())
                 .name(userDto.name())

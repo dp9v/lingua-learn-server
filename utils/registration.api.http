@@ -1,0 +1,31 @@
+### Register request
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@test.test2",
+  "password": "qwerty",
+  "name": "userName",
+  "surname": "userSurname"
+}
+
+### Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.test2",
+  "password": "qwerty"
+}
+
+### GetUserInfo
+GET http://localhost:8080/api/user/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM2OTIxMCwic3ViIjoidGVzdEB0ZXN0LnRlc3QyIn0.EwPIhEodUnTzEIEalw5RBIl4Pz4W9NxHmqTtAwEPV4wM16fnyshELO7Nl7H81a2_L16UYl07njSHewbrdzHK7aHKslU6JcbzK4JgFjy3QDzz4Rs6WI0tlZ5j0MKyhRV5TxQ4jd-_AYdacDps7Duj7eD96dvlWzPwiMeo7KTyQ_gIDEMiap_h5uEYY_-r0hGZE9dljxFfrW0dye-hELnWfY09Dv23vSWjbKhh_324QjbgsEC6991REHiXwziUfuGooM-0x4Lp3I2p4Sne6xPE-U7xo2h6xBUFABHQLMMkY7vZde8opwe9uSMad1yGaC52QK45-XL-D-OGouqds0yZ8Q
+
+
+### GetWords
+GET http://localhost:8080/api/words
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJsaW5ndWEtbGVhcm4tc2VydmVyLWFwaSIsImV4cCI6MTc0NTM2OTIxMCwic3ViIjoidGVzdEB0ZXN0LnRlc3QyIn0.EwPIhEodUnTzEIEalw5RBIl4Pz4W9NxHmqTtAwEPV4wM16fnyshELO7Nl7H81a2_L16UYl07njSHewbrdzHK7aHKslU6JcbzK4JgFjy3QDzz4Rs6WI0tlZ5j0MKyhRV5TxQ4jd-_AYdacDps7Duj7eD96dvlWzPwiMeo7KTyQ_gIDEMiap_h5uEYY_-r0hGZE9dljxFfrW0dye-hELnWfY09Dv23vSWjbKhh_324QjbgsEC6991REHiXwziUfuGooM-0x4Lp3I2p4Sne6xPE-U7xo2h6xBUFABHQLMMkY7vZde8opwe9uSMad1yGaC52QK45-XL-D-OGouqds0yZ8Q
+
