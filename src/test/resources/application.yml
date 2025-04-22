@@ -1,3 +1,5 @@
 spring:
+  application:
+    name: lingua-learn-server-api
   flyway:
     enabled: true
