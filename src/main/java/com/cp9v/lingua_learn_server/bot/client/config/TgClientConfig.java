@@ -15,8 +15,8 @@ public class TgClientConfig {
 
     @Bean
     public RestTemplate tgRestTemplate(
-            @Value("${tg.bot.timeout}") int timeout,
-            @Value("${tg.bot.token}") String token,
+            @Value("${tg.bot.timeout:10}") int timeout,
+            @Value("${tg.bot.token:}") String token,
             RestTemplateBuilder restTemplateBuilder
     ) {
         return restTemplateBuilder

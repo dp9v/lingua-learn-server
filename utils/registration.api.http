@@ -1,0 +1,30 @@
+### Register request
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@test.test3",
+  "password": "qwerty",
+  "name": "userName",
+  "surname": "userSurname"
+}
+
+### Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.test3",
+  "password": "qwerty"
+}
+
+### GetUserInfo
+GET http://localhost:8080/api/user/me
+Content-Type: application/json
+Authorization: Bearer INSERT_JWT_TOKEN
+
+
+### GetWords
+GET http://localhost:8080/api/words
+Content-Type: application/json
+Authorization: Bearer INSERT_JWT_TOKEN
