@@ -73,7 +73,7 @@ public class AuthenticationFlowTest extends BaseIT {
     @Order(3)
     public void testAuthentication() throws Exception {
         var res = mockMvc
-                .perform(get("/api/user/me")
+                .perform(get("/api/auth/me")
                                  .header("Authorization", "Bearer " + testToken))
                 .andExpect(status().isOk())
                 .andReturn()
