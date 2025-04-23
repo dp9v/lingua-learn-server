@@ -4,12 +4,13 @@ import com.cp9v.lingua_learn_server.api.components.JwtService;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
 import com.cp9v.lingua_learn_server.api.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,15 +21,24 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public void register(@RequestBody UserDto userDto) {
+    public ResponseEntity<Integer> register(@RequestBody UserDto userDto) {
         userService.create(userDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> login(@RequestBody UserDto userDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password())
         );
-        return jwtService.generateToken(userDto.email());
+        return ResponseEntity.ok(
+                jwtService.generateToken(userDto.email())
+        );
+    }
+
+    @GetMapping("/me")
+    public String getUserName() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }

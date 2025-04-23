@@ -21,15 +21,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
-//@Import(TestSecurityConfig.class)
 @AutoConfigureMockMvc
 public class BaseIT {
-
-    @MockBean
-    private JwtDecoder jwtDecoder;
-
-    @MockBean
-    private JwtEncoder jwtEncoder;
 
     @Autowired
     protected MockMvc mockMvc;
@@ -48,22 +41,5 @@ public class BaseIT {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("spring.datasource.username", postgres::getUsername);
-    }
-
-    @BeforeEach
-    void setupMockJwt() {
-        Mockito.when(jwtDecoder.decode(anyString()))
-                .thenReturn(Jwt.withTokenValue("token")
-                        .header("alg", "none")
-                        .claim("sub", "test-user")
-                        .claim("scope", "read")
-                        .build());
-
-        Mockito.when(jwtEncoder.encode(any()))
-                .thenReturn(Jwt.withTokenValue("token")
-                        .header("alg", "none")
-                        .claim("sub", "test-user")
-                        .claim("scope", "read")
-                        .build());
     }
 }
