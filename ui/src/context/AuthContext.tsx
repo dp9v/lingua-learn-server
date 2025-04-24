@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from 'react';
+import { createContext, useContext, useState } from 'react';
 
 type AuthContextType = {
     token: string | null;
@@ -9,7 +9,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
     token: null,
     login: () => {},
-    logout: () => {}
+    logout: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -25,11 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(null);
     };
 
-    return (
-        <AuthContext.Provider value={{token, login, logout}}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={{ token, login, logout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);
