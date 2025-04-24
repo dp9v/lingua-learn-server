@@ -1,5 +1,3 @@
-const API_URL = 'http://localhost:3000/api';
-
 type RegisterForm = {
     email: string;
     password: string;
@@ -13,7 +11,7 @@ type LoginForm = {
 };
 
 export const register = async (data: RegisterForm) => {
-    const response = await fetch(`${API_URL}/auth/register`, {
+    const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -24,7 +22,7 @@ export const register = async (data: RegisterForm) => {
 };
 
 export const login = async (data: LoginForm) => {
-    const response = await fetch(`${API_URL}/auth/login`, {
+    const response = await fetch(`/api/auth/login`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -35,12 +33,12 @@ export const login = async (data: LoginForm) => {
 };
 
 export const me = async (token: string) => {
-    const response = await fetch(`${API_URL}/auth/me`, {
+    const response = await fetch(`/api/auth/me`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
     });
-    return response.text();
+    return response.json();
 };

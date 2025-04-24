@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { register } from '../api/auth.ts';
+import { Button, Input } from 'reactstrap';
 
 export default function RegisterPage() {
     const [form, setForm] = useState({
@@ -18,16 +19,45 @@ export default function RegisterPage() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-            <input
-                type="password"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-            <input type="text" value={form.surname} onChange={(e) => setForm({ ...form, surname: e.target.value })} />
-            <button type="submit">Login</button>
-        </form>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
+            <h2 className="text-2xl font-semibold mb-4">Регистрация</h2>
+            <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
+                <Input
+                    type="email"
+                    placeholder="Email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    required
+                />
+                <Input
+                    type="password"
+                    placeholder="Password"
+                    value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    required
+                />
+                <Input
+                    type="text"
+                    placeholder="Name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+                <Input
+                    type="text"
+                    placeholder="Surname"
+                    value={form.surname}
+                    onChange={(e) => setForm({ ...form, surname: e.target.value })}
+                />
+                <Button type="submit" className="w-full">
+                    Зарегистрироваться
+                </Button>
+            </form>
+            <p className="mt-4 text-sm text-gray-500">
+                Уже есть аккаунт?{' '}
+                <Link to="/login" className="text-blue-600 hover:underline">
+                    Войти
+                </Link>
+            </p>
+        </div>
     );
 }

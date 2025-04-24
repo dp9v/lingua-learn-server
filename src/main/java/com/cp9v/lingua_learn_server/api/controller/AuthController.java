@@ -1,6 +1,8 @@
 package com.cp9v.lingua_learn_server.api.controller;
 
 import com.cp9v.lingua_learn_server.api.components.JwtService;
+import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
+import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
 import com.cp9v.lingua_learn_server.api.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +29,24 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDto userDto) {
+    public ResponseEntity<LoginResponse> login(@RequestBody UserDto userDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password())
         );
         return ResponseEntity.ok(
-                jwtService.generateToken(userDto.email())
+                new LoginResponse(
+                        jwtService.generateToken(userDto.email())
+                )
         );
     }
 
     @GetMapping("/me")
-    public String getUserName() {
+    public ResponseEntity<MeResponse> getUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
+        return ResponseEntity.ok(
+                new MeResponse(
+                        auth.getName()
+                )
+        );
     }
 }

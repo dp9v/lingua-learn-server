@@ -8,11 +8,11 @@ export default function HomePage() {
 
     useEffect(() => {
         if (!token) return;
-        me(token).then(setName);
+        me(token).then((response) => setName(response.name));
     }, [token]);
     return (
-        <div>
-            <h1>Hello {name}</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+            <h1 className="text-3xl font-bold mb-6">Добро пожаловать, {name}!</h1>
         </div>
     );
 }
