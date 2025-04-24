@@ -5,13 +5,5 @@
     "tabWidth": 4,
     "printWidth": 120,
     "proseWrap": "preserve",
-    "endOfLine": "auto",
-    "overrides": [
-        {
-            "files": "*.json",
-            "options": {
-                "proseWrap": "preserve"
-            }
-        }
-    ]
+    "endOfLine": "auto"
 }
