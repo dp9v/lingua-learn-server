@@ -12,9 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-import java.util.Map;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,6 +67,7 @@ public class AuthenticationFlowTest extends BaseIT {
                            .andReturn()
                            .getResponse()
                            .getContentAsString();
+      
         var loginResponse = objectMapper.readValue(response, LoginResponse.class);
         testToken = loginResponse.token();
         assertThat(loginResponse.token()).isNotNull();
