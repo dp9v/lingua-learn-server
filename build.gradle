@@ -47,26 +47,33 @@ tasks.named('test') {
 }
 
 node {
-	download = false
-	workDir = file("${project.projectDir}/src/main/resources/fe/nodejs")
-	// NPM work directory
-	npmWorkDir = file("${project.projectDir}/src/main/resources/fe/npm")
-	// node modules directory
-	nodeModulesDir = file("${project.projectDir}/src/main/resources/fe")
+	version = '22.15.0'
+	download = true
+	workDir = file("${project.projectDir}/ui/nodejs")
+	npmWorkDir = file("${project.projectDir}/ui/npm")
+	nodeModulesDir = file("${project.projectDir}/ui")
 }
 
-tasks.register('appNpmInstall', NpmTask) {
-	description = " read package.json and install all jars"
-	workingDir = file("${project.projectDir}/src/main/resources/fe")
-	args = ["install", "-debug"]
+tasks.register('uiCleanBuild', Delete) {
+	delete(fileTree("${project.projectDir}/src/main/resources/static"))
 }
-tasks.register('appNpmBuild', NpmTask) {
+
+tasks.register('uiNpmInstall', NpmTask) {
+	description = " read package.json and install all jars"
+	workingDir = file("${project.projectDir}/ui")
+	args = ["install"]
+}
+
+tasks.register('uiNpmBuild', NpmTask) {
+	dependsOn 'uiNpmInstall'
 	description = "Builds application for your frontend "
-	workingDir = file("${project.projectDir}/src/main/resources/fe")
+	workingDir = file("${project.projectDir}/ui")
 	args = ["run", "build"]
 }
-tasks.register('copyToFrontend', Copy) {
-	from "${project.projectDir}/src/main/resources/fe/dist"
+
+tasks.register('uiCopyStatic', Copy) {
+	dependsOn 'uiNpmBuild', 'uiCleanBuild'
+	from "${project.projectDir}/ui/dist"
 	into "${project.projectDir}/src/main/resources/static"
 	eachFile { file ->
 		println file.sourcePath

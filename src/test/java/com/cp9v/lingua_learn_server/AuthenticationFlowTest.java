@@ -1,6 +1,8 @@
 package com.cp9v.lingua_learn_server;
 
 import com.cp9v.lingua_learn_server.api.components.JwtService;
+import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
+import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,24 +62,28 @@ public class AuthenticationFlowTest extends BaseIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testUser));
 
-        testToken = mockMvc.perform(request)
+        var response = mockMvc.perform(request)
                            .andExpect(status().is2xxSuccessful())
                            .andReturn()
                            .getResponse()
                            .getContentAsString();
-        assertThat(testToken).isNotNull();
+      
+        var loginResponse = objectMapper.readValue(response, LoginResponse.class);
+        testToken = loginResponse.token();
+        assertThat(loginResponse.token()).isNotNull();
     }
 
     @Test
     @Order(3)
     public void testAuthentication() throws Exception {
-        var res = mockMvc
+        var response = mockMvc
                 .perform(get("/api/auth/me")
                                  .header("Authorization", "Bearer " + testToken))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertThat(res).isEqualTo("test@test.com");
+        var meResponse = objectMapper.readValue(response, MeResponse.class);
+        assertThat(meResponse.name()).isEqualTo("test@test.com");
     }
 }
