@@ -1,8 +1,8 @@
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import HomePage from "../pages/HomePage";
-import { useAuth } from "../context/AuthContext";
+import LoginPage from "../pages/LoginPage.tsx";
+import RegisterPage from "../pages/RegisterPage.tsx";
+import HomePage from "../pages/HomePage.tsx";
+import { useAuth } from "../context/AuthContext.tsx";
 
 export default function AppRoutes() {
     const { token } = useAuth();

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useAuth} from "../context/AuthContext";
+import {useAuth} from "../context/AuthContext.tsx";
 import { useHistory } from "react-router-dom";
 import {login} from "../api/auth.ts";
 
