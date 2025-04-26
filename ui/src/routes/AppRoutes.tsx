@@ -10,7 +10,7 @@ export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/login" render={() => (token ? <Redirect to="/" /> : <LoginPage />)} />
+                <Route exact path="/login" component={LoginPage} />
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/" render={() => (token ? <HomePage /> : <Redirect to="/login" />)} />
             </Switch>
