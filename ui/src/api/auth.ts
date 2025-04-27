@@ -1,3 +1,4 @@
+
 export type RegisterRequiestData = {
     email: string;
     password: string;
