@@ -23,9 +23,9 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<Integer> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
         userService.create(userDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("OK", HttpStatus.CREATED);
     }
 
     @PostMapping("/login")

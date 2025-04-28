@@ -1,16 +1,17 @@
-type RegisterForm = {
+
+export type RegisterRequiestData = {
     email: string;
     password: string;
     name: string;
     surname: string;
 };
 
-type LoginForm = {
+export type LoginForm = {
     email: string;
     password: string;
 };
 
-export const register = async (data: RegisterForm) => {
+export const register = async (data: RegisterRequiestData) => {
     const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         body: JSON.stringify(data),
@@ -18,7 +19,7 @@ export const register = async (data: RegisterForm) => {
             'Content-Type': 'application/json',
         },
     });
-    return response.json();
+    return response.text();
 };
 
 export const login = async (data: LoginForm) => {
