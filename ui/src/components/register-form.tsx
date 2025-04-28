@@ -1,4 +1,4 @@
-import { RegisterRequiestData } from '@/api/auth.ts';
+import { RegisterRequestData } from '@/api/auth.ts';
 import { useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 
 interface RegisterFormProps extends React.ComponentPropsWithoutRef<'div'> {
-    onFormSubmit: (value: RegisterRequiestData) => void;
+    onFormSubmit: (value: RegisterRequestData) => void;
 }
 
 export function RegisterForm({ className, onFormSubmit, ...props }: RegisterFormProps) {

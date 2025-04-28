@@ -1,14 +1,14 @@
-import { useHistory } from 'react-router-dom';
-import { register, RegisterRequiestData } from '../api/auth.ts';
+import { useNavigate } from 'react-router-dom';
+import { register, RegisterRequestData } from '../api/auth.ts';
 import { RegisterForm } from '@/components/register-form.tsx';
 
 export default function RegisterPage() {
-    const history = useHistory();
+    const navigate = useNavigate();
 
-    const handleRegister = async (value: RegisterRequiestData) => {
+    const handleRegister = async (value: RegisterRequestData) => {
         const result = await register(value);
         if (result == 'OK') {
-            history.push('/login');
+            navigate('/login');
         }
     };
 

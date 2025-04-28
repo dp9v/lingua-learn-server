@@ -1,18 +1,17 @@
-
 import { useAuth } from '../context/AuthContext.tsx';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth.ts';
 import { LoginForm } from '../components/login-form.tsx';
 
 export default function LoginPage() {
     const { login: loginUser } = useAuth();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleLogin = async (value: { email: string; password: string }) => {
         const data = await login(value);
         if (data.token) {
             loginUser(data.token);
-            history.push('/');
+            navigate('/');
         }
     };
 
