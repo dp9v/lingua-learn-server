@@ -1,5 +1,4 @@
-
-export type RegisterRequiestData = {
+export type RegisterRequestData = {
     email: string;
     password: string;
     name: string;
@@ -11,7 +10,7 @@ export type LoginForm = {
     password: string;
 };
 
-export const register = async (data: RegisterRequiestData) => {
+export const register = async (data: RegisterRequestData) => {
     const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         body: JSON.stringify(data),
