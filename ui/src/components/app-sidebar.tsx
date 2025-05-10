@@ -1,14 +1,23 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { Calendar, Home, Inbox, LogOut, Search, Settings } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarRail,
 } from '@/components/ui/sidebar';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu.tsx';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 
 // This is sample data.
 const items = [
@@ -39,9 +48,9 @@ const items = [
     },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar>
+        <Sidebar collapsible={'icon'} {...props}>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>LinguaLearn</SidebarGroupLabel>
@@ -61,6 +70,49 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton
+                                    size="lg"
+                                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                >
+                                    <Avatar className="h-8 w-8 rounded-lg">
+                                        <AvatarImage src={''} alt={'Name'} />
+                                        <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex items-center gap-3 p-2 cursor-pointer rounded-md hover:bg-muted transition">
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-medium">Name</span>
+                                            <span className="text-xs text-muted-foreground">email@email.com</span>
+                                        </div>
+                                    </div>
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                                side={'right'}
+                                align="end"
+                                sideOffset={4}
+                            >
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        // Здесь ваша логика выхода
+                                        console.log('Logout clicked');
+                                    }}
+                                    className="flex items-center gap-2 text-sm"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Logout
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
+            <SidebarRail />
         </Sidebar>
     );
 }

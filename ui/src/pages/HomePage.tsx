@@ -4,6 +4,7 @@ import { me } from '../api/auth.ts';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar.tsx';
 import { AppSidebar } from '@/components/app-sidebar.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function HomePage() {
     const [name, setName] = useState('');
@@ -17,19 +18,32 @@ export default function HomePage() {
         <SidebarProvider style={{ '--sidebar-width': '19rem' } as React.CSSProperties}>
             <AppSidebar />
             <SidebarInset>
-                <header className="group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear">
-                    <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" />
-                        <h1 className="text-base font-medium">PageName</h1>
-                    </div>
-                </header>
-                <main className="bg-white shadow-sm">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Hello, {name}</h1>
-                    </div>
+                <Header title="Page name" />
+                <main className="bg-muted/40 min-h-[calc(100vh-3rem)] p-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Добро пожаловать</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-xl font-semibold">Привет, {name ? name : 'Человек'} 👋</p>
+                            <p className="text-muted-foreground mt-1">
+                                Это ваша домашняя страница. Используйте меню слева для навигации.
+                            </p>
+                        </CardContent>
+                    </Card>
                 </main>
             </SidebarInset>
         </SidebarProvider>
+    );
+}
+
+function Header({ title }: { title: string }) {
+    return (
+        <header className="flex h-12 items-center border-b px-4 lg:px-4">
+            <SidebarTrigger className="mr-1" />
+            <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-8" />
+            <h1 className="text-lg font-medium mx-2">{title}</h1>
+            <div className="ml-auto"></div>
+        </header>
     );
 }
