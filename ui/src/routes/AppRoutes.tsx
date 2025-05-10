@@ -4,6 +4,7 @@ import RegisterPage from '../pages/RegisterPage.tsx';
 import HomePage from '../pages/HomePage.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { AuthLayout } from '@/layouts/AuthLayout.tsx';
+import { MainLayout } from '@/layouts/MainLayout.tsx';
 
 export default function AppRoutes() {
     const { token } = useAuth();
@@ -15,9 +16,9 @@ export default function AppRoutes() {
                     <Route path="/login" element={token ? <Navigate to="/" replace /> : <LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                 </Route>
-                <Route path="/" element={token ? <HomePage /> : <Navigate to="/login" replace />} />
-                {/*<Route element={<MainLayout />}>*/}
-                {/*</Route>*/}
+                <Route element={<MainLayout />}>
+                    <Route path="/" element={token ? <HomePage /> : <Navigate to="/login" replace />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );

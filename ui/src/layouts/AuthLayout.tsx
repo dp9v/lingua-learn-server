@@ -7,7 +7,7 @@ export const AuthLayout = () => {
                 <a href="#" className="flex items-center gap-2 self-center font-medium">
                     LinguaLearn
                 </a>
-                <Outlet />;
+                <Outlet />
             </div>
         </div>
     );
