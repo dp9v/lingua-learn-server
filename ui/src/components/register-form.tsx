@@ -18,7 +18,6 @@ const formSchema = z.object({
     password: z.string().min(8, 'Password must be at least 8 characters long.'),
     name: z.string().optional(),
     surname: z.string().optional(),
-    birthDate: z.date().optional(),
 });
 
 export function RegisterForm({ className, onFormSubmit, ...props }: RegisterFormProps) {
@@ -87,19 +86,6 @@ export function RegisterForm({ className, onFormSubmit, ...props }: RegisterForm
                                         <FormLabel>Surname</FormLabel>
                                         <FormControl>
                                             <Input {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={registerForm.control}
-                                name={'birthDate'}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>BirthDate</FormLabel>
-                                        <FormControl>
-                                            <Input type={'date'} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

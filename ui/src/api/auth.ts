@@ -3,7 +3,6 @@ export type RegisterRequestData = {
     password: string;
     name?: string;
     surname?: string;
-    birthDate?: Date | null;
 };
 
 export type LoginForm = {
