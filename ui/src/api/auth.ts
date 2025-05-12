@@ -29,6 +29,13 @@ export const login = async (data: LoginForm) => {
             'Content-Type': 'application/json',
         },
     });
+
+    if (!response.ok) {
+        if (response.status === 401) {
+            throw new Error('Invalid credentials');
+        }
+    }
+
     return response.json();
 };
 

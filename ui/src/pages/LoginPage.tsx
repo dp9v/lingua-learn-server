@@ -8,11 +8,12 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = async (value: { email: string; password: string }) => {
-        const data = await login(value);
-        if (data.token) {
-            loginUser(data.token);
-            navigate('/');
-        }
+        return login(value).then((data) => {
+            if (data.token) {
+                loginUser(data.token);
+                navigate('/');
+            }
+        });
     };
 
     return <LoginForm onFormSubmit={handleLogin} />;
