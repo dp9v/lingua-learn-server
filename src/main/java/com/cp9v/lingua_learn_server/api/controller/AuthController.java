@@ -3,8 +3,10 @@ package com.cp9v.lingua_learn_server.api.controller;
 import com.cp9v.lingua_learn_server.api.components.JwtService;
 import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
 import com.cp9v.lingua_learn_server.api.dto.MeResponse;
+import com.cp9v.lingua_learn_server.api.dto.RegisterDto;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
 import com.cp9v.lingua_learn_server.api.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterDto userDto) {
         userService.create(userDto);
         return new ResponseEntity<>("OK", HttpStatus.CREATED);
     }

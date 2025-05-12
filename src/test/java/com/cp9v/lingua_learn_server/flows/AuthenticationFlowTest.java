@@ -1,6 +1,6 @@
-package com.cp9v.lingua_learn_server;
+package com.cp9v.lingua_learn_server.flows;
 
-import com.cp9v.lingua_learn_server.api.components.JwtService;
+import com.cp9v.lingua_learn_server.BaseIT;
 import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
 import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -45,10 +45,10 @@ public class AuthenticationFlowTest extends BaseIT {
                 .content(objectMapper.writeValueAsString(testUser));
 
         mockMvc.perform(request)
-               .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
 
         var user = userRepository.findByEmail("test@test.com")
-                                 .orElseThrow();
+                .orElseThrow();
         assertThat(user)
                 .matches(u -> u.getPassword().equals(user.getPassword()))
                 .matches(u -> u.getName().equals(user.getName()))
