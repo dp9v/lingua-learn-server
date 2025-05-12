@@ -1,8 +1,9 @@
 export type RegisterRequestData = {
     email: string;
     password: string;
-    name: string;
-    surname: string;
+    name?: string;
+    surname?: string;
+    birthDate?: Date | null;
 };
 
 export type LoginForm = {
