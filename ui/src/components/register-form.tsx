@@ -9,6 +9,8 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationError } from '@/api/utils.ts';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface RegisterFormProps extends React.ComponentPropsWithoutRef<'div'> {
     onFormSubmit: (value: RegisterRequestData) => Promise<void>;
@@ -22,12 +24,14 @@ const formSchema = z.object({
 });
 
 export function RegisterForm({ className, onFormSubmit, ...props }: RegisterFormProps) {
+    const [isLoading, setIsLoading] = useState(false);
     const registerForm = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     });
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
+            setIsLoading(true);
             await onFormSubmit(data);
         } catch (error) {
             if (error instanceof ValidationError) {
@@ -39,6 +43,8 @@ export function RegisterForm({ className, onFormSubmit, ...props }: RegisterForm
                     });
                 });
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -104,8 +110,8 @@ export function RegisterForm({ className, onFormSubmit, ...props }: RegisterForm
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full">
-                                Register
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : 'Register'}
                             </Button>
 
                             <div className="text-center text-sm">
