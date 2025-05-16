@@ -1,6 +1,6 @@
-package com.cp9v.lingua_learn_server;
+package com.cp9v.lingua_learn_server.flows;
 
-import com.cp9v.lingua_learn_server.api.components.JwtService;
+import com.cp9v.lingua_learn_server.BaseIT;
 import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
 import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import java.util.Map;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -35,7 +35,7 @@ public class AuthenticationFlowTest extends BaseIT {
     public void testRegistration() throws Exception {
         testUser = UserDto.builder()
                           .email("test@test.com")
-                          .password("123456")
+                          .password("12345678")
                           .name("testName")
                           .surname("testSurname")
                           .build();
@@ -64,11 +64,11 @@ public class AuthenticationFlowTest extends BaseIT {
                 .content(objectMapper.writeValueAsString(testUser));
 
         var response = mockMvc.perform(request)
-                           .andExpect(status().is2xxSuccessful())
-                           .andReturn()
-                           .getResponse()
-                           .getContentAsString();
-      
+                              .andExpect(status().is2xxSuccessful())
+                              .andReturn()
+                              .getResponse()
+                              .getContentAsString();
+
         var loginResponse = objectMapper.readValue(response, LoginResponse.class);
         testToken = loginResponse.token();
         assertThat(loginResponse.token()).isNotNull();

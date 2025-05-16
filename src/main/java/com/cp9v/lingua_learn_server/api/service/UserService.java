@@ -1,6 +1,7 @@
 package com.cp9v.lingua_learn_server.api.service;
 
-import com.cp9v.lingua_learn_server.api.dto.UserDto;
+import com.cp9v.lingua_learn_server.api.dto.RegisterDto;
+import com.cp9v.lingua_learn_server.api.exceptions.UserAlreadyExistsException;
 import com.cp9v.lingua_learn_server.api.models.User;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,10 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User %s not found".formatted(username)));
     }
 
-    public void create(UserDto userDto) {
+    public void create(RegisterDto userDto) {
         userRepository.findByEmail(userDto.email())
                 .ifPresent(u -> {
-                    throw new UsernameNotFoundException("User %s already exist".formatted(userDto.email()));
+                    throw new UserAlreadyExistsException();
                 });
         var user = User.builder()
                 .email(userDto.email())
