@@ -17,7 +17,7 @@ interface RegisterFormProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const formSchema = z.object({
-    email: z.string().email(),
+    email: z.string().email('Invalid email'),
     password: z.string().min(8, 'Password must be at least 8 characters long.'),
     name: z.string().optional(),
     surname: z.string().optional(),
