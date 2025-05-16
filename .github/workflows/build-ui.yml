@@ -26,6 +26,7 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
+        working-directory: ui
 
       - name: 🧹 Run ESLint
         run: npm run lint
