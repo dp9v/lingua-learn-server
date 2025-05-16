@@ -20,7 +20,7 @@ public class AuthControllerTest extends BaseIT {
     public ObjectMapper objectMapper;
 
     @Test
-    void register_WithInvalidEmail_ShouldReturn400() throws Exception {
+    void register_WithInvalidEmail_ShouldReturnUnprocessableEntity() throws Exception {
         var dto = new RegisterDto(
                 "infalid-email", "validPassword123", "John", "Doe"
         );
@@ -28,11 +28,11 @@ public class AuthControllerTest extends BaseIT {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
-    void register_WithShortPassword_ShouldReturn400() throws Exception {
+    void register_WithShortPassword_ShouldReturnUnprocessableEntity() throws Exception {
         var dto = new RegisterDto(
                 "john@example.com", "1231", "John", "Doe"
         );
@@ -40,7 +40,7 @@ public class AuthControllerTest extends BaseIT {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class AuthControllerTest extends BaseIT {
         var response = mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

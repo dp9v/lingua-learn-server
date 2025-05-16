@@ -35,7 +35,7 @@ public class AuthenticationFlowTest extends BaseIT {
     public void testRegistration() throws Exception {
         testUser = UserDto.builder()
                           .email("test@test.com")
-                          .password("123456")
+                          .password("12345678")
                           .name("testName")
                           .surname("testSurname")
                           .build();
@@ -45,10 +45,10 @@ public class AuthenticationFlowTest extends BaseIT {
                 .content(objectMapper.writeValueAsString(testUser));
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated());
+               .andExpect(status().isCreated());
 
         var user = userRepository.findByEmail("test@test.com")
-                .orElseThrow();
+                                 .orElseThrow();
         assertThat(user)
                 .matches(u -> u.getPassword().equals(user.getPassword()))
                 .matches(u -> u.getName().equals(user.getName()))
@@ -64,11 +64,11 @@ public class AuthenticationFlowTest extends BaseIT {
                 .content(objectMapper.writeValueAsString(testUser));
 
         var response = mockMvc.perform(request)
-                           .andExpect(status().is2xxSuccessful())
-                           .andReturn()
-                           .getResponse()
-                           .getContentAsString();
-      
+                              .andExpect(status().is2xxSuccessful())
+                              .andReturn()
+                              .getResponse()
+                              .getContentAsString();
+
         var loginResponse = objectMapper.readValue(response, LoginResponse.class);
         testToken = loginResponse.token();
         assertThat(loginResponse.token()).isNotNull();
