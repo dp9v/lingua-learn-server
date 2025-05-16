@@ -16,7 +16,8 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "tsBuildInfoFile": ".build/node.tsbuildinfo"
     },
     "include": ["vite.config.ts"]
 }

@@ -1,11 +1,11 @@
 import { api } from '@/api/utils.ts';
 
-export type RegisterRequestData = {
+export interface RegisterRequestData {
     email: string;
     password: string;
     name?: string;
     surname?: string;
-};
+}
 
 export type LoginForm = {
     email: string;

@@ -24,7 +24,8 @@
           "@/*": [
             "./src/*"
           ]
-        }
+        },
+        "tsBuildInfoFile": ".build/app.tsbuildinfo"
     },
-    "include": ["src"]
+  "include": ["src"]
 }
