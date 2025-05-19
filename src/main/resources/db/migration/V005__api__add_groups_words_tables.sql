@@ -1,5 +1,7 @@
 CREATE TYPE language_code AS ENUM ('en', 'ru', 'cz');
 
+DROP TABLE api__words;
+
 CREATE TABLE IF NOT EXISTS api__words
 (
     id         SERIAL PRIMARY KEY,
@@ -25,6 +27,8 @@ CREATE TABLE IF NOT EXISTS api__word_pairs
     id           SERIAL PRIMARY KEY,
     word_from_id INTEGER NOT NULL REFERENCES api__words (id) ON DELETE RESTRICT,
     word_to_id   INTEGER NOT NULL REFERENCES api__words (id) ON DELETE RESTRICT,
+    created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (word_from_id, word_to_id)
 );
 
@@ -33,12 +37,16 @@ CREATE TABLE IF NOT EXISTS api__group_word_pairs
     id           SERIAL PRIMARY KEY,
     group_id     INTEGER NOT NULL REFERENCES api__groups (id) ON DELETE RESTRICT,
     word_pair_id INTEGER NOT NULL REFERENCES api__word_pairs (id) ON DELETE RESTRICT,
+    created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (group_id, word_pair_id)
 );
 
 CREATE TABLE IF NOT EXISTS api__user_groups
 (
     user_id INTEGER NOT NULL REFERENCES api__users (id) ON DELETE RESTRICT,
-    pair_id INTEGER NOT NULL REFERENCES api__group_word_pairs (id) ON DELETE RESTRICT,
-    PRIMARY KEY (user_id, pair_id)
+    group_id INTEGER NOT NULL REFERENCES api__groups (id) ON DELETE RESTRICT,
+    created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, group_id)
 )

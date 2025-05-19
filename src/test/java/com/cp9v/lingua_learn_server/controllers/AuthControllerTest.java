@@ -1,7 +1,7 @@
 package com.cp9v.lingua_learn_server.controllers;
 
 import com.cp9v.lingua_learn_server.BaseIT;
-import com.cp9v.lingua_learn_server.api.dto.RegisterDto;
+import com.cp9v.lingua_learn_server.api.dto.auth.RegisterRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class AuthControllerTest extends BaseIT {
 
     @Test
     void register_WithInvalidEmail_ShouldReturnUnprocessableEntity() throws Exception {
-        var dto = new RegisterDto(
+        var dto = new RegisterRequest(
                 "infalid-email", "validPassword123", "John", "Doe"
         );
 
@@ -33,7 +33,7 @@ public class AuthControllerTest extends BaseIT {
 
     @Test
     void register_WithShortPassword_ShouldReturnUnprocessableEntity() throws Exception {
-        var dto = new RegisterDto(
+        var dto = new RegisterRequest(
                 "john@example.com", "1231", "John", "Doe"
         );
 
@@ -45,7 +45,7 @@ public class AuthControllerTest extends BaseIT {
 
     @Test
     void register_withBlancForm_shouldReturnAllFields() throws Exception {
-        var request = new RegisterDto("","", "", "");
+        var request = new RegisterRequest("", "", "", "");
         var response = mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -60,7 +60,7 @@ public class AuthControllerTest extends BaseIT {
     @Test
     void register_shouldReturnError_ifUserExists() throws Exception {
         var request = objectMapper.writeValueAsString(
-                new RegisterDto("john@example.com", "validPassword123", "John", "Doe")
+                new RegisterRequest("john@example.com", "validPassword123", "John", "Doe")
         );
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

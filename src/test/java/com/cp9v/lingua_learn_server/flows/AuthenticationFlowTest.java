@@ -1,9 +1,9 @@
 package com.cp9v.lingua_learn_server.flows;
 
 import com.cp9v.lingua_learn_server.BaseIT;
-import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
-import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
+import com.cp9v.lingua_learn_server.api.dto.auth.LoginResponse;
+import com.cp9v.lingua_learn_server.api.dto.auth.MeResponse;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;

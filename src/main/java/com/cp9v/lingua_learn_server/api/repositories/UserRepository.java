@@ -35,4 +35,8 @@ public class UserRepository {
         log.info("Inserted user with id: {}", res);
     }
 
+    public void addGroup(long userId, long groupId) {
+        jdbcTemplate.update("INSERT INTO api__user_groups (user_id, group_id) VALUES (?, ?);", userId, groupId);
+    }
+
 }

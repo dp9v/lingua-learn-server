@@ -1,28 +1,26 @@
 package com.cp9v.lingua_learn_server;
 
-import com.cp9v.lingua_learn_server.config.TestSecurityConfig;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
+import com.cp9v.lingua_learn_server.api.dto.UserDto;
+import org.junit.jupiter.api.AfterAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BaseIT {
+    public static UserDto TEST_USER_DTO = UserDto.builder()
+                                                 .email("test@test.com")
+                                                 .password("12345678")
+                                                 .name("testName")
+                                                 .surname("testSurname")
+                                                 .build();
 
     @Autowired
     protected MockMvc mockMvc;
@@ -41,5 +39,10 @@ public class BaseIT {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("spring.datasource.username", postgres::getUsername);
+    }
+
+    @AfterAll
+    public static void dropDb() {
+        postgres.stop();
     }
 }

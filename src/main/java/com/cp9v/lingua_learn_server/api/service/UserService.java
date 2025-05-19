@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server.api.service;
 
-import com.cp9v.lingua_learn_server.api.dto.RegisterDto;
+import com.cp9v.lingua_learn_server.api.dto.auth.RegisterRequest;
 import com.cp9v.lingua_learn_server.api.exceptions.UserAlreadyExistsException;
 import com.cp9v.lingua_learn_server.api.models.User;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
@@ -24,7 +24,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User %s not found".formatted(username)));
     }
 
-    public void create(RegisterDto userDto) {
+    public void create(RegisterRequest userDto) {
         userRepository.findByEmail(userDto.email())
                 .ifPresent(u -> {
                     throw new UserAlreadyExistsException();

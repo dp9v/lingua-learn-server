@@ -1,10 +1,10 @@
-package com.cp9v.lingua_learn_server.api.dto;
+package com.cp9v.lingua_learn_server.api.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record RegisterDto(
+public record RegisterRequest(
         @Email(message = "Email is not valid")
         @NotBlank(message = "Email is required")
         String email,

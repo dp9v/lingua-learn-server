@@ -1,9 +1,9 @@
 package com.cp9v.lingua_learn_server.api.controller;
 
 import com.cp9v.lingua_learn_server.api.components.JwtService;
-import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
-import com.cp9v.lingua_learn_server.api.dto.MeResponse;
-import com.cp9v.lingua_learn_server.api.dto.RegisterDto;
+import com.cp9v.lingua_learn_server.api.dto.auth.LoginResponse;
+import com.cp9v.lingua_learn_server.api.dto.auth.MeResponse;
+import com.cp9v.lingua_learn_server.api.dto.auth.RegisterRequest;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
 import com.cp9v.lingua_learn_server.api.service.UserService;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterDto userDto) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest userDto) {
         userService.create(userDto);
         return new ResponseEntity<>("OK", HttpStatus.CREATED);
     }
