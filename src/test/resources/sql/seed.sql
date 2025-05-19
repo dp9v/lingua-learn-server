@@ -1,3 +1,10 @@
+INSERT INTO api__users (id, email, password, name, surname)
+VALUES (1001,
+        'test@test.com',
+        '$2a$10$1zQsnW.Pf8z1lTOS2qEUg.sr9DPoZELQKZclrwiHBI26hCVxx6SJq',
+        'testName',
+        'testSurname');
+
 INSERT INTO api__words (id, language, text)
 VALUES (101, 'en'::language_code, 'word_1'),
        (102, 'en'::language_code, 'word_2'),

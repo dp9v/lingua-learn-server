@@ -1,6 +1,6 @@
 CREATE TYPE language_code AS ENUM ('en', 'ru', 'cz');
 
-DROP TABLE api__words;
+DROP TABLE IF EXISTS api__words;
 
 CREATE TABLE IF NOT EXISTS api__words
 (

@@ -34,7 +34,7 @@ public class AuthenticationFlowTest extends BaseIT {
     @Order(1)
     public void testRegistration() throws Exception {
         testUser = UserDto.builder()
-                          .email("test@test.com")
+                          .email("test@test.test")
                           .password("12345678")
                           .name("testName")
                           .surname("testSurname")

@@ -16,8 +16,9 @@ import static org.mockito.ArgumentMatchers.any;
 @AutoConfigureMockMvc
 public class BaseIT {
     public static UserDto TEST_USER_DTO = UserDto.builder()
+                                                 .id(1001L)
                                                  .email("test@test.com")
-                                                 .password("12345678")
+                                                 .password("qwerty123")
                                                  .name("testName")
                                                  .surname("testSurname")
                                                  .build();
