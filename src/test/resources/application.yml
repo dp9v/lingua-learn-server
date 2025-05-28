@@ -8,3 +8,10 @@ jwt:
   private-key: classpath:certs/app-test.key
   public-key: classpath:certs/app-test.pub
   ttl: 12H
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

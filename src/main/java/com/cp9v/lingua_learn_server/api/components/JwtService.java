@@ -1,5 +1,6 @@
 package com.cp9v.lingua_learn_server.api.components;
 
+import com.cp9v.lingua_learn_server.api.models.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -25,12 +26,13 @@ public class JwtService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(final String username) {
-        final var claimsSet = JwtClaimsSet.builder()
-                .subject(username)
-                .issuer(issuer)
-                .expiresAt(Instant.now().plus(rsaKeyProps.getTtl()))
-                .build();
+    public String generateToken(User user) {
+        var claimsSet = JwtClaimsSet.builder()
+                                    .subject(user.getEmail())
+                                    .id(user.getId().toString())
+                                    .issuer(issuer)
+                                    .expiresAt(Instant.now().plus(rsaKeyProps.getTtl()))
+                                    .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
     }

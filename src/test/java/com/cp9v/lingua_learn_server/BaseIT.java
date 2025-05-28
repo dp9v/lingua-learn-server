@@ -1,7 +1,9 @@
 package com.cp9v.lingua_learn_server;
 
+import com.cp9v.lingua_learn_server.api.components.JwtService;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
-import org.junit.jupiter.api.AfterAll;
+import com.cp9v.lingua_learn_server.api.models.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +11,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -25,6 +25,12 @@ public class BaseIT {
 
     @Autowired
     protected MockMvc mockMvc;
+
+    @Autowired
+    public ObjectMapper objectMapper;
+
+    @Autowired
+    public JwtService jwtService;
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.0-alpine")
             .withDatabaseName("lingua_learn_db")
@@ -42,8 +48,10 @@ public class BaseIT {
         registry.add("spring.datasource.username", postgres::getUsername);
     }
 
-    @AfterAll
-    public static void dropDb() {
-        postgres.stop();
+    protected String getTestToken() throws Exception {
+        return jwtService.generateToken(User.builder()
+                                            .id(TEST_USER_DTO.id())
+                                            .email(TEST_USER_DTO.email())
+                                            .build());
     }
 }

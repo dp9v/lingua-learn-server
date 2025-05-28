@@ -6,19 +6,19 @@ VALUES (1001,
         'testSurname');
 
 INSERT INTO api__words (id, language, text)
-VALUES (101, 'en'::language_code, 'word_1'),
-       (102, 'en'::language_code, 'word_2'),
-       (103, 'en'::language_code, 'word_3'),
-       (201, 'ru'::language_code, 'слово_1'),
-       (202, 'ru'::language_code, 'слово_2'),
-       (203, 'ru'::language_code, 'слово_3'),
-       (301, 'cz'::language_code, 'slovo_1'),
-       (302, 'cz'::language_code, 'slovo_2'),
-       (303, 'cz'::language_code, 'slovo_3');
+VALUES (101, 'EN'::language_code, 'word_1'),
+       (102, 'EN'::language_code, 'word_2'),
+       (103, 'EN'::language_code, 'word_3'),
+       (201, 'RU'::language_code, 'слово_1'),
+       (202, 'RU'::language_code, 'слово_2'),
+       (203, 'RU'::language_code, 'слово_3'),
+       (301, 'CZ'::language_code, 'slovo_1'),
+       (302, 'CZ'::language_code, 'slovo_2'),
+       (303, 'CZ'::language_code, 'slovo_3');
 
 INSERT INTO api__groups(id, name, description, is_public)
 VALUES (101, 'Eng to Rus', 'Англо-русский', true),
-       (201, 'Rus to Czech', 'Русско-чешский', true),
+       (201, 'Rus to Czech', 'Русско-чешский', false),
        (301, 'Czech to Eng', 'Чешско-английский', false);
 
 INSERT INTO api__word_pairs(id, word_from_id, word_to_id)
@@ -42,3 +42,7 @@ VALUES (101, 101),
        (301, 301),
        (301, 302),
        (301, 303);
+
+INSERT INTO api__user_groups(user_id, group_id)
+VALUES (1001, 101),
+       (1001, 301)

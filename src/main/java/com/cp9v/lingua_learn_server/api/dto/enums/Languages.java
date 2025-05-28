@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Languages {
-    RU("Russian", "ru"),
-    EN("English", "en"),
-    CZ("Czech", "cz"),;
+    RU("Russian"),
+    EN("English"),
+    CZ("Czech"),
+    ;
 
     public final String longName;
-    public final String shortName;
 }
