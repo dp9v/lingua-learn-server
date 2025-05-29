@@ -25,4 +25,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
         return new ResponseEntity<>(Map.of("email", ex.getMessage()), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(UnauthorisedException.class)
+    public ResponseEntity<Map<String, String>> handleUnauthorised(UnauthorisedException ex) {
+        return new ResponseEntity<>(Map.of("message", ex.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
 }

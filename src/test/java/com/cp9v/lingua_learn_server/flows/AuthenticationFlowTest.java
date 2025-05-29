@@ -1,11 +1,10 @@
 package com.cp9v.lingua_learn_server.flows;
 
 import com.cp9v.lingua_learn_server.BaseIT;
-import com.cp9v.lingua_learn_server.api.dto.LoginResponse;
-import com.cp9v.lingua_learn_server.api.dto.MeResponse;
 import com.cp9v.lingua_learn_server.api.dto.UserDto;
+import com.cp9v.lingua_learn_server.api.dto.auth.LoginResponse;
+import com.cp9v.lingua_learn_server.api.dto.auth.MeResponse;
 import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -27,14 +26,11 @@ public class AuthenticationFlowTest extends BaseIT {
     @Autowired
     public UserRepository userRepository;
 
-    @Autowired
-    public ObjectMapper objectMapper;
-
     @Test
     @Order(1)
     public void testRegistration() throws Exception {
         testUser = UserDto.builder()
-                          .email("test@test.com")
+                          .email("test@test.test")
                           .password("12345678")
                           .name("testName")
                           .surname("testSurname")
@@ -47,7 +43,7 @@ public class AuthenticationFlowTest extends BaseIT {
         mockMvc.perform(request)
                .andExpect(status().isCreated());
 
-        var user = userRepository.findByEmail("test@test.com")
+        var user = userRepository.findByEmail("test@test.test")
                                  .orElseThrow();
         assertThat(user)
                 .matches(u -> u.getPassword().equals(user.getPassword()))
@@ -85,6 +81,6 @@ public class AuthenticationFlowTest extends BaseIT {
                 .getResponse()
                 .getContentAsString();
         var meResponse = objectMapper.readValue(response, MeResponse.class);
-        assertThat(meResponse.name()).isEqualTo("test@test.com");
+        assertThat(meResponse.name()).isEqualTo("test@test.test");
     }
 }

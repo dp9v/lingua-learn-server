@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server.api.repositories;
 
-import com.cp9v.lingua_learn_server.api.models.Word;
+import com.cp9v.lingua_learn_server.api.dto.Word;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,8 +13,13 @@ public class WordsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Word> getAll() {
-        return jdbcTemplate.query("SELECT * FROM public.api__words", Word::new);
-    }
+    public void saveAll(List<Word> words) {
+        String sql = "INSERT INTO api__words (text, language) VALUES (?, ?)";
+        var updates = words.stream().map(u -> new Object[]{
+                u.text(),
+                u.language().name(),
+        }).toList();
 
+        jdbcTemplate.batchUpdate(sql, updates);
+    }
 }

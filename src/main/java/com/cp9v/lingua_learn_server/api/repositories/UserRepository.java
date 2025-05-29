@@ -1,6 +1,7 @@
 package com.cp9v.lingua_learn_server.api.repositories;
 
 import com.cp9v.lingua_learn_server.api.models.User;
+import com.cp9v.lingua_learn_server.api.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,22 +18,20 @@ public class UserRepository {
 
     public Optional<User> findByEmail(String email) {
         var result = jdbcTemplate.query("SELECT * FROM api__users WHERE email=?", User::new, email);
-        if (result.isEmpty()) {
-            return Optional.empty();
-        }
-        if (result.size() > 1) {
-            throw new IllegalStateException("More than one user found for email: " + email);
-        }
-        return Optional.of(result.getFirst());
+        return Utils.toOptional(result);
     }
 
     public void save(User user) {
         var res = jdbcTemplate.update("INSERT INTO api__users (email, password, name, surname) VALUES (?, ?, ?, ?);",
-                user.getEmail(),
-                user.getPassword(),
-                user.getName(),
-                user.getSurname());
+                                      user.getEmail(),
+                                      user.getPassword(),
+                                      user.getName(),
+                                      user.getSurname());
         log.info("Inserted user with id: {}", res);
+    }
+
+    public void addGroup(long userId, long groupId) {
+        jdbcTemplate.update("INSERT INTO api__user_groups (user_id, group_id) VALUES (?, ?);", userId, groupId);
     }
 
 }
