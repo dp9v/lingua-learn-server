@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { AuthLayout } from '@/layouts/AuthLayout.tsx';
 import { MainLayout } from '@/layouts/MainLayout.tsx';
+import GroupDetailedPage from '@/pages/GroupDetailedPage.tsx';
 
 export default function AppRoutes() {
     const { token } = useAuth();
@@ -18,6 +19,10 @@ export default function AppRoutes() {
                 </Route>
                 <Route element={<MainLayout />}>
                     <Route path="/" element={token ? <HomePage /> : <Navigate to="/login" replace />} />
+                    <Route
+                        path="/groups/:id"
+                        element={token ? <GroupDetailedPage /> : <Navigate to="/login" replace />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -17,7 +17,7 @@ import { AppSidebarUser } from '@/components/app-sidebar-user.tsx';
 const items = [
     {
         title: 'Main',
-        url: '#',
+        url: '/#',
         icon: Home,
     },
     // {
