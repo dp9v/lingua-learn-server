@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage.tsx';
 import RegisterPage from '../pages/RegisterPage.tsx';
-import HomePage from '../pages/HomePage.tsx';
+import { HomePage } from '../pages/HomePage.tsx';
 import { useAuth } from '../context/AuthContext.tsx';
 import { AuthLayout } from '@/layouts/AuthLayout.tsx';
 import { MainLayout } from '@/layouts/MainLayout.tsx';
