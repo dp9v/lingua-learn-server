@@ -2,6 +2,7 @@ package com.cp9v.lingua_learn_server.controllers;
 
 import com.cp9v.lingua_learn_server.BaseIT;
 import com.cp9v.lingua_learn_server.api.dto.Group;
+import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.dto.Word;
 import com.cp9v.lingua_learn_server.api.dto.WordPair;
 import org.junit.jupiter.api.Test;
@@ -50,10 +51,10 @@ public class GroupsControllerTest extends BaseIT {
                               .andExpect(status().isOk())
                               .andReturn().getResponse().getContentAsString();
 
-        var words = objectMapper.readValue(response, WordPair[].class);
+        var groupWithWords = objectMapper.readValue(response, GroupWithWords.class);
 
-        assertThat(words).hasSize(3);
-        assertThat(words).containsExactlyInAnyOrder(
+        assertThat(groupWithWords.words()).hasSize(3);
+        assertThat(groupWithWords.words()).containsExactlyInAnyOrder(
                 new WordPair(101, new Word(101, "word_1", EN), new Word(201, "слово_1", RU)),
                 new WordPair(102, new Word(102, "word_2", EN), new Word(202, "слово_2", RU)),
                 new WordPair(103, new Word(103, "word_3", EN), new Word(203, "слово_3", RU))

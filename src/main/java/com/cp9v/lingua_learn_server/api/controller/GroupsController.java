@@ -1,7 +1,7 @@
 package com.cp9v.lingua_learn_server.api.controller;
 
 import com.cp9v.lingua_learn_server.api.dto.Group;
-import com.cp9v.lingua_learn_server.api.dto.WordPair;
+import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.service.GroupsService;
 import com.cp9v.lingua_learn_server.api.service.WordsService;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,13 @@ public class GroupsController {
 
     @GetMapping
     @RequestMapping("/{groupId}/words")
-    public ResponseEntity<List<WordPair>> getWordsInGroup(
+    public ResponseEntity<GroupWithWords> getWordsInGroup(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable long groupId
     ) {
         var userId = Long.parseLong(jwt.getId());
-        groupsService.checkAvailability(groupId, userId);
-        var result = wordsService.getPairsForGroup(groupId);
-        return ResponseEntity.ok(result);
+        var group = groupsService.getGroup(groupId, userId);
+        var wordPairs = wordsService.getPairsForGroup(groupId);
+        return ResponseEntity.ok(new GroupWithWords(group, wordPairs));
     }
 }

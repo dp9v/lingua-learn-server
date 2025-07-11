@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { Home } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -16,30 +16,15 @@ import { AppSidebarUser } from '@/components/app-sidebar-user.tsx';
 // This is sample data.
 const items = [
     {
-        title: 'Home',
-        url: '#',
+        title: 'Main',
+        url: '/#',
         icon: Home,
     },
-    {
-        title: 'Inbox',
-        url: '#',
-        icon: Inbox,
-    },
-    {
-        title: 'Calendar',
-        url: '#',
-        icon: Calendar,
-    },
-    {
-        title: 'Search',
-        url: '#',
-        icon: Search,
-    },
-    {
-        title: 'Settings',
-        url: '#',
-        icon: Settings,
-    },
+    // {
+    //     title: 'Settings',
+    //     url: '#',
+    //     icon: Settings,
+    // },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
