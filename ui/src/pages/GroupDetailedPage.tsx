@@ -1,14 +1,18 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext.tsx';
-import { useEffect, useState } from 'react';
-import { getGroupWords, WordPair } from '@/api/groups.ts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import {useNavigate, useParams} from 'react-router-dom';
+import {useAuth} from '@/context/AuthContext.tsx';
+import {useEffect, useState} from 'react';
+import {getGroupWords, GroupWithWords} from '@/api/groups.ts';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card.tsx';
+import {GroupInfo, GroupInfoSkeleton} from '@/components/gruop-info.tsx';
+import {Skeleton} from '@/components/ui/skeleton.tsx';
+import {WordsTable, WordsTableSkeleton} from '@/components/words-table';
 
 export default function GroupDetailedPage() {
     const navigate = useNavigate();
     const { id } = useParams();
     const { token } = useAuth();
-    const [words, setWords] = useState<WordPair[]>([]);
+
+    const [groupData, setGroupData] = useState<GroupWithWords>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -19,50 +23,40 @@ export default function GroupDetailedPage() {
         }
         if (!id) {
             setError('404: Group ID is missing');
+            setLoading(false);
+            return;
         }
 
         getGroupWords(Number(id), token)
-            .then(setWords)
+            .then(setGroupData)
             .catch(() => setError('Ошибка при загрузке слов'))
             .finally(() => setLoading(false));
     }, [token, id, navigate]);
 
+    const words = groupData?.words ?? [];
+    const group = groupData?.group;
+
     return (
-        <main className="bg-muted/40 min-h-screen p-6">
-            <Card className="max-w-3xl w-full">
+        <main className="flex flex-col bg-muted/40 min-h-screen p-6">
+            <Card className="w-full max-w-3xl">
                 <CardHeader>
-                    <CardTitle>Слова в группе</CardTitle>
+                    <CardTitle className="text-3xl font-bold">
+                        {loading ? <Skeleton className="h-8 w-1/2"/> : (group?.name ?? 'Слова в группе')}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {loading && <p>Загрузка...</p>}
                     {error && <p className="text-red-500">{error}</p>}
+
+                    {loading && <GroupInfoSkeleton/>}
+                    {loading && <WordsTableSkeleton/>}
+
+                    {!loading && !error && group && <GroupInfo group={group} wordsCount={words.length}/>}
+
                     {!loading && !error && words.length === 0 && (
                         <p className="text-muted-foreground">Список слов в этой группе пуст.</p>
                     )}
-                    {!loading && !error && words.length > 0 && (
-                        <div className="overflow-x-auto">
-                            <table className="text-left border-separate border-spacing-y-2 w-full">
-                                <thead>
-                                    <tr>
-                                        <th className="px-2 py-1">Слово (из)</th>
-                                        <th className="px-2 py-1">Слово (в)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {words.map((pair) => (
-                                        <tr key={pair.id} className="bg-white rounded shadow-sm">
-                                            <td className="px-2 py-1">
-                                                {pair.from.text} ({pair.from.language})
-                                            </td>
-                                            <td className="px-2 py-1">
-                                                {pair.to.text} ({pair.to.language})
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+
+                    {!loading && !error && words.length > 0 && <WordsTable words={words}/>}
                 </CardContent>
             </Card>
         </main>

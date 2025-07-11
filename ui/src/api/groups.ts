@@ -20,6 +20,11 @@ export interface WordPair {
     to: Word;
 }
 
+export interface GroupWithWords {
+    group: Group;
+    words: WordPair[];
+}
+
 export const getUserGroups = async (token: string) => {
     return await api<Group[]>(`/api/groups`, {
         method: 'GET',
@@ -31,7 +36,7 @@ export const getUserGroups = async (token: string) => {
 };
 
 export const getGroupWords = async (groupId: number, token: string) => {
-    return await api<WordPair[]>(`/api/groups/${groupId}/words`, {
+    return await api<GroupWithWords>(`/api/groups/${groupId}/words`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -13,8 +13,8 @@ import java.util.List;
 public class GroupsService {
     private final GroupsRepository groupsRepository;
 
-    public void checkAvailability(long groupId, long userId) {
-        groupsRepository.getByIdAndUserId(groupId, userId)
+    public Group getGroup(long groupId, long userId) {
+        return groupsRepository.getByIdAndUserId(groupId, userId)
                         .orElseThrow(() -> new UnauthorisedException(
                                 "Group id: %d is not available for you".formatted(groupId)
                         ));
