@@ -52,6 +52,6 @@ public class BaseIT {
         return jwtService.generateToken(User.builder()
                                             .id(TEST_USER_DTO.id())
                                             .email(TEST_USER_DTO.email())
-                                            .build());
+                                            .build()).token();
     }
 }
