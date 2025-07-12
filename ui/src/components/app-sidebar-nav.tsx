@@ -1,5 +1,6 @@
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar.tsx';
-import { LucideProps } from 'lucide-react';
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from '@/components/ui/sidebar.tsx';
+import {LucideProps} from 'lucide-react';
+import {Link} from 'react-router-dom';
 
 interface AppSidebarNavProps {
     items: {
@@ -15,10 +16,11 @@ export const AppSidebarNav = ({ items }: AppSidebarNavProps) => {
             {items.map(({ title, url, icon: Icon }) => (
                 <SidebarMenuItem key={title}>
                     <SidebarMenuButton asChild>
-                        <a href={url}>
+                        <Link to={url}>
+                            {' '}
                             <Icon />
                             <span>{title}</span>
-                        </a>
+                        </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             ))}

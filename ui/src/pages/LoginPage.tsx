@@ -1,7 +1,7 @@
-import { useAuth } from '../context/AuthContext.tsx';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../api/auth.ts';
-import { LoginForm } from '../components/login-form.tsx';
+import {useAuth} from '../context/AuthContext.tsx';
+import {useNavigate} from 'react-router-dom';
+import {login} from '../api/auth.ts';
+import {LoginForm} from '../components/login-form.tsx';
 
 export default function LoginPage() {
     const { login: loginUser } = useAuth();
@@ -9,8 +9,8 @@ export default function LoginPage() {
 
     const handleLogin = async (value: { email: string; password: string }) => {
         return login(value).then((data) => {
-            if (data.token) {
-                loginUser(data.token);
+            if (data.token && data.expiresAt) {
+                loginUser(data.token, data.expiresAt);
                 navigate('/');
             }
         });

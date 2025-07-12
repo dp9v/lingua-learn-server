@@ -1,4 +1,4 @@
-import { api } from '@/api/utils.ts';
+import {api} from "@/api/utils.ts";
 
 export interface RegisterRequestData {
     email: string;
@@ -14,6 +14,7 @@ export type LoginForm = {
 
 export type LoginResponse = {
     token: string;
+    expiresAt: string;
 };
 
 export const register = async (data: RegisterRequestData) => {
