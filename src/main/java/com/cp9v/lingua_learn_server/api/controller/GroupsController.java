@@ -3,13 +3,17 @@ package com.cp9v.lingua_learn_server.api.controller;
 import com.cp9v.lingua_learn_server.api.dto.Group;
 import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.service.GroupsService;
+import com.cp9v.lingua_learn_server.api.service.UserService;
 import com.cp9v.lingua_learn_server.api.service.WordsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +26,7 @@ public class GroupsController {
 
     private final GroupsService groupsService;
     private final WordsService wordsService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<Group>> getGroupsForUser(@AuthenticationPrincipal Jwt jwt) {
@@ -40,5 +45,15 @@ public class GroupsController {
         var group = groupsService.getGroup(groupId, userId);
         var wordPairs = wordsService.getPairsForGroup(groupId);
         return ResponseEntity.ok(new GroupWithWords(group, wordPairs));
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> createGroup(@AuthenticationPrincipal Jwt jwt, @RequestBody Group group) {
+        var groupId = groupsService.createGroup(group);
+        userService.addGroup(
+                Long.parseLong(jwt.getId()),
+                groupId
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(groupId);
     }
 }

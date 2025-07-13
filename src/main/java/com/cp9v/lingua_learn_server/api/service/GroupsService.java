@@ -3,6 +3,7 @@ package com.cp9v.lingua_learn_server.api.service;
 import com.cp9v.lingua_learn_server.api.dto.Group;
 import com.cp9v.lingua_learn_server.api.exceptions.UnauthorisedException;
 import com.cp9v.lingua_learn_server.api.repositories.GroupsRepository;
+import com.cp9v.lingua_learn_server.api.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupsService {
     private final GroupsRepository groupsRepository;
+    private final UserRepository userRepository;
 
     public Group getGroup(long groupId, long userId) {
         return groupsRepository.getByIdAndUserId(groupId, userId)
@@ -22,5 +24,9 @@ public class GroupsService {
 
     public List<Group> getGroupsForUser(long userId) {
         return groupsRepository.getAllForUser(userId);
+    }
+
+    public Long createGroup(Group group) {
+        return groupsRepository.createGroup(group);
     }
 }
