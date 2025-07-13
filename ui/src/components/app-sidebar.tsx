@@ -1,4 +1,4 @@
-import {Home} from 'lucide-react';
+import { Home } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -10,8 +10,8 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from '@/components/ui/sidebar';
-import {AppSidebarNav} from '@/components/app-sidebar-nav.tsx';
-import {AppSidebarUser} from '@/components/app-sidebar-user.tsx';
+import { AppSidebarNav } from '@/components/app-sidebar-nav.tsx';
+import { AppSidebarUser } from '@/components/app-sidebar-user.tsx';
 
 // This is sample data.
 const items = [

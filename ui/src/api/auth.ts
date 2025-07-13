@@ -1,4 +1,4 @@
-import {api} from "@/api/utils.ts";
+import { api } from '@/api/utils.ts';
 
 export interface RegisterRequestData {
     email: string;

@@ -1,28 +1,28 @@
 // AuthProvider.test.tsx
-import {act, render, waitFor} from '@testing-library/react';
-import {AuthProvider, useAuth} from './AuthContext';
+import { act, render, waitFor } from '@testing-library/react';
+import { AuthProvider, useAuth } from './AuthContext';
 
 jest.useFakeTimers();
 
 describe('AuthProvider', () => {
     const TestComponent = () => {
-        const {token, login, logout} = useAuth();
+        const { token, login, logout } = useAuth();
 
         return (
-                <div>
-                    <div>Token: {token}</div>
-                    <button onClick={() => login('mock-token', new Date(Date.now() + 5000).toISOString())}>Login</button>
-                    <button onClick={logout}>Logout</button>
-                </div>
+            <div>
+                <div>Token: {token}</div>
+                <button onClick={() => login('mock-token', new Date(Date.now() + 5000).toISOString())}>Login</button>
+                <button onClick={logout}>Logout</button>
+            </div>
         );
     };
 
     const renderWithProvider = () =>
-            render(
-                    <AuthProvider>
-                        <TestComponent/>
-                    </AuthProvider>
-            );
+        render(
+            <AuthProvider>
+                <TestComponent />
+            </AuthProvider>
+        );
 
     afterEach(() => {
         localStorage.clear();
@@ -30,7 +30,7 @@ describe('AuthProvider', () => {
     });
 
     it('save token and expireAt when login', () => {
-        const {getByText} = renderWithProvider();
+        const { getByText } = renderWithProvider();
 
         act(() => {
             getByText('Login').click();

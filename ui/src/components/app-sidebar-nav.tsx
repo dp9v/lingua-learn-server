@@ -1,6 +1,6 @@
-import {SidebarMenu, SidebarMenuButton, SidebarMenuItem} from '@/components/ui/sidebar.tsx';
-import {LucideProps} from 'lucide-react';
-import {Link} from 'react-router-dom';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar.tsx';
+import { LucideProps } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface AppSidebarNavProps {
     items: {

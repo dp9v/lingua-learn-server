@@ -1,7 +1,7 @@
-import {useAuth} from '../context/AuthContext.tsx';
-import {useNavigate} from 'react-router-dom';
-import {login} from '../api/auth.ts';
-import {LoginForm} from '../components/login-form.tsx';
+import { useAuth } from '../context/AuthContext.tsx';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api/auth.ts';
+import { LoginForm } from '../components/login-form.tsx';
 
 export default function LoginPage() {
     const { login: loginUser } = useAuth();
