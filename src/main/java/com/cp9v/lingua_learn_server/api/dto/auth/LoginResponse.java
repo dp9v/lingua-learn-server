@@ -1,4 +1,9 @@
 package com.cp9v.lingua_learn_server.api.dto.auth;
 
-public record LoginResponse(String token) {
+import java.time.LocalDateTime;
+
+public record LoginResponse(
+        String token,
+        LocalDateTime expiresAt
+) {
 }

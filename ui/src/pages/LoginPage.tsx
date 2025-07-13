@@ -9,8 +9,8 @@ export default function LoginPage() {
 
     const handleLogin = async (value: { email: string; password: string }) => {
         return login(value).then((data) => {
-            if (data.token) {
-                loginUser(data.token);
+            if (data.token && data.expiresAt) {
+                loginUser(data.token, data.expiresAt);
                 navigate('/');
             }
         });

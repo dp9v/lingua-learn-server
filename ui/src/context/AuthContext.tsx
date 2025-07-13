@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type AuthContextType = {
     token: string | null;
-    login: (token: string) => void;
+    login: (token: string, expiresAt: string) => void;
     logout: () => void;
 };
 
@@ -13,15 +13,33 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
-    const login = (token: string) => {
+    useEffect(() => {
+        const expiresAt = localStorage.getItem('expiresAt');
+        if (expiresAt) {
+            const expiry = new Date(expiresAt).getTime();
+            const now = Date.now();
+
+            if (now >= expiry) {
+                logout();
+            } else {
+                // Автоматический logout по таймеру
+                const timeout = setTimeout(() => logout(), expiry - now);
+                return () => clearTimeout(timeout); // Чистим при размонтировании
+            }
+        }
+    }, []);
+
+    const login = (token: string, expiresAt: string) => {
         localStorage.setItem('token', token);
+        localStorage.setItem('expiresAt', expiresAt);
         setToken(token);
     };
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('expiresAt');
         setToken(null);
     };
 

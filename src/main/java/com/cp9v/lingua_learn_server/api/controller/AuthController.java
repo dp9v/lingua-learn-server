@@ -42,9 +42,7 @@ public class AuthController {
         );
         var user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(
-                new LoginResponse(
-                        jwtService.generateToken(user)
-                )
+                jwtService.generateToken(user)
         );
     }
 
