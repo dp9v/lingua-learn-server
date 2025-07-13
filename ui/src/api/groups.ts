@@ -44,3 +44,14 @@ export const getGroupWords = async (groupId: number, token: string) => {
         },
     });
 };
+
+export const createGroup = async (name: string, description: string, token: string) => {
+    return await api<number>(`/api/groups`, {
+        method: 'POST',
+        body: JSON.stringify({ name, description }),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};

@@ -18,7 +18,7 @@ export function GroupList({ groups }: GroupListProps) {
                     <a href="/groups" className="text-blue-500 underline hover:text-blue-700">
                         просмотреть список публичных групп
                     </a>
-                    .
+                    или добавить новую группу вручную.
                 </p>
             </div>
         );

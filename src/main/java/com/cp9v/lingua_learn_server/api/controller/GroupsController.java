@@ -5,6 +5,7 @@ import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.service.GroupsService;
 import com.cp9v.lingua_learn_server.api.service.UserService;
 import com.cp9v.lingua_learn_server.api.service.WordsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,7 @@ public class GroupsController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createGroup(@AuthenticationPrincipal Jwt jwt, @RequestBody Group group) {
+    public ResponseEntity<Long> createGroup(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody Group group) {
         var groupId = groupsService.createGroup(group);
         userService.addGroup(
                 Long.parseLong(jwt.getId()),
