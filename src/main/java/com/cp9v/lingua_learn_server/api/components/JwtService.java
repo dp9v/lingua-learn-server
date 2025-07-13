@@ -1,5 +1,6 @@
 package com.cp9v.lingua_learn_server.api.components;
 
+import com.cp9v.lingua_learn_server.api.dto.auth.LoginResponse;
 import com.cp9v.lingua_learn_server.api.models.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -8,6 +9,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Component
 public class JwtService {
@@ -26,14 +29,18 @@ public class JwtService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String generateToken(User user) {
+    public LoginResponse generateToken(User user) {
+        var expiresAt = Instant.now().plus(rsaKeyProps.getTtl());
         var claimsSet = JwtClaimsSet.builder()
                                     .subject(user.getEmail())
                                     .id(user.getId().toString())
                                     .issuer(issuer)
-                                    .expiresAt(Instant.now().plus(rsaKeyProps.getTtl()))
+                                    .expiresAt(expiresAt)
                                     .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+        return new LoginResponse(
+                jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue(),
+                LocalDateTime.ofInstant(expiresAt, ZoneId.systemDefault())
+        );
     }
 }

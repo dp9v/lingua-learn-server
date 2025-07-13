@@ -14,6 +14,7 @@ export type LoginForm = {
 
 export type LoginResponse = {
     token: string;
+    expiresAt: string;
 };
 
 export const register = async (data: RegisterRequestData) => {

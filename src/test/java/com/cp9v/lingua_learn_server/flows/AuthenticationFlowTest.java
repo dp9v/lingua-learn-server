@@ -68,6 +68,7 @@ public class AuthenticationFlowTest extends BaseIT {
         var loginResponse = objectMapper.readValue(response, LoginResponse.class);
         testToken = loginResponse.token();
         assertThat(loginResponse.token()).isNotNull();
+        assertThat(loginResponse.expiresAt()).isNotNull();
     }
 
     @Test
