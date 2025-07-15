@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext.tsx';
-import { me } from '../api/auth.ts';
-import { getUserGroups, Group } from '@/api/groups.ts';
-import { useNavigate } from 'react-router-dom';
-import { GroupList, GroupListSkeleton } from '@/components/group-list.tsx';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
-import { NewGroupModal } from '@/components/create-group-modal.tsx';
+import {useEffect, useState} from 'react';
+import {useAuth} from '../context/AuthContext.tsx';
+import {me} from '../api/auth.ts';
+import {getUserGroups, Group} from '@/api/groups.ts';
+import {useNavigate} from 'react-router-dom';
+import {GroupList, GroupListSkeleton} from '@/components/group-list.tsx';
+import {Button} from '@/components/ui/button';
+import {PlusIcon} from 'lucide-react';
+import {CreateGroupModal} from '@/components/create-group-modal.tsx';
 
 export function HomePage() {
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export function HomePage() {
             .finally(() => setLoading(false));
     }, [navigate, token]);
 
-    const handleGroupCreated = () => {
+    const onGroupCreated = () => {
         setLoading(true);
         getUserGroups(token!)
             .then(setGroups)
@@ -57,10 +57,10 @@ export function HomePage() {
                 </Button>
             </div>
             {loading ? <GroupListSkeleton /> : <GroupList groups={groups} />}
-            <NewGroupModal
+            <CreateGroupModal
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
-                onGroupCreated={handleGroupCreated}
+                onGroupCreated={onGroupCreated}
                 token={token!}
             />
         </main>
