@@ -2,6 +2,7 @@ package com.cp9v.lingua_learn_server.api.controller;
 
 import com.cp9v.lingua_learn_server.api.dto.Group;
 import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
+import com.cp9v.lingua_learn_server.api.dto.requests.CreateWordsRequest;
 import com.cp9v.lingua_learn_server.api.service.GroupsService;
 import com.cp9v.lingua_learn_server.api.service.UserService;
 import com.cp9v.lingua_learn_server.api.service.WordsService;
@@ -56,5 +57,15 @@ public class GroupsController {
                 groupId
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(groupId);
+    }
+
+    @PostMapping("/{groupId}/words")
+    public ResponseEntity<String> addWords(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable long groupId,
+            @Valid @RequestBody CreateWordsRequest createWordsRequest
+    ) {
+        var group = groupsService.getGroup(groupId, Long.parseLong(jwt.getId()));
+        wordsService.createWordsIfNotExist(createWordsRequest.pairs());
     }
 }
