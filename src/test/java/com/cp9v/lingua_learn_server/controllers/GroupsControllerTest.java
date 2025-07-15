@@ -5,19 +5,26 @@ import com.cp9v.lingua_learn_server.api.dto.Group;
 import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.dto.Word;
 import com.cp9v.lingua_learn_server.api.dto.WordPair;
+import com.cp9v.lingua_learn_server.api.repositories.GroupsRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.Comparator;
 
 import static com.cp9v.lingua_learn_server.api.dto.enums.Languages.EN;
 import static com.cp9v.lingua_learn_server.api.dto.enums.Languages.RU;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Sql(value = "/sql/seed.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class GroupsControllerTest extends BaseIT {
+    @Autowired
+    GroupsRepository groupsRepository;
 
     @Test
     public void testGetGroupsForUser() throws Exception {
@@ -35,8 +42,8 @@ public class GroupsControllerTest extends BaseIT {
 
         assertThat(groups).hasSize(2);
         assertThat(groups).containsExactlyInAnyOrder(
-                new Group(101, "Eng to Rus", "Англо-русский", true, 3),
-                new Group(301, "Czech to Eng", "Чешско-английский", false, 3)
+                new Group(101L, "Eng to Rus", "Англо-русский", true, 3),
+                new Group(301L, "Czech to Eng", "Чешско-английский", false, 3)
         );
     }
 
@@ -70,6 +77,28 @@ public class GroupsControllerTest extends BaseIT {
 
         mockMvc.perform(request)
                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testCrateGroup() throws Exception {
+        var createGroupBody = new Group(null, "test_user_group", "test", true, 0);
+        var request = post("/api/groups")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createGroupBody))
+                .header("Authorization", "Bearer " + getTestToken());
+
+        mockMvc.perform(request)
+               .andExpect(status().isCreated());
+
+        var userGroups = groupsRepository.getAllForUser(TEST_USER_DTO.id());
+        var createdGroup = userGroups.stream()
+                                     .min(Comparator.comparingLong(Group::id))
+                                     .orElseThrow();
+
+        assertThat(createdGroup)
+                .matches(group -> !group.isPublic(), "Created group should be private")
+                .matches(group -> group.name().equals("test_user_group"), "Created group should have correct name")
+                .matches(group -> group.description().equals("test"), "Created group should have correct description");
     }
 
 }

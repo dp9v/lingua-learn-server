@@ -37,4 +37,8 @@ public class UserService implements UserDetailsService {
                 .build();
         userRepository.save(user);
     }
+
+    public void addGroup(long userId, long groupId) {
+        userRepository.addGroup(userId, groupId);
+    }
 }

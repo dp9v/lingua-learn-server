@@ -1,9 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { HomePage } from '@/pages/HomePage';
 import * as authApi from '@/api/auth';
 import * as groupsApi from '@/api/groups';
 import { useAuth } from '@/context/AuthContext';
+import { Group } from '@/api/groups';
 
 // Мокаем useAuth
 jest.mock('@/context/AuthContext', () => ({
@@ -26,7 +28,6 @@ describe('HomePage', () => {
     });
 
     test('shows loading skeletons while loading', async () => {
-        // Задержим ответ промисов
         jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Test User' });
         jest.spyOn(groupsApi, 'getUserGroups').mockResolvedValueOnce([]);
 
@@ -34,7 +35,6 @@ describe('HomePage', () => {
 
         expect(screen.getAllByRole('progressbar').length).toBeGreaterThan(0);
 
-        // Подождем снятия загрузки
         await waitFor(() => {
             expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
         });
@@ -82,5 +82,57 @@ describe('HomePage', () => {
         await waitFor(() => {
             expect(screen.getByText(/ошиба при загрузке данных/i)).toBeInTheDocument();
         });
+    });
+
+    test('allows creating a new group', async () => {
+        const user = userEvent.setup();
+
+        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Анна' });
+
+        const initialGroups: Group[] = [];
+        const updatedGroups = [
+            {
+                id: 1,
+                name: 'Новая группа',
+                description: 'Описание новой группы',
+                isPublic: true,
+                wordsCount: 0,
+            },
+        ];
+
+        const getGroupsMock = jest
+            .spyOn(groupsApi, 'getUserGroups')
+            .mockResolvedValueOnce(initialGroups) // первая загрузка
+            .mockResolvedValueOnce(updatedGroups); // после создания
+
+        const createGroupMock = jest.spyOn(groupsApi, 'createGroup').mockResolvedValueOnce(1);
+
+        render(<HomePage />, { wrapper: MemoryRouter });
+
+        await waitFor(() => {
+            expect(screen.getByText(/Привет, Анна/i)).toBeInTheDocument();
+        });
+
+        await user.click(screen.getByRole('button', { name: /добавить группу/i }));
+        expect(screen.getByText(/создать новую группу/i)).toBeInTheDocument();
+
+        const nameInput = screen.getByLabelText(/название/i);
+        const descriptionInput = screen.getByLabelText(/описание/i);
+
+        await user.type(nameInput, 'Новая группа');
+        await user.type(descriptionInput, 'Описание новой группы');
+
+        await user.click(screen.getByRole('button', { name: /создать/i }));
+
+        await waitFor(() => {
+            expect(createGroupMock).toHaveBeenCalledWith('Новая группа', 'Описание новой группы', 'mock-token');
+        });
+
+        await waitFor(() => {
+            expect(getGroupsMock).toHaveBeenCalledTimes(2);
+            expect(screen.getByText('Новая группа')).toBeInTheDocument();
+        });
+
+        expect(screen.queryByText(/создать новую группу/i)).not.toBeInTheDocument();
     });
 });
