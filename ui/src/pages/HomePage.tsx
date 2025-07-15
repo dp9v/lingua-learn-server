@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react';
-import {useAuth} from '../context/AuthContext.tsx';
-import {me} from '../api/auth.ts';
-import {getUserGroups, Group} from '@/api/groups.ts';
-import {useNavigate} from 'react-router-dom';
-import {GroupList, GroupListSkeleton} from '@/components/group-list.tsx';
-import {Button} from '@/components/ui/button';
-import {PlusIcon} from 'lucide-react';
-import {CreateGroupModal} from '@/components/create-group-modal.tsx';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext.tsx';
+import { me } from '../api/auth.ts';
+import { getUserGroups, Group } from '@/api/groups.ts';
+import { useNavigate } from 'react-router-dom';
+import { GroupList, GroupListSkeleton } from '@/components/group-list.tsx';
+import { Button } from '@/components/ui/button';
+import { PlusIcon } from 'lucide-react';
+import { CreateGroupModal } from '@/components/create-group-modal.tsx';
 
 export function HomePage() {
     const navigate = useNavigate();

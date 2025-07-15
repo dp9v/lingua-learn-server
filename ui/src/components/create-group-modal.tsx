@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from './ui/dialog';
-import {Input} from './ui/input';
-import {Label} from './ui/label';
-import {Textarea} from './ui/textarea';
-import {Button} from './ui/button';
-import {createGroup} from '@/api/groups';
-import {ValidationError} from '@/api/utils';
+import { useEffect, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
+import { Button } from './ui/button';
+import { createGroup } from '@/api/groups';
+import { ValidationError } from '@/api/utils';
 
 interface CreateGroupModalProps {
     open: boolean;
