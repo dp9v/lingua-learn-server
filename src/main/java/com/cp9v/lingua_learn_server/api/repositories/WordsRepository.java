@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,4 +43,22 @@ public class WordsRepository {
                            .toList();
         jdbcTemplate.batchUpdate(sql, updates);
     }
+
+    public List<Word> findAllByTextAndLanguage(Collection<Word> words) {
+        String inClause = words.stream()
+                               .map(w -> "(?, ?)")
+                               .collect(Collectors.joining(", "));
+        String sql = """
+                    SELECT id, text, language
+                    FROM api__words
+                    WHERE (text, language) IN (%s)
+                """.formatted(inClause);
+
+        Object[] args = words.stream()
+                             .flatMap(w -> Stream.of(w.text(), w.language().name()))
+                             .toArray();
+
+        return jdbcTemplate.query(sql, Word::new, args);
+    }
+
 }

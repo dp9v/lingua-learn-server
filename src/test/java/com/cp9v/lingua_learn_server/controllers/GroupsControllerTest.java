@@ -4,7 +4,7 @@ import com.cp9v.lingua_learn_server.BaseIT;
 import com.cp9v.lingua_learn_server.api.dto.Group;
 import com.cp9v.lingua_learn_server.api.dto.GroupWithWords;
 import com.cp9v.lingua_learn_server.api.dto.Word;
-import com.cp9v.lingua_learn_server.api.dto.WordPair;
+import com.cp9v.lingua_learn_server.api.dto.WordPairFull;
 import com.cp9v.lingua_learn_server.api.repositories.GroupsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +62,9 @@ public class GroupsControllerTest extends BaseIT {
 
         assertThat(groupWithWords.words()).hasSize(3);
         assertThat(groupWithWords.words()).containsExactlyInAnyOrder(
-                new WordPair(101, new Word(101, "word_1", EN), new Word(201, "слово_1", RU)),
-                new WordPair(102, new Word(102, "word_2", EN), new Word(202, "слово_2", RU)),
-                new WordPair(103, new Word(103, "word_3", EN), new Word(203, "слово_3", RU))
+                new WordPairFull(101, new Word(101, "word_1", EN), new Word(201, "слово_1", RU)),
+                new WordPairFull(102, new Word(102, "word_2", EN), new Word(202, "слово_2", RU)),
+                new WordPairFull(103, new Word(103, "word_3", EN), new Word(203, "слово_3", RU))
         );
     }
 

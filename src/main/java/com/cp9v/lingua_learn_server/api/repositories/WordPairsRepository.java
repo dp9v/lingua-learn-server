@@ -1,6 +1,6 @@
 package com.cp9v.lingua_learn_server.api.repositories;
 
-import com.cp9v.lingua_learn_server.api.dto.WordPair;
+import com.cp9v.lingua_learn_server.api.dto.WordPairFull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,7 +13,7 @@ public class WordPairsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public int[] createPairs(List<WordPair> pairs) {
+    public int[] createPairs(List<WordPairFull> pairs) {
         var query = "INSERT INTO api__word_pairs (word_from_id, word_to_id) VALUES (?, ?)";
         var updates = pairs.stream().map(p -> new Object[]{
                 p.from().id(),
@@ -23,7 +23,7 @@ public class WordPairsRepository {
         return jdbcTemplate.batchUpdate(query, updates);
     }
 
-    public List<WordPair> getPairsForGroup(long groupId) {
+    public List<WordPairFull> getPairsForGroup(long groupId) {
         var query = """
                 SELECT
                     api__word_pairs.id,
@@ -39,6 +39,6 @@ public class WordPairsRepository {
                 INNER JOIN api__words to_word ON api__word_pairs.word_to_id = to_word.id
                 WHERE api__group_word_pairs.group_id = ?
                 """;
-        return jdbcTemplate.query(query, WordPair::new, groupId);
+        return jdbcTemplate.query(query, WordPairFull::new, groupId);
     }
 }
