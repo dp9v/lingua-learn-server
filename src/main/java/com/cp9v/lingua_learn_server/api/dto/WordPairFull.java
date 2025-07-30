@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public record WordPairFull(
-        long id,
+        Long id,
         Word from,
         Word to
 ) {

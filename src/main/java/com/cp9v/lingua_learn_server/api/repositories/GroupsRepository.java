@@ -17,16 +17,6 @@ import java.util.Optional;
 public class GroupsRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void saveAll(List<Group> groups) {
-        var updates = groups.stream().map(u -> new Object[]{
-                u.name(),
-                u.description(),
-        }).toList();
-
-        String sql = "INSERT INTO api__groups (name, description) VALUES (?, ?)";
-        jdbcTemplate.batchUpdate(sql, updates);
-    }
-
     public long createGroup(Group group) {
         String sql = "INSERT INTO api__groups (name, description) VALUES (?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -72,5 +62,13 @@ public class GroupsRepository {
                 """;
         List<Group> result = jdbcTemplate.query(sql, Group::new, groupId, userId, groupId);
         return Utils.toOptional(result);
+    }
+
+    public void addNewPairs(long groupId, List<Long> pairs) {
+        var sql = "INSERT INTO api__group_word_pairs (group_id, word_pair_id) " +
+                  "VALUES (?, ?)" +
+                  "ON CONFLICT (group_id, word_pair_id) DO NOTHING";
+        var updates = pairs.stream().map(p -> new Object[]{groupId, p}).toList();
+        jdbcTemplate.batchUpdate(sql, updates);
     }
 }

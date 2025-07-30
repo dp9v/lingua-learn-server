@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,13 +60,14 @@ public class GroupsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(groupId);
     }
 
-    @PostMapping("/{groupId}/words")
+    @PutMapping("/{groupId}/words")
     public ResponseEntity<String> addWords(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable long groupId,
             @Valid @RequestBody CreateWordsRequest createWordsRequest
     ) {
-        var group = groupsService.getGroup(groupId, Long.parseLong(jwt.getId()));
-        wordsService.createWordsIfNotExist(createWordsRequest.pairs());
+        groupsService.addPairs(groupId, Long.parseLong(jwt.getId()), createWordsRequest.pairs());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .build();
     }
 }

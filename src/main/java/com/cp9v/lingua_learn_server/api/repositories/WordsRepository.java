@@ -17,28 +17,17 @@ public class WordsRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public void saveAll(List<Word> words) {
-        String sql = "INSERT INTO api__words (text, language) VALUES (?, ?)";
-        var updates = words.stream()
-                           .map(u -> new Object[]{
-                                   u.text(),
-                                   u.language().name(),
-                           }).toList();
-
-        jdbcTemplate.batchUpdate(sql, updates);
-    }
-
     public void saveAllNewWords(Set<Word> words) {
         String sql = """
                     INSERT INTO api__words (text, language)
-                    VALUES (?, ?)
+                    VALUES (?, ?::language_code)
                     ON CONFLICT (text, language) DO NOTHING
                 """;
 
         var updates = words.stream()
                            .map(word -> new Object[]{
-                                   word.text(),
-                                   word.language().name()
+                                   word.getText(),
+                                   word.getLanguage().name()
                            })
                            .toList();
         jdbcTemplate.batchUpdate(sql, updates);
@@ -46,7 +35,7 @@ public class WordsRepository {
 
     public List<Word> findAllByTextAndLanguage(Collection<Word> words) {
         String inClause = words.stream()
-                               .map(w -> "(?, ?)")
+                               .map(w -> "(?, ?::language_code)")
                                .collect(Collectors.joining(", "));
         String sql = """
                     SELECT id, text, language
@@ -55,7 +44,7 @@ public class WordsRepository {
                 """.formatted(inClause);
 
         Object[] args = words.stream()
-                             .flatMap(w -> Stream.of(w.text(), w.language().name()))
+                             .flatMap(w -> Stream.of(w.getText(), w.getLanguage().name()))
                              .toArray();
 
         return jdbcTemplate.query(sql, Word::new, args);
