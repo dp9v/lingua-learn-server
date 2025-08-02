@@ -4,5 +4,5 @@ import java.util.List;
 
 public record GroupWithWords(
         Group group,
-        List<WordPair> words
+        List<WordPairFull> words
 ) {}
