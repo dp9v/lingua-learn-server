@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext.tsx';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getGroupWords, GroupWithWords } from '@/api/groups.ts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { GroupInfo, GroupInfoSkeleton } from '@/components/gruop-info.tsx';
 import { Skeleton } from '@/components/ui/skeleton.tsx';
 import { WordsTable, WordsTableSkeleton } from '@/components/words-table';
+import AddWordsForm from '@/components/add-words-form';
 
 export default function GroupDetailedPage() {
     const navigate = useNavigate();
@@ -15,6 +16,16 @@ export default function GroupDetailedPage() {
     const [groupData, setGroupData] = useState<GroupWithWords>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [saving, setSaving] = useState(false);
+
+    const fetchGroupWords = useCallback(() => {
+        if (!token || !id) return;
+        setLoading(true);
+        getGroupWords(Number(id), token)
+            .then(setGroupData)
+            .catch(() => setError('Ошибка при загрузке слов'))
+            .finally(() => setLoading(false));
+    }, [id, token]);
 
     useEffect(() => {
         if (!token) {
@@ -27,11 +38,8 @@ export default function GroupDetailedPage() {
             return;
         }
 
-        getGroupWords(Number(id), token)
-            .then(setGroupData)
-            .catch(() => setError('Ошибка при загрузке слов'))
-            .finally(() => setLoading(false));
-    }, [token, id, navigate]);
+        fetchGroupWords();
+    }, [token, id, navigate, fetchGroupWords]);
 
     const words = groupData?.words ?? [];
     const group = groupData?.group;
@@ -57,6 +65,26 @@ export default function GroupDetailedPage() {
                     )}
 
                     {!loading && !error && words.length > 0 && <WordsTable words={words} />}
+
+                    {!loading && !error && group && (
+                        <div className="mt-8">
+                            {saving ? (
+                                <Skeleton className="h-48 w-full rounded-lg" />
+                            ) : (
+                                <AddWordsForm
+                                    groupId={group.id}
+                                    token={token ?? ''}
+                                    onWordsAdded={() => {
+                                        setSaving(true);
+                                        fetchGroupWords();
+                                        setTimeout(() => {
+                                            setSaving(false);
+                                        }, 500);
+                                    }}
+                                />
+                            )}
+                        </div>
+                    )}
                 </CardContent>
             </Card>
         </main>
