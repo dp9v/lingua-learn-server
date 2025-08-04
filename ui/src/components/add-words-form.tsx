@@ -123,7 +123,6 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
     );
 }
 
-// 👇 Вложенный компонент WordPairsList (в этом же файле)
 function WordPairsList({
     pairs,
     languages,
