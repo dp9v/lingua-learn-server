@@ -9,5 +9,5 @@ public enum Languages {
     CZ("Czech"),
     ;
 
-    public final String longName;
+    public final String fullName;
 }

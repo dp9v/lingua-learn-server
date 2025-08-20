@@ -9,13 +9,13 @@ export interface Group {
 }
 
 export interface Word {
-    id: number;
+    id?: number;
     text: string;
     language: string;
 }
 
 export interface WordPair {
-    id: number;
+    id?: number;
     from: Word;
     to: Word;
 }
@@ -23,6 +23,11 @@ export interface WordPair {
 export interface GroupWithWords {
     group: Group;
     words: WordPair[];
+}
+
+export interface Language {
+    code: string;
+    fullName: string;
 }
 
 export const getUserGroups = async (token: string) => {
@@ -49,6 +54,27 @@ export const createGroup = async (name: string, description: string, token: stri
     return await api<number>(`/api/groups`, {
         method: 'POST',
         body: JSON.stringify({ name, description }),
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const getAvailableLanguages = async (token: string) => {
+    return await api<Language[]>(`/api/languages`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const addWords = async (groupId: number, token: string, pairs: WordPair[]) => {
+    return await api<void>(`/api/groups/${groupId}/words`, {
+        method: 'PUT',
+        body: JSON.stringify({ pairs }),
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,

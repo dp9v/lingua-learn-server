@@ -3,7 +3,12 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GroupDetailedPage from '@/pages/GroupDetailedPage';
 import { useAuth } from '@/context/AuthContext';
 import * as api from '@/api/groups';
+import { getAvailableLanguages, Language } from '@/api/groups';
 
+const LANGS: Language[] = [
+    { code: 'en', fullName: 'English' },
+    { code: 'ru', fullName: 'Русский' },
+];
 // Мокаем useAuth
 jest.mock('@/context/AuthContext', () => ({
     useAuth: jest.fn(),
@@ -12,10 +17,12 @@ jest.mock('@/context/AuthContext', () => ({
 // Мокаем API
 jest.mock('@/api/groups', () => ({
     getGroupWords: jest.fn(),
+    getAvailableLanguages: jest.fn(),
 }));
 
 const mockUseAuth = useAuth as jest.Mock;
 const mockGetGroupWords = api.getGroupWords as jest.Mock;
+const mockedGetAvailableLanguages = getAvailableLanguages as jest.MockedFunction<typeof getAvailableLanguages>;
 
 function renderWithRouter(id: string) {
     return render(
@@ -31,6 +38,7 @@ function renderWithRouter(id: string) {
 describe('GroupDetailedPage', () => {
     beforeEach(() => {
         mockUseAuth.mockReturnValue({ token: 'mock-token' });
+        mockedGetAvailableLanguages.mockResolvedValue(LANGS);
     });
 
     it('shows loading skeletons initially', () => {
