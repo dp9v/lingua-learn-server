@@ -37,16 +37,15 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
             onClose();
         } catch (err) {
             const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : err instanceof SyntaxError
-                      ? 'Неверный формат JSON'
+                err instanceof SyntaxError
+                    ? 'Неверный формат JSON'
+                    : err instanceof Error
+                      ? err.message
                       : 'Ошибка при парсинге JSON';
             setError(errorMessage);
         }
     };
 
-    // 👇 получаем список языков из props
     const availableLangs = languages.map((l) => `${l.name} (${l.code})`).join(', ');
 
     return (
@@ -66,12 +65,13 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
 
                     {error && <p className="text-sm text-red-500">{error}</p>}
 
-                    {/* 👇 блок с подсказкой теперь под textarea */}
                     <div className="text-xs bg-muted p-2 rounded space-y-1">
                         <p>
-                            ⚠️ Приложение не интегрировано с AI. Вы можете использовать этот промпт для преобразования
-                            своих слов в нужный формат:
+                            Если вы хотите загрузить добавить несколько слов сразу, то нужно передать их в форму в
+                            правильном формате. Для преобразования ваших слов в нужный формат, проще всего обратиться за
+                            помощью к чат-боту. Ниже приведен промпт, который можно для этого использовать.
                         </p>
+                        <br />
                         <pre className="whitespace-pre-wrap">
                             {`Преобразуй мой список слов в JSON-массив такого вида:
 [
@@ -84,6 +84,7 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
 Условия:
 1. Поле "text" должно содержать только одно слово или одну короткую фразу (без перечислений).
 2. Используй только доступные языки: ${availableLangs}.
+3. Если для какого-то из слов нет перевода, то укажи его.
 `}
                         </pre>
                     </div>
