@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Trash2 } from 'lucide-react';
 import type { Language, WordPair } from '@/api/groups';
 import { addWords, getAvailableLanguages } from '@/api/groups';
+import AddWordsFromJson from './add-words-from-json-modal';
 
 interface AddWordsFormProps {
     groupId: number;
@@ -18,6 +19,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
     const [newWords, setNewWords] = useState<WordPair[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [importOpen, setImportOpen] = useState(false);
 
     useEffect(() => {
         getAvailableLanguages(token)
@@ -75,51 +77,79 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
 
     if (newWords.length === 0) {
         return (
-            <Card className="mt-6 w-full max-w-3xl">
-                <CardContent className="flex justify-center">
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() =>
-                            setNewWords([
-                                {
-                                    from: { text: '', language: languages[0]?.code ?? '' },
-                                    to: { text: '', language: languages[1]?.code ?? '' },
-                                },
-                            ])
-                        }
-                    >
-                        + Добавить слова
-                    </Button>
-                </CardContent>
-            </Card>
+            <>
+                <Card className="mt-6 w-full max-w-3xl">
+                    <CardContent className="flex justify-center gap-2">
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() =>
+                                setNewWords([
+                                    {
+                                        from: { text: '', language: languages[0]?.code ?? '' },
+                                        to: { text: '', language: languages[1]?.code ?? '' },
+                                    },
+                                ])
+                            }
+                        >
+                            + Добавить слова
+                        </Button>
+                        <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
+                            Импортировать JSON
+                        </Button>
+                    </CardContent>
+                </Card>
+
+                {/* модалка всегда одна */}
+                <AddWordsFromJson
+                    open={importOpen}
+                    onClose={() => setImportOpen(false)}
+                    onImport={(pairs) => setNewWords([...newWords, ...pairs])}
+                    languages={languages}
+                />
+            </>
         );
     }
 
     return (
-        <Card className="mt-6 w-full max-w-3xl">
-            <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && <p className="text-sm text-red-500">{error}</p>}
+        <>
+            <Card className="mt-6 w-full max-w-3xl">
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {error && <p className="text-sm text-red-500">{error}</p>}
 
-                    <WordPairsList
-                        pairs={newWords}
-                        languages={languages}
-                        onChange={handleChange}
-                        onRemove={handleRemoveRow}
-                    />
+                        <WordPairsList
+                            pairs={newWords}
+                            languages={languages}
+                            onChange={handleChange}
+                            onRemove={handleRemoveRow}
+                        />
 
-                    <div className="flex justify-between">
-                        <Button type="button" variant="secondary" onClick={handleAddRow}>
-                            + Добавить строку
-                        </Button>
-                        <Button type="submit" disabled={loading || languages.length === 0}>
-                            {loading ? 'Сохраняем...' : 'Сохранить'}
-                        </Button>
-                    </div>
-                </form>
-            </CardContent>
-        </Card>
+                        <div className="flex justify-between gap-2">
+                            <div className="flex gap-2">
+                                <Button type="button" variant="secondary" onClick={handleAddRow}>
+                                    + Добавить строку
+                                </Button>
+                                <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
+                                    Импортировать JSON
+                                </Button>
+                            </div>
+                            <Button type="submit" disabled={loading || languages.length === 0}>
+                                {loading ? 'Сохраняем...' : 'Сохранить'}
+                            </Button>
+                        </div>
+                    </form>
+                </CardContent>
+            </Card>
+
+            {/* модалка всегда одна */}
+            <AddWordsFromJson
+                open={importOpen}
+                onClose={() => setImportOpen(false)}
+                onImport={(pairs) => setNewWords([...newWords, ...pairs])}
+                languages={languages}
+            />
+        </>
     );
 }
 
@@ -156,7 +186,7 @@ function WordPairsList({
                             <SelectContent>
                                 {languages.map((lang) => (
                                     <SelectItem key={lang.code} value={lang.code}>
-                                        {lang.fullName} ({lang.code})
+                                        {lang.name} ({lang.code})
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -178,7 +208,7 @@ function WordPairsList({
                             <SelectContent>
                                 {languages.map((lang) => (
                                     <SelectItem key={lang.code} value={lang.code}>
-                                        {lang.fullName} ({lang.code})
+                                        {lang.name} ({lang.code})
                                     </SelectItem>
                                 ))}
                             </SelectContent>

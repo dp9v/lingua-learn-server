@@ -12,8 +12,8 @@ const mockedAddWords = addWords as jest.MockedFunction<typeof addWords>;
 const mockedGetAvailableLanguages = getAvailableLanguages as jest.MockedFunction<typeof getAvailableLanguages>;
 
 const LANGS: Language[] = [
-    { code: 'en', fullName: 'English' },
-    { code: 'ru', fullName: 'Русский' },
+    { code: 'en', name: 'English' },
+    { code: 'ru', name: 'Русский' },
 ];
 
 describe('AddWordsForm', () => {

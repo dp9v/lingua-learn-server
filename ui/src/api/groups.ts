@@ -27,7 +27,7 @@ export interface GroupWithWords {
 
 export interface Language {
     code: string;
-    fullName: string;
+    name: string;
 }
 
 export const getUserGroups = async (token: string) => {

@@ -6,8 +6,8 @@ import * as api from '@/api/groups';
 import { getAvailableLanguages, Language } from '@/api/groups';
 
 const LANGS: Language[] = [
-    { code: 'en', fullName: 'English' },
-    { code: 'ru', fullName: 'Русский' },
+    { code: 'en', name: 'English' },
+    { code: 'ru', name: 'Русский' },
 ];
 // Мокаем useAuth
 jest.mock('@/context/AuthContext', () => ({
