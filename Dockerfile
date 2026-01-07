@@ -1,8 +1,8 @@
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
-COPY /build/libs/lingua-learn-server-0.0.1.jar app.jar
+COPY build/libs/lingua-learn-server-0.0.1.jar app.jar
 
 EXPOSE 8080
 
