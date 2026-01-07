@@ -1,0 +1,4 @@
+jwt:
+  private-key: ${PRIVATE_CERT}
+  public-key: ${PUBLIC_CERT}
+  ttl: 6H
