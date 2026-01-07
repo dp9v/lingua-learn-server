@@ -72,11 +72,10 @@ The workflow is triggered only manually via GitHub Actions UI:
 1. Navigate to GitHub → Actions
 2. Select "Docker Image CI"
 3. Click "Run workflow"
-4. Specify parameters:
-    - **branch**: branch to build from (default `master`)
+4. Select the branch you want to build from (using the branch dropdown)
+5. Specify parameters:
     - **version**: image version (e.g., `1.0.0`). If not specified, current date/time is used
-    - **environment**: Spring profile (local, pi, etc.)
-5. Click "Run workflow"
+6. Click "Run workflow"
 
 The workflow will:
 
