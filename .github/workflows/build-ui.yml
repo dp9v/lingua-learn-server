@@ -1,4 +1,4 @@
-name: Build UI
+name: Test UI
 
 on:
   push:
