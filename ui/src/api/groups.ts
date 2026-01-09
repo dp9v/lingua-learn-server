@@ -1,34 +1,5 @@
 import { api } from '@/api/utils.ts';
-
-export interface Group {
-    id: number;
-    name: string;
-    description: string;
-    isPublic: boolean;
-    wordsCount: number;
-}
-
-export interface Word {
-    id?: number;
-    text: string;
-    language: string;
-}
-
-export interface WordPair {
-    id?: number;
-    from: Word;
-    to: Word;
-}
-
-export interface GroupWithWords {
-    group: Group;
-    words: WordPair[];
-}
-
-export interface Language {
-    code: string;
-    name: string;
-}
+import type { Group, GroupWithWords, Language, WordPair } from '@/api/types.ts';
 
 export const getUserGroups = async (token: string) => {
     return await api<Group[]>(`/api/groups`, {

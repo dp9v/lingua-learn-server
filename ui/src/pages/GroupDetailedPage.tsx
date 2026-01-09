@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext.tsx';
 import { useCallback, useEffect, useState } from 'react';
-import { getGroupWords, GroupWithWords } from '@/api/groups.ts';
+import { getGroupWords } from '@/api/groups.ts';
+import { GroupWithWords } from '@/api/types.ts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { GroupInfo, GroupInfoSkeleton } from '@/components/gruop-info.tsx';
 import { Skeleton } from '@/components/ui/skeleton.tsx';

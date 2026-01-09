@@ -5,7 +5,7 @@ import { HomePage } from '@/pages/HomePage';
 import * as authApi from '@/api/auth';
 import * as groupsApi from '@/api/groups';
 import { useAuth } from '@/context/AuthContext';
-import { Group } from '@/api/groups';
+import type { Group } from '@/api/types';
 
 // Мокаем useAuth
 jest.mock('@/context/AuthContext', () => ({

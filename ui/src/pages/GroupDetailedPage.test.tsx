@@ -3,7 +3,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GroupDetailedPage from '@/pages/GroupDetailedPage';
 import { useAuth } from '@/context/AuthContext';
 import * as api from '@/api/groups';
-import { getAvailableLanguages, Language } from '@/api/groups';
+import { getAvailableLanguages } from '@/api/groups';
+import type { Language } from '@/api/types';
 
 const LANGS: Language[] = [
     { code: 'en', name: 'English' },

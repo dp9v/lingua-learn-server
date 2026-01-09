@@ -1,4 +1,4 @@
-import { Group } from '@/api/groups';
+import type { Group } from '@/api/types';
 import { Skeleton } from '@/components/ui/skeleton.tsx';
 
 interface GroupInfoProps {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { me } from '../api/auth.ts';
-import { getUserGroups, Group } from '@/api/groups.ts';
+import { getUserGroups } from '@/api/groups.ts';
+import { Group } from '@/api/types.ts';
 import { useNavigate } from 'react-router-dom';
 import { GroupList, GroupListSkeleton } from '@/components/group-list.tsx';
 import { Button } from '@/components/ui/button';

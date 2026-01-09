@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { register, RegisterRequestData } from '../api/auth.ts';
+import { register } from '../api/auth.ts';
+import { RegisterRequestData } from '@/api/types.ts';
 import { RegisterForm } from '@/components/register-form.tsx';
 
 export default function RegisterPage() {

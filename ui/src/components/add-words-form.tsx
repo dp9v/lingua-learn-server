@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2 } from 'lucide-react';
-import type { Language, WordPair } from '@/api/groups';
+import type { Language, WordPair } from '@/api/types';
 import { addWords, getAvailableLanguages } from '@/api/groups';
 import AddWordsFromJson from './add-words-from-json-modal';
 

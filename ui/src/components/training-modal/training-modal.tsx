@@ -15,7 +15,8 @@ import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { XIcon } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext.tsx';
-import { getUserGroups, Group } from '@/api/groups.ts';
+import { getUserGroups } from '@/api/groups';
+import { Group } from '@/api/types.ts';
 
 interface TrainingModalProps {
     open: boolean;

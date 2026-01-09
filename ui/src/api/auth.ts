@@ -1,21 +1,5 @@
 import { api } from '@/api/utils.ts';
-
-export interface RegisterRequestData {
-    email: string;
-    password: string;
-    name?: string;
-    surname?: string;
-}
-
-export type LoginForm = {
-    email: string;
-    password: string;
-};
-
-export type LoginResponse = {
-    token: string;
-    expiresAt: string;
-};
+import type { RegisterRequestData, LoginForm, LoginResponse } from '@/api/types.ts';
 
 export const register = async (data: RegisterRequestData) => {
     return await api<string>(`/api/auth/register`, {

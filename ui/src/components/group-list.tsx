@@ -1,4 +1,4 @@
-import { Group } from '@/api/groups.ts';
+import { Group } from '@/api/types.ts';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Skeleton } from './ui/skeleton';
