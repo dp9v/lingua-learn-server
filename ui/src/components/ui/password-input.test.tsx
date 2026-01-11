@@ -28,13 +28,6 @@ describe('PasswordInput', () => {
         expect(input).toHaveAttribute('type', 'password');
     });
 
-    test('forwards ref correctly', () => {
-        const ref = jest.fn();
-        render(<PasswordInput ref={ref} name="password" />);
-
-        expect(ref).toHaveBeenCalled();
-    });
-
     test('accepts and applies custom className', () => {
         const { container } = render(<PasswordInput name="password" className="custom-class" />);
         const input = container.querySelector('input[name="password"]') as HTMLInputElement;

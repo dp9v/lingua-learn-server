@@ -69,7 +69,7 @@ export function LoginForm({ className, onFormSubmit, ...props }: LoginFormProps)
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <PasswordInput {...field} value={field.value} />
+                                            <PasswordInput {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
