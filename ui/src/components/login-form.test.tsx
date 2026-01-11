@@ -5,10 +5,10 @@ import '@testing-library/jest-dom';
 
 describe('LoginForm', () => {
     const setup = (onFormSubmit = jest.fn()) => {
-        render(<LoginForm onFormSubmit={onFormSubmit} />);
+        const { container } = render(<LoginForm onFormSubmit={onFormSubmit} />);
         return {
             emailInput: screen.getByLabelText(/email/i),
-            passwordInput: screen.getByLabelText(/password/i),
+            passwordInput: container.querySelector('input[name="password"]') as HTMLInputElement,
             submitButton: screen.getByRole('button', { name: /login/i }),
             onFormSubmit,
         };
