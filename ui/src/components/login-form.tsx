@@ -56,7 +56,7 @@ export function LoginForm({ className, onFormSubmit, ...props }: LoginFormProps)
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input {...field} value={field.value} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
