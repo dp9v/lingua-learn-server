@@ -98,7 +98,7 @@ describe('GroupDetailedPage', () => {
 
         renderWithRouter('1');
 
-        expect(await screen.findByText('Список слов в этой группе пуст.')).toBeInTheDocument();
+        expect(await screen.findByText('The word list in this group is empty.')).toBeInTheDocument();
     });
 
     it('shows error on API failure', async () => {

@@ -4,12 +4,12 @@ import { Input } from '@/components/ui/input';
 
 export type PasswordInputProps = React.ComponentProps<'input'>;
 
-const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(({ className, ...props }) => {
+const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(({ className, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     return (
         <div className="relative">
-            <Input {...props} type={showPassword ? 'text' : 'password'} className={className} />
+            <Input {...props} ref={ref} type={showPassword ? 'text' : 'password'} className={className} />
             <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
