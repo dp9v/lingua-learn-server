@@ -27,7 +27,7 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
 
     const handleConfirmClose = useCallback(() => {
         setShowConfirmDialog(false);
-        // Remove an entry from history if it exists
+        // Navigate back in history if the modal was added to it
         if (window.history.state?.modal === 'training') {
             window.history.back();
         }
