@@ -9,4 +9,3 @@ spring:
 tg.bot:
   timeout: 10
   token: ${TG_BOT_TOKEN:"placeholder"}
-
