@@ -57,5 +57,18 @@ public class WordsControllerTest extends BaseIT {
         assertThat(randomWordsResponse.words().stream().map(WordPairFull::id))
                 .containsExactlyInAnyOrder(101L, 102L, 103L);
     }
+
+    @Test
+    public void testGetRandomWords_withUnauthorizedGroup() throws Exception {
+        var request = get("/api/words/random")
+                .param("groups", "201")
+                .param("count", "5")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .header("Authorization", "Bearer " + getTestToken());
+
+        mockMvc.perform(request)
+               .andExpect(status().isForbidden());
+    }
 }
 
