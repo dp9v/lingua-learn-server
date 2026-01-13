@@ -68,7 +68,7 @@ export function SetupStep({ initialGroupId, onStartTraining }: SetupStepProps) {
 
     const handleStart = () => {
         if (selectedGroupIds.length === 0) {
-            alert('Please select at least one group');
+            console.warn('Please select at least one group before starting training.');
             return;
         }
 
