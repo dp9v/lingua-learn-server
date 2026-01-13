@@ -53,7 +53,7 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
     // Handle browser back button
     useEffect(() => {
         if (!open) return;
-        const handlePopState = (e: PopStateEvent) => {
+        const handlePopState = () => {
             // Ignore popstate events triggered by programmatic navigation
             if (isProgrammaticNavigation.current) {
                 isProgrammaticNavigation.current = false;
@@ -63,7 +63,6 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
                 onClose();
                 return;
             }
-            e.preventDefault();
             handleClose();
         };
         // Add an entry to history when modal opens
