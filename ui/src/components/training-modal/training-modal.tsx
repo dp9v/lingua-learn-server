@@ -26,6 +26,12 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
     } | null>(null);
     const isProgrammaticNavigation = useRef(false);
 
+    const resetModalState = useCallback(() => {
+        setCurrentStep('setup');
+        setTrainingParams(null);
+        onClose();
+    }, [onClose]);
+
     const handleConfirmClose = useCallback(() => {
         setShowConfirmDialog(false);
         // Navigate back in history if the modal was added to it
@@ -33,12 +39,9 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
             isProgrammaticNavigation.current = true;
             window.history.back();
         } else {
-            // Reset state on close
-            setCurrentStep('setup');
-            setTrainingParams(null);
-            onClose();
+            resetModalState();
         }
-    }, [onClose]);
+    }, [resetModalState]);
 
     const handleClose = useCallback(() => {
         // Show confirmation dialog only if on training step
@@ -57,10 +60,7 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
             // Ignore popstate events triggered by programmatic navigation
             if (isProgrammaticNavigation.current) {
                 isProgrammaticNavigation.current = false;
-                // Reset state on close
-                setCurrentStep('setup');
-                setTrainingParams(null);
-                onClose();
+                resetModalState();
                 return;
             }
             handleClose();
@@ -71,7 +71,7 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
         return () => {
             window.removeEventListener('popstate', handlePopState);
         };
-    }, [open, handleClose, onClose]);
+    }, [open, handleClose, resetModalState]);
 
     const handleCancelClose = () => {
         setShowConfirmDialog(false);
