@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import {
@@ -24,17 +24,20 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
         selectedGroupIds: number[];
         wordsCount: number;
     } | null>(null);
+    const isProgrammaticNavigation = useRef(false);
 
     const handleConfirmClose = useCallback(() => {
         setShowConfirmDialog(false);
         // Navigate back in history if the modal was added to it
         if (window.history.state?.modal === 'training') {
+            isProgrammaticNavigation.current = true;
             window.history.back();
+        } else {
+            // Reset state on close
+            setCurrentStep('setup');
+            setTrainingParams(null);
+            onClose();
         }
-        // Reset state on close
-        setCurrentStep('setup');
-        setTrainingParams(null);
-        onClose();
     }, [onClose]);
 
     const handleClose = useCallback(() => {
@@ -51,6 +54,15 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
     useEffect(() => {
         if (!open) return;
         const handlePopState = (e: PopStateEvent) => {
+            // Ignore popstate events triggered by programmatic navigation
+            if (isProgrammaticNavigation.current) {
+                isProgrammaticNavigation.current = false;
+                // Reset state on close
+                setCurrentStep('setup');
+                setTrainingParams(null);
+                onClose();
+                return;
+            }
             e.preventDefault();
             handleClose();
         };
@@ -60,7 +72,7 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
         return () => {
             window.removeEventListener('popstate', handlePopState);
         };
-    }, [open, handleClose]);
+    }, [open, handleClose, onClose]);
 
     const handleCancelClose = () => {
         setShowConfirmDialog(false);
