@@ -73,38 +73,40 @@ export function TrainingModal({ open, onClose, initialGroupId }: TrainingModalPr
     if (!open) return null;
     return (
         <>
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                    <CardHeader className="relative">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-4 top-4"
-                            onClick={handleClose}
-                            aria-label="Close"
-                        >
-                            <XIcon className="h-4 w-4" />
-                        </Button>
-                        <CardTitle className="pr-10">
-                            {currentStep === 'setup' ? 'Training Setup' : 'Training'}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {currentStep === 'setup' ? (
-                            <SetupStep initialGroupId={initialGroupId} onStartTraining={handleStartTraining} />
-                        ) : trainingParams ? (
-                            <TrainingStep
-                                selectedGroupIds={trainingParams.selectedGroupIds}
-                                wordsCount={trainingParams.wordsCount}
-                                onBackToSetup={() => setCurrentStep('setup')}
-                            />
-                        ) : null}
-                    </CardContent>
-                </Card>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4 overflow-y-auto">
+                <div className="w-full max-w-2xl my-auto">
+                    <Card className="w-full max-h-[calc(100svh-2rem)] overflow-y-auto">
+                        <CardHeader className="relative p-4 sm:p-6">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-2 top-2 sm:right-4 sm:top-4"
+                                onClick={handleClose}
+                                aria-label="Close"
+                            >
+                                <XIcon className="h-4 w-4" />
+                            </Button>
+                            <CardTitle className="pr-10 text-lg sm:text-xl">
+                                {currentStep === 'setup' ? 'Training Setup' : 'Training'}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-4 sm:p-6">
+                            {currentStep === 'setup' ? (
+                                <SetupStep initialGroupId={initialGroupId} onStartTraining={handleStartTraining} />
+                            ) : trainingParams ? (
+                                <TrainingStep
+                                    selectedGroupIds={trainingParams.selectedGroupIds}
+                                    wordsCount={trainingParams.wordsCount}
+                                    onBackToSetup={() => setCurrentStep('setup')}
+                                />
+                            ) : null}
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
             {/* Exit confirmation dialog */}
             <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-                <DialogContent>
+                <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md">
                     <DialogHeader>
                         <DialogTitle>Confirm Exit</DialogTitle>
                         <DialogDescription>

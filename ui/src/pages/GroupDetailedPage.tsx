@@ -51,22 +51,26 @@ export default function GroupDetailedPage() {
     const group = groupData?.group;
 
     return (
-        <main className="flex flex-col bg-muted/40 min-h-screen p-6">
-            <Card className="w-full max-w-3xl">
-                <CardHeader>
-                    <div className="flex justify-between items-start">
-                        <CardTitle className="text-3xl font-bold">
-                            {loading ? <Skeleton className="h-8 w-1/2" /> : (group?.name ?? 'Words in Group')}
+        <main className="flex flex-col bg-muted/40 min-h-[100svh] lg:min-h-screen p-3 sm:p-6">
+            <Card className="w-full max-w-3xl mx-auto">
+                <CardHeader className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+                        <CardTitle className="text-2xl sm:text-3xl font-bold">
+                            {loading ? <Skeleton className="h-8 w-48" /> : (group?.name ?? 'Words in Group')}
                         </CardTitle>
                         {!loading && !error && words.length > 0 && (
-                            <Button onClick={openTraining} variant="default" className="flex items-center gap-2">
+                            <Button
+                                onClick={openTraining}
+                                variant="default"
+                                className="flex items-center gap-2 w-full sm:w-auto"
+                            >
                                 <DumbbellIcon className="w-4 h-4" />
-                                <span className="hidden sm:inline">Training</span>
+                                <span className="sm:inline">Training</span>
                             </Button>
                         )}
                     </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 sm:p-6">
                     {error && <p className="text-red-500">{error}</p>}
 
                     {loading && <GroupInfoSkeleton />}
