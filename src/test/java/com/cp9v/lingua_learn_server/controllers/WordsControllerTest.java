@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -69,6 +71,30 @@ public class WordsControllerTest extends BaseIT {
 
         mockMvc.perform(request)
                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testValidRequest() throws Exception {
+        var request = get("/api/words/random")
+                .param("groups", "201")
+                .param("count", "31")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .header("Authorization", "Bearer " + getTestToken());
+        mockMvc.perform(request)
+               .andExpect(status().isUnprocessableEntity());
+
+        var groupsReq = IntStream.range(1, 30)
+                                 .mapToObj(String::valueOf)
+                                 .collect(Collectors.joining(","));
+        request = get("/api/words/random")
+                .param("groups", groupsReq)
+                .param("count", "5")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .header("Authorization", "Bearer " + getTestToken());
+        mockMvc.perform(request)
+               .andExpect(status().isUnprocessableEntity());
     }
 }
 

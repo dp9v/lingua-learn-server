@@ -4,6 +4,7 @@ import com.cp9v.lingua_learn_server.api.dto.requests.GetRandomWordsRequest;
 import com.cp9v.lingua_learn_server.api.dto.responses.GetRandomWordsResponse;
 import com.cp9v.lingua_learn_server.api.service.GroupsService;
 import com.cp9v.lingua_learn_server.api.service.WordsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class WordsController {
     @GetMapping("/random")
     public ResponseEntity<GetRandomWordsResponse> getRandomWords(
             @AuthenticationPrincipal Jwt jwt,
-            @ModelAttribute GetRandomWordsRequest request
+            @ModelAttribute @Valid GetRandomWordsRequest request
     ) {
         groupsService.validateAccess(new HashSet<>(request.groups()), Long.parseLong(jwt.getId()));
         return ResponseEntity.ok(
