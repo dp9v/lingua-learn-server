@@ -1,4 +1,4 @@
-import { RegisterRequestData } from '@/api/auth.ts';
+import { RegisterRequestData } from '@/api/types.ts';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { cn } from '@/lib/utils.ts';

@@ -30,4 +30,8 @@ public class WordsService {
         return wordsRepository
                 .findAllByTextAndLanguage(uniqueWords);
     }
+
+    public List<WordPairFull> getRandomPairs(List<Long> groupIds, int count) {
+        return wordPairsRepository.getRandomPairs(groupIds, count);
+    }
 }

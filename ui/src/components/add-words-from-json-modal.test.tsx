@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import AddWordsFromJson from './add-words-from-json-modal.tsx';
-import type { Language } from '@/api/groups';
+import type { Language } from '@/api/types';
 
 const mockLanguages: Language[] = [
     { code: 'en', name: 'English' },

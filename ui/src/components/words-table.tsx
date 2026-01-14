@@ -1,4 +1,4 @@
-import { WordPair } from '@/api/groups';
+import type { WordPair } from '@/api/types';
 import { Skeleton } from '@/components/ui/skeleton.tsx';
 
 interface WordsTableProps {

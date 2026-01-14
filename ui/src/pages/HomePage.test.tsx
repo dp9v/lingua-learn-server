@@ -5,7 +5,7 @@ import { HomePage } from '@/pages/HomePage';
 import * as authApi from '@/api/auth';
 import * as groupsApi from '@/api/groups';
 import { useAuth } from '@/context/AuthContext';
-import { Group } from '@/api/groups';
+import type { Group } from '@/api/types';
 
 // Мокаем useAuth
 jest.mock('@/context/AuthContext', () => ({
@@ -55,7 +55,7 @@ describe('HomePage', () => {
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/Привет, Анна/i)).toBeInTheDocument();
+            expect(screen.getByText(/Hello, Анна/i)).toBeInTheDocument();
             expect(screen.getByText('Группа A')).toBeInTheDocument();
             expect(screen.getByText('Описание A')).toBeInTheDocument();
             expect(screen.getByText(/10 слов/i)).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('HomePage', () => {
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/ошиба при загрузке данных/i)).toBeInTheDocument();
+            expect(screen.getByText(/Error loading data:/i)).toBeInTheDocument();
         });
     });
 
@@ -110,10 +110,10 @@ describe('HomePage', () => {
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/Привет, Анна/i)).toBeInTheDocument();
+            expect(screen.getByText(/Hello, Анна/i)).toBeInTheDocument();
         });
 
-        await user.click(screen.getByRole('button', { name: /добавить группу/i }));
+        await user.click(screen.getByRole('button', { name: /Add Group/i }));
         expect(screen.getByText(/создать новую группу/i)).toBeInTheDocument();
 
         const nameInput = screen.getByLabelText(/название/i);

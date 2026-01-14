@@ -9,11 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(value = "/sql/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class BaseIT {
     public static UserDto TEST_USER_DTO = UserDto.builder()
                                                  .id(1001L)

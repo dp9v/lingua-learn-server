@@ -1,6 +1,7 @@
 import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { addWords, getAvailableLanguages, Language } from '@/api/groups';
+import { addWords, getAvailableLanguages } from '@/api/groups';
+import type { Language } from '@/api/types';
 import AddWordsForm from '@/components/add-words-form.tsx';
 
 jest.mock('@/api/groups', () => ({

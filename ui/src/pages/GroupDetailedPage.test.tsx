@@ -3,7 +3,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GroupDetailedPage from '@/pages/GroupDetailedPage';
 import { useAuth } from '@/context/AuthContext';
 import * as api from '@/api/groups';
-import { getAvailableLanguages, Language } from '@/api/groups';
+import { getAvailableLanguages } from '@/api/groups';
+import type { Language } from '@/api/types';
 
 const LANGS: Language[] = [
     { code: 'en', name: 'English' },
@@ -97,7 +98,7 @@ describe('GroupDetailedPage', () => {
 
         renderWithRouter('1');
 
-        expect(await screen.findByText('Список слов в этой группе пуст.')).toBeInTheDocument();
+        expect(await screen.findByText('The word list in this group is empty.')).toBeInTheDocument();
     });
 
     it('shows error on API failure', async () => {
