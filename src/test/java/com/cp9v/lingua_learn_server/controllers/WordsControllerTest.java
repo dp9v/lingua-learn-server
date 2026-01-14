@@ -68,7 +68,7 @@ public class WordsControllerTest extends BaseIT {
                 .header("Authorization", "Bearer " + getTestToken());
 
         mockMvc.perform(request)
-               .andExpect(status().isForbidden());
+               .andExpect(status().isUnauthorized());
     }
 }
 
