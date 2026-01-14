@@ -79,7 +79,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
         return (
             <>
                 <Card className="mt-6 w-full max-w-3xl">
-                    <CardContent className="flex justify-center gap-2">
+                    <CardContent className="flex flex-col sm:flex-row justify-center gap-2 p-4">
                         <Button
                             type="button"
                             variant="secondary"
@@ -91,10 +91,16 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                                     },
                                 ])
                             }
+                            className="w-full sm:w-auto"
                         >
                             + Добавить слова
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => setImportOpen(true)}
+                            className="w-full sm:w-auto"
+                        >
                             Импортировать JSON
                         </Button>
                     </CardContent>
@@ -125,16 +131,30 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                             onRemove={handleRemoveRow}
                         />
 
-                        <div className="flex justify-between gap-2">
-                            <div className="flex gap-2">
-                                <Button type="button" variant="secondary" onClick={handleAddRow}>
+                        <div className="flex flex-col sm:flex-row justify-between gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={handleAddRow}
+                                    className="w-full sm:w-auto"
+                                >
                                     + Добавить строку
                                 </Button>
-                                <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => setImportOpen(true)}
+                                    className="w-full sm:w-auto"
+                                >
                                     Импортировать JSON
                                 </Button>
                             </div>
-                            <Button type="submit" disabled={loading || languages.length === 0}>
+                            <Button
+                                type="submit"
+                                disabled={loading || languages.length === 0}
+                                className="w-full sm:w-auto"
+                            >
                                 {loading ? 'Сохраняем...' : 'Сохранить'}
                             </Button>
                         </div>

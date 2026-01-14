@@ -117,4 +117,19 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    /* Fix for mobile viewport height */
+    html,
+    body {
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Improve mobile touch targets */
+    @media (max-width: 640px) {
+        button,
+        a {
+            min-height: 44px;
+        }
+    }
 }

@@ -52,17 +52,21 @@ export function HomePage() {
     }
 
     return (
-        <main className="bg-muted/40 min-h-[calc(100vh-3rem)] p-6">
-            <div className="flex justify-between items-center mb-6">
-                <div className="text-xl font-semibold">Hello, {name ? name : 'User'} 👋</div>
-                <div className="flex gap-2">
-                    <Button onClick={openTraining} variant="outline" className="flex items-center gap-2">
+        <main className="bg-muted/40 min-h-[100svh] lg:min-h-[calc(100vh-3rem)] p-3 sm:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+                <div className="text-lg sm:text-xl font-semibold">Hello, {name ? name : 'User'} 👋</div>
+                <div className="flex gap-2 w-full sm:w-auto">
+                    <Button
+                        onClick={openTraining}
+                        variant="outline"
+                        className="flex items-center gap-2 flex-1 sm:flex-none"
+                    >
                         <DumbbellIcon className="w-4 h-4" />
-                        <span className="hidden sm:inline">Training</span>
+                        <span className="sm:inline">Training</span>
                     </Button>
-                    <Button onClick={() => setModalOpen(true)} className="flex items-center gap-2">
+                    <Button onClick={() => setModalOpen(true)} className="flex items-center gap-2 flex-1 sm:flex-none">
                         <PlusIcon className="w-4 h-4" />
-                        <span className="hidden sm:inline">Add Group</span>
+                        <span className="sm:inline">Add Group</span>
                     </Button>
                 </div>
             </div>

@@ -68,16 +68,16 @@ export function TrainingStep({ selectedGroupIds, wordsCount, onBackToSetup }: Tr
                         words.map((wordPair, index) => (
                             <div
                                 key={wordPair.id || index}
-                                className="flex items-center justify-between p-3 bg-muted rounded-md"
+                                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-muted rounded-md gap-2"
                             >
                                 <div className="flex-1">
-                                    <p className="font-medium">{wordPair.from.text}</p>
-                                    <p className="text-sm text-muted-foreground">{wordPair.from.language}</p>
+                                    <p className="font-medium text-sm sm:text-base">{wordPair.from.text}</p>
+                                    <p className="text-xs sm:text-sm text-muted-foreground">{wordPair.from.language}</p>
                                 </div>
-                                <div className="mx-4 text-muted-foreground">→</div>
-                                <div className="flex-1 text-right">
-                                    <p className="font-medium">{wordPair.to.text}</p>
-                                    <p className="text-sm text-muted-foreground">{wordPair.to.language}</p>
+                                <div className="mx-0 sm:mx-4 text-muted-foreground text-center sm:text-left">→</div>
+                                <div className="flex-1 text-left sm:text-right">
+                                    <p className="font-medium text-sm sm:text-base">{wordPair.to.text}</p>
+                                    <p className="text-xs sm:text-sm text-muted-foreground">{wordPair.to.language}</p>
                                 </div>
                             </div>
                         ))

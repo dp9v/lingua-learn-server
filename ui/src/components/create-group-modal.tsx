@@ -58,11 +58,11 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Создать новую группу</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                     <div className="space-y-2">
                         <Label htmlFor="name">Название</Label>
                         <Input
@@ -85,7 +85,7 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
 
                     {error && <p className="text-red-500 text-sm">{error}</p>}
 
-                    <Button onClick={onSubmit} disabled={loading}>
+                    <Button onClick={onSubmit} disabled={loading} className="w-full sm:w-auto">
                         {loading ? 'Создание...' : 'Создать'}
                     </Button>
                 </div>
