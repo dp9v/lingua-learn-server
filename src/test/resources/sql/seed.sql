@@ -9,9 +9,9 @@ INSERT INTO api__words (id, language, text)
 VALUES (101, 'EN'::language_code, 'word_1'),
        (102, 'EN'::language_code, 'word_2'),
        (103, 'EN'::language_code, 'word_3'),
-       (201, 'RU'::language_code, 'word_1_ru'),
-       (202, 'RU'::language_code, 'word_2_ru'),
-       (203, 'RU'::language_code, 'word_3_ru'),
+       (201, 'RU'::language_code, 'слово_1'),
+       (202, 'RU'::language_code, 'слово_2'),
+       (203, 'RU'::language_code, 'слово_3'),
        (301, 'CZ'::language_code, 'slovo_1'),
        (302, 'CZ'::language_code, 'slovo_2'),
        (303, 'CZ'::language_code, 'slovo_3');

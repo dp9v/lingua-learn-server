@@ -69,9 +69,9 @@ public class GroupsControllerTest extends BaseIT {
 
         assertThat(groupWithWords.words()).hasSize(3);
         assertThat(groupWithWords.words()).containsExactlyInAnyOrder(
-                new WordPairFull(101L, new Word(101L, "word_1", EN), new Word(201L, "word_1_ru", RU)),
-                new WordPairFull(102L, new Word(102L, "word_2", EN), new Word(202L, "word_2_ru", RU)),
-                new WordPairFull(103L, new Word(103L, "word_3", EN), new Word(203L, "word_3_ru", RU))
+                new WordPairFull(101L, new Word(101L, "word_1", EN), new Word(201L, "слово_1", RU)),
+                new WordPairFull(102L, new Word(102L, "word_2", EN), new Word(202L, "слово_2", RU)),
+                new WordPairFull(103L, new Word(103L, "word_3", EN), new Word(203L, "слово_3", RU))
         );
     }
 
@@ -115,7 +115,7 @@ public class GroupsControllerTest extends BaseIT {
                 List.of(
                         new WordPairFull(null, new Word(null, "slovo_2", CZ), new Word(null, "word_2", EN)),
                         new WordPairFull(null, new Word(null, "slovo_4", CZ), new Word(null, "word_4", EN)),
-                        new WordPairFull(null, new Word(null, "word_1", EN), new Word(null, "word_1_ru", RU))
+                        new WordPairFull(null, new Word(null, "word_1", EN), new Word(null, "слово_1", RU))
                 )
         );
 
@@ -136,7 +136,7 @@ public class GroupsControllerTest extends BaseIT {
                 new String[]{"slovo_2", "word_2"},
                 new String[]{"slovo_3", "word_3"},
                 new String[]{"slovo_4", "word_4"},
-                new String[]{"word_1", "word_1_ru"});
+                new String[]{"word_1", "слово_1"});
     }
 
 }
