@@ -22,7 +22,7 @@ public class SaveNutritionScoreStep implements PipelineStep {
     @Override
     public PipelineStepInfo process(PipelineStepInfo stepInfo, FlatUpdate update) {
         tgClient.sendMessage(
-                new ResponseMessage(update.chatId, "Поздравляю, мы все сохранили. Но ты все равно будешь жирным.")
+                new ResponseMessage(update.chatId, "Congratulations, we saved everything. But you'll still be fat.")
         );
         return PipelineStepInfo.builder()
                 .userId(stepInfo.userId)

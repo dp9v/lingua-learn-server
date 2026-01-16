@@ -29,7 +29,7 @@ export default function GroupDetailedPage() {
         setLoading(true);
         getGroupWords(Number(id), token)
             .then(setGroupData)
-            .catch(() => setError('Ошибка при загрузке слов'))
+            .catch(() => setError('Error loading words'))
             .finally(() => setLoading(false));
     }, [id, token]);
 
