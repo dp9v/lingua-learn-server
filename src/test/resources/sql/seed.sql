@@ -17,9 +17,9 @@ VALUES (101, 'EN'::language_code, 'word_1'),
        (303, 'CZ'::language_code, 'slovo_3');
 
 INSERT INTO api__groups(id, name, description, is_public)
-VALUES (101, 'Eng to Rus', 'Англо-русский', true),
-       (201, 'Rus to Czech', 'Русско-чешский', false),
-       (301, 'Czech to Eng', 'Чешско-английский', false);
+VALUES (101, 'Eng to Rus', 'English-Russian', true),
+       (201, 'Rus to Czech', 'Russian-Czech', false),
+       (301, 'Czech to Eng', 'Czech-English', false);
 
 INSERT INTO api__word_pairs(id, word_from_id, word_to_id)
 VALUES (101, 101, 201),

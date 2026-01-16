@@ -14,7 +14,7 @@ export const api = async <T>(input: RequestInfo, init?: RequestInit): Promise<T>
     const contentType = response.headers.get('Content-Type') || '';
 
     if (!response.ok) {
-        // Валидационные ошибки
+        // Validation errors
         if ((response.status === 422 || response.status === 409) && contentType.includes('application/json')) {
             const errorData = await response.json();
             throw new ValidationError(errorData);
@@ -24,7 +24,7 @@ export const api = async <T>(input: RequestInfo, init?: RequestInit): Promise<T>
             throw new Error('Invalid credentials');
         }
 
-        // Ошибки с текстом
+        // Errors with text
         const message = contentType.includes('application/json')
             ? ((await response.json()).message ?? 'Unknown error')
             : await response.text();

@@ -49,8 +49,8 @@ public class GroupsControllerTest extends BaseIT {
 
         assertThat(groups).hasSize(2);
         assertThat(groups).containsExactlyInAnyOrder(
-                new Group(101L, "Eng to Rus", "Англо-русский", true, 3),
-                new Group(301L, "Czech to Eng", "Чешско-английский", false, 3)
+                new Group(101L, "Eng to Rus", "English-Russian", true, 3),
+                new Group(301L, "Czech to Eng", "Czech-English", false, 3)
         );
     }
 

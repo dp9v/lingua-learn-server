@@ -14,11 +14,11 @@ export function GroupList({ groups }: GroupListProps) {
         return (
             <div className="text-center mt-6">
                 <p className="text-muted-foreground text-lg">
-                    У вас пока нет групп. Вы можете{' '}
+                    You don't have any groups yet. You can{' '}
                     <a href="/groups" className="text-blue-500 underline hover:text-blue-700">
-                        просмотреть список публичных групп
+                        view the list of public groups
                     </a>
-                    или добавить новую группу вручную.
+                    or add a new group manually.
                 </p>
             </div>
         );
@@ -27,9 +27,7 @@ export function GroupList({ groups }: GroupListProps) {
     return (
         <div>
             <div className="welcome-message text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
-                <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                    Ниже представлены группы, которые вы добавили к себе.
-                </p>
+                <p className="text-muted-foreground mt-2 text-sm sm:text-base">Below are the groups you've added.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {groups.map((group) => (
@@ -44,7 +42,7 @@ export function GroupList({ groups }: GroupListProps) {
                         <CardContent className="p-4 sm:p-6 pt-0">
                             <p className="text-sm text-muted-foreground line-clamp-2">{group.description}</p>
                             <p className="text-xs mt-2">
-                                {group.wordsCount} слов • {group.isPublic ? 'Публичная' : 'Приватная'}
+                                {group.wordsCount} words • {group.isPublic ? 'Public' : 'Private'}
                             </p>
                         </CardContent>
                     </Card>

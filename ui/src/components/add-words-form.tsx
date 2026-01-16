@@ -26,7 +26,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
             .then((langs) => {
                 setLanguages(langs);
             })
-            .catch(() => setError('Не удалось загрузить список языков'));
+            .catch(() => setError('Failed to load language list'));
     }, [token]);
 
     const handleAddRow = () => {
@@ -69,7 +69,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
             setNewWords([]);
         } catch (err) {
             console.error(err);
-            setError('Не удалось сохранить слова. Попробуйте ещё раз.');
+            setError('Failed to save words. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -93,7 +93,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                             }
                             className="w-full sm:w-auto"
                         >
-                            + Добавить слова
+                            + Add Words
                         </Button>
                         <Button
                             type="button"
@@ -101,12 +101,12 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                             onClick={() => setImportOpen(true)}
                             className="w-full sm:w-auto"
                         >
-                            Импортировать JSON
+                            Import JSON
                         </Button>
                     </CardContent>
                 </Card>
 
-                {/* модалка всегда одна */}
+                {/* Modal is always singular */}
                 <AddWordsFromJson
                     open={importOpen}
                     onClose={() => setImportOpen(false)}
@@ -139,7 +139,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                                     onClick={handleAddRow}
                                     className="w-full sm:w-auto"
                                 >
-                                    + Добавить строку
+                                    + Add Row
                                 </Button>
                                 <Button
                                     type="button"
@@ -147,7 +147,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                                     onClick={() => setImportOpen(true)}
                                     className="w-full sm:w-auto"
                                 >
-                                    Импортировать JSON
+                                    Import JSON
                                 </Button>
                             </div>
                             <Button
@@ -155,14 +155,14 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                                 disabled={loading || languages.length === 0}
                                 className="w-full sm:w-auto"
                             >
-                                {loading ? 'Сохраняем...' : 'Сохранить'}
+                                {loading ? 'Saving...' : 'Save'}
                             </Button>
                         </div>
                     </form>
                 </CardContent>
             </Card>
 
-            {/* модалка всегда одна */}
+            {/* Modal is always singular */}
             <AddWordsFromJson
                 open={importOpen}
                 onClose={() => setImportOpen(false)}
@@ -193,7 +193,7 @@ function WordPairsList({
                         <Input
                             value={pair.from.text}
                             onChange={(e) => onChange(index, 'from', 'text', e.target.value)}
-                            placeholder="Слово (из)"
+                            placeholder="Word (from)"
                             className="flex-1 min-w-0"
                         />
                         <Select
@@ -201,7 +201,7 @@ function WordPairsList({
                             onValueChange={(v) => onChange(index, 'from', 'language', v)}
                         >
                             <SelectTrigger className="min-w-[110px]">
-                                <SelectValue placeholder="Язык" />
+                                <SelectValue placeholder="Language" />
                             </SelectTrigger>
                             <SelectContent>
                                 {languages.map((lang) => (
@@ -218,12 +218,12 @@ function WordPairsList({
                         <Input
                             value={pair.to.text}
                             onChange={(e) => onChange(index, 'to', 'text', e.target.value)}
-                            placeholder="Слово (в)"
+                            placeholder="Word (to)"
                             className="flex-1 min-w-0"
                         />
                         <Select value={pair.to.language} onValueChange={(v) => onChange(index, 'to', 'language', v)}>
                             <SelectTrigger className="min-w-[110px]">
-                                <SelectValue placeholder="Язык" />
+                                <SelectValue placeholder="Language" />
                             </SelectTrigger>
                             <SelectContent>
                                 {languages.map((lang) => (
@@ -242,7 +242,7 @@ function WordPairsList({
                         size="icon"
                         className="text-destructive hover:bg-destructive/10 shrink-0 self-start md:self-center"
                         onClick={() => onRemove(index)}
-                        aria-label="Удалить строку"
+                        aria-label="Delete row"
                     >
                         <Trash2 size={18} />
                     </Button>
