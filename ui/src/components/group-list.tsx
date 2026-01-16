@@ -27,9 +27,7 @@ export function GroupList({ groups }: GroupListProps) {
     return (
         <div>
             <div className="welcome-message text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
-                <p className="text-muted-foreground mt-2 text-sm sm:text-base">
-                    Below are the groups you've added.
-                </p>
+                <p className="text-muted-foreground mt-2 text-sm sm:text-base">Below are the groups you've added.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {groups.map((group) => (

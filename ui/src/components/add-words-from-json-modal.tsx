@@ -67,9 +67,9 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
 
                     <div className="text-xs bg-muted p-2 rounded space-y-1">
                         <p>
-                            If you want to add multiple words at once, you need to provide them in the correct format. 
-                            To convert your words into the required format, it's easiest to use a chatbot. 
-                            Below is a prompt you can use for this purpose.
+                            If you want to add multiple words at once, you need to provide them in the correct format.
+                            To convert your words into the required format, it's easiest to use a chatbot. Below is a
+                            prompt you can use for this purpose.
                         </p>
                         <br />
                         <pre className="whitespace-pre-wrap">
