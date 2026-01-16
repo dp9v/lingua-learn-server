@@ -12,8 +12,8 @@ export function WordsTable({ words }: WordsTableProps) {
                 <table className="text-left border-separate border-spacing-y-2 w-full min-w-[500px] sm:min-w-0">
                     <thead>
                         <tr>
-                            <th className="px-2 sm:px-4 py-2 text-sm sm:text-base">Слово (из)</th>
-                            <th className="px-2 sm:px-4 py-2 text-sm sm:text-base">Слово (в)</th>
+                            <th className="px-2 sm:px-4 py-2 text-sm sm:text-base">Word (from)</th>
+                            <th className="px-2 sm:px-4 py-2 text-sm sm:text-base">Word (to)</th>
                         </tr>
                     </thead>
                     <tbody>
