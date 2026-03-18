@@ -1,6 +1,7 @@
 import { render, screen, waitFor, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { addWords, getAvailableLanguages, Language } from '@/api/groups';
+import { addWords, getAvailableLanguages } from '@/api/groups';
+import type { Language } from '@/api/types';
 import AddWordsForm from '@/components/add-words-form.tsx';
 
 jest.mock('@/api/groups', () => ({
@@ -23,12 +24,12 @@ describe('AddWordsForm', () => {
         mockedAddWords.mockResolvedValue(undefined);
     });
 
-    it('shows "+ Добавить слова" when rendered for the first time', async () => {
+    it('shows "+ Add Words" when rendered for the first time', async () => {
         render(<AddWordsForm groupId={123} token="TEST_TOKEN" />);
 
         await waitFor(() => expect(mockedGetAvailableLanguages).toHaveBeenCalledWith('TEST_TOKEN'));
 
-        expect(screen.getByRole('button', { name: '+ Добавить слова' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '+ Add Words' })).toBeInTheDocument();
     });
 
     it('adds a row, inputs a word pair, submits to server, clears the form and calls the callback', async () => {
@@ -41,7 +42,7 @@ describe('AddWordsForm', () => {
         await waitFor(() => expect(mockedGetAvailableLanguages).toHaveBeenCalled());
 
         // Open the add-words form
-        await user.click(screen.getByRole('button', { name: '+ Добавить слова' }));
+        await user.click(screen.getByRole('button', { name: '+ Add Words' }));
 
         // The form should now contain inputs for the word pair
         const form = container.querySelector('form') as HTMLFormElement;
@@ -51,7 +52,7 @@ describe('AddWordsForm', () => {
         expect(inputs.length).toBeGreaterThanOrEqual(2);
 
         await user.type(inputs[0], 'hello');
-        await user.type(inputs[1], 'привет');
+        await user.type(inputs[1], 'privet');
 
         // Submit the form
         fireEvent.submit(form);
@@ -69,7 +70,7 @@ describe('AddWordsForm', () => {
             expect.arrayContaining([
                 expect.objectContaining({
                     from: expect.objectContaining({ text: 'hello' }),
-                    to: expect.objectContaining({ text: 'привет' }),
+                    to: expect.objectContaining({ text: 'privet' }),
                 }),
             ])
         );
@@ -77,8 +78,8 @@ describe('AddWordsForm', () => {
         // Callback called
         expect(onWordsAdded).toHaveBeenCalledTimes(1);
 
-        // Form cleared — "+ Добавить слова" button visible again
-        expect(await screen.findByRole('button', { name: '+ Добавить слова' })).toBeInTheDocument();
+        // Form cleared — "+ Add Words" button visible again
+        expect(await screen.findByRole('button', { name: '+ Add Words' })).toBeInTheDocument();
     });
 
     it('does not submit empty rows (does not call anything)', async () => {
@@ -87,7 +88,7 @@ describe('AddWordsForm', () => {
         await waitFor(() => expect(mockedGetAvailableLanguages).toHaveBeenCalled());
 
         // Open the add-words form
-        await userEvent.click(screen.getByRole('button', { name: '+ Добавить слова' }));
+        await userEvent.click(screen.getByRole('button', { name: '+ Add Words' }));
 
         const form = container.querySelector('form') as HTMLFormElement;
         fireEvent.submit(form);
@@ -106,19 +107,19 @@ describe('AddWordsForm', () => {
         await waitFor(() => expect(mockedGetAvailableLanguages).toHaveBeenCalled());
 
         // Open form and enter data
-        await user.click(screen.getByRole('button', { name: '+ Добавить слова' }));
+        await user.click(screen.getByRole('button', { name: '+ Add Words' }));
 
         const form = container.querySelector('form') as HTMLFormElement;
         const inputs = within(form).getAllByRole('textbox');
         expect(inputs.length).toBeGreaterThanOrEqual(2);
 
         await user.type(inputs[0], 'cat');
-        await user.type(inputs[1], 'кот');
+        await user.type(inputs[1], 'kot');
 
         fireEvent.submit(form);
 
         // Expect error message to be shown
-        expect(await screen.findByText('Не удалось сохранить слова. Попробуйте ещё раз.')).toBeInTheDocument();
+        expect(await screen.findByText('Failed to save words. Please try again.')).toBeInTheDocument();
     });
 
     it('shows an error message when loading languages fails (after opening the form)', async () => {
@@ -129,8 +130,8 @@ describe('AddWordsForm', () => {
         await waitFor(() => expect(mockedGetAvailableLanguages).toHaveBeenCalled());
 
         // Error will appear in the form markup when it becomes visible
-        await userEvent.click(screen.getByRole('button', { name: '+ Добавить слова' }));
+        await userEvent.click(screen.getByRole('button', { name: '+ Add Words' }));
 
-        expect(await screen.findByText('Не удалось загрузить список языков')).toBeInTheDocument();
+        expect(await screen.findByText('Failed to load language list')).toBeInTheDocument();
     });
 });

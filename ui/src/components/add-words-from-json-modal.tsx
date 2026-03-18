@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import type { WordPair, Language } from '@/api/groups';
+import type { WordPair, Language } from '@/api/types';
 
 interface AddWordsFromJsonProps {
     open: boolean;
@@ -20,7 +20,7 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
             const parsed = JSON.parse(jsonInput);
 
             if (!Array.isArray(parsed)) {
-                throw new Error('Ожидается массив объектов');
+                throw new Error('Expected array of objects');
             }
 
             const validPairs: WordPair[] = parsed.filter(
@@ -28,7 +28,7 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
             );
 
             if (validPairs.length === 0) {
-                throw new Error('Не найдено корректных пар слов');
+                throw new Error('No valid word pairs found');
             }
 
             onImport(validPairs);
@@ -38,10 +38,10 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
         } catch (err) {
             const errorMessage =
                 err instanceof SyntaxError
-                    ? 'Неверный формат JSON'
+                    ? 'Invalid JSON format'
                     : err instanceof Error
                       ? err.message
-                      : 'Ошибка при парсинге JSON';
+                      : 'JSON parsing error';
             setError(errorMessage);
         }
     };
@@ -52,14 +52,14 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>Импорт слов из JSON</DialogTitle>
+                    <DialogTitle>Import Words from JSON</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-3">
                     <Textarea
                         value={jsonInput}
                         onChange={(e) => setJsonInput(e.target.value)}
-                        placeholder="Вставьте сюда JSON-массив слов"
+                        placeholder="Paste JSON array of words here"
                         className="h-48 resize-none"
                     />
 
@@ -67,13 +67,13 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
 
                     <div className="text-xs bg-muted p-2 rounded space-y-1">
                         <p>
-                            Если вы хотите загрузить добавить несколько слов сразу, то нужно передать их в форму в
-                            правильном формате. Для преобразования ваших слов в нужный формат, проще всего обратиться за
-                            помощью к чат-боту. Ниже приведен промпт, который можно для этого использовать.
+                            If you want to add multiple words at once, you need to provide them in the correct format.
+                            To convert your words into the required format, it's easiest to use a chatbot. Below is a
+                            prompt you can use for this purpose.
                         </p>
                         <br />
                         <pre className="whitespace-pre-wrap">
-                            {`Преобразуй мой список слов в JSON-массив такого вида:
+                            {`Convert my word list into a JSON array in this format:
 [
   {
     "from": { "text": "cat", "language": "en" },
@@ -81,10 +81,10 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
   }
 ]
 
-Условия:
-1. Поле "text" должно содержать только одно слово или одну короткую фразу (без перечислений).
-2. Используй только доступные языки: ${availableLangs}.
-3. Если для какого-то из слов нет перевода, то укажи его.
+Requirements:
+1. The "text" field should contain only one word or one short phrase (no lists).
+2. Use only available languages: ${availableLangs}.
+3. If there's no translation for a word, indicate it.
 `}
                         </pre>
                     </div>
@@ -92,9 +92,9 @@ export default function AddWordsFromJson({ open, onClose, onImport, languages }:
 
                 <DialogFooter>
                     <Button variant="secondary" onClick={onClose}>
-                        Отмена
+                        Cancel
                     </Button>
-                    <Button onClick={handleImport}>Импортировать</Button>
+                    <Button onClick={handleImport}>Import</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

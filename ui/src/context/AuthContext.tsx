@@ -24,9 +24,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (now >= expiry) {
                 logout();
             } else {
-                // Автоматический logout по таймеру
+                // Automatic logout on timer
                 const timeout = setTimeout(() => logout(), expiry - now);
-                return () => clearTimeout(timeout); // Чистим при размонтировании
+                return () => clearTimeout(timeout); // Cleanup on unmount
             }
         }
     }, []);

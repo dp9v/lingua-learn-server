@@ -6,10 +6,10 @@ import '@testing-library/jest-dom';
 
 describe('RegisterForm', () => {
     const setup = (onFormSubmit = jest.fn()) => {
-        render(<RegisterForm onFormSubmit={onFormSubmit} />);
+        const { container } = render(<RegisterForm onFormSubmit={onFormSubmit} />);
         return {
             emailInput: screen.getByLabelText(/email/i),
-            passwordInput: screen.getByLabelText(/password/i),
+            passwordInput: container.querySelector('input[name="password"]') as HTMLInputElement,
             nameInput: screen.getByLabelText('Name'),
             surnameInput: screen.getByLabelText('Surname'),
             submitButton: screen.getByRole('button', { name: /register/i }),

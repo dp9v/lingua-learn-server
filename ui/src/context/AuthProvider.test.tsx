@@ -60,7 +60,7 @@ describe('AuthProvider', () => {
 
         renderWithProvider();
 
-        // fast-forward 5 секунд
+        // fast-forward 5 seconds
         act(() => {
             jest.advanceTimersByTime(5000);
         });

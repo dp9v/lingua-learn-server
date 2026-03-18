@@ -52,3 +52,7 @@ From the project root, run:
 ### 5. Test Bot Functionality
    
 To verify bot functionality and authentication, run the following script: `utils/registration.api`
+
+## 📚 Additional Documentation
+
+- [Deployment Guide](DEPLOYMENT.md) - Instructions for deploying to different environments

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -56,5 +57,16 @@ public class GroupsService {
                                          .toList();
 
         groupsRepository.addNewPairs(groupId, pairIds);
+    }
+
+    public void validateAccess(Set<Long> groups, long userId) {
+        var userGroups = groupsRepository.getAllForUser(userId)
+                .stream()
+                .map(Group::id)
+                .collect(Collectors.toSet());
+        groups.removeAll(userGroups);
+        if (!groups.isEmpty()) {
+            throw new UnauthorisedException("You don't have access to some of the requested groups: " + groups);
+        }
     }
 }

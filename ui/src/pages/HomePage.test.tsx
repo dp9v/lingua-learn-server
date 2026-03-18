@@ -5,14 +5,14 @@ import { HomePage } from '@/pages/HomePage';
 import * as authApi from '@/api/auth';
 import * as groupsApi from '@/api/groups';
 import { useAuth } from '@/context/AuthContext';
-import { Group } from '@/api/groups';
+import type { Group } from '@/api/types';
 
-// Мокаем useAuth
+// Mock useAuth
 jest.mock('@/context/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-// Мокаем useNavigate
+// Mock useNavigate
 const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -41,12 +41,12 @@ describe('HomePage', () => {
     });
 
     test('renders greeting and groups on success', async () => {
-        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Анна' });
+        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Anna' });
         jest.spyOn(groupsApi, 'getUserGroups').mockResolvedValueOnce([
             {
                 id: 1,
-                name: 'Группа A',
-                description: 'Описание A',
+                name: 'Group A',
+                description: 'Description A',
                 isPublic: true,
                 wordsCount: 10,
             },
@@ -55,46 +55,46 @@ describe('HomePage', () => {
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/Привет, Анна/i)).toBeInTheDocument();
-            expect(screen.getByText('Группа A')).toBeInTheDocument();
-            expect(screen.getByText('Описание A')).toBeInTheDocument();
-            expect(screen.getByText(/10 слов/i)).toBeInTheDocument();
+            expect(screen.getByText(/Hello, Anna/i)).toBeInTheDocument();
+            expect(screen.getByText('Group A')).toBeInTheDocument();
+            expect(screen.getByText('Description A')).toBeInTheDocument();
+            expect(screen.getByText(/10 words/i)).toBeInTheDocument();
         });
     });
 
     test('shows message if no groups', async () => {
-        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Анна' });
+        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Anna' });
         jest.spyOn(groupsApi, 'getUserGroups').mockResolvedValueOnce([]);
 
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/у вас пока нет групп/i)).toBeInTheDocument();
+            expect(screen.getByText(/you don't have any groups yet/i)).toBeInTheDocument();
         });
     });
 
     test('shows error message if fetch fails', async () => {
-        jest.spyOn(authApi, 'me').mockRejectedValueOnce(new Error('Ошибка'));
+        jest.spyOn(authApi, 'me').mockRejectedValueOnce(new Error('Error'));
         jest.spyOn(groupsApi, 'getUserGroups').mockResolvedValueOnce([]);
 
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/ошиба при загрузке данных/i)).toBeInTheDocument();
+            expect(screen.getByText(/Error loading data:/i)).toBeInTheDocument();
         });
     });
 
     test('allows creating a new group', async () => {
         const user = userEvent.setup();
 
-        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Анна' });
+        jest.spyOn(authApi, 'me').mockResolvedValueOnce({ name: 'Anna' });
 
         const initialGroups: Group[] = [];
         const updatedGroups = [
             {
                 id: 1,
-                name: 'Новая группа',
-                description: 'Описание новой группы',
+                name: 'New Group',
+                description: 'New group description',
                 isPublic: true,
                 wordsCount: 0,
             },
@@ -102,37 +102,37 @@ describe('HomePage', () => {
 
         const getGroupsMock = jest
             .spyOn(groupsApi, 'getUserGroups')
-            .mockResolvedValueOnce(initialGroups) // первая загрузка
-            .mockResolvedValueOnce(updatedGroups); // после создания
+            .mockResolvedValueOnce(initialGroups) // first load
+            .mockResolvedValueOnce(updatedGroups); // after creation
 
         const createGroupMock = jest.spyOn(groupsApi, 'createGroup').mockResolvedValueOnce(1);
 
         render(<HomePage />, { wrapper: MemoryRouter });
 
         await waitFor(() => {
-            expect(screen.getByText(/Привет, Анна/i)).toBeInTheDocument();
+            expect(screen.getByText(/Hello, Anna/i)).toBeInTheDocument();
         });
 
-        await user.click(screen.getByRole('button', { name: /добавить группу/i }));
-        expect(screen.getByText(/создать новую группу/i)).toBeInTheDocument();
+        await user.click(screen.getByRole('button', { name: /Add Group/i }));
+        expect(screen.getByText(/create new group/i)).toBeInTheDocument();
 
-        const nameInput = screen.getByLabelText(/название/i);
-        const descriptionInput = screen.getByLabelText(/описание/i);
+        const nameInput = screen.getByLabelText(/name/i);
+        const descriptionInput = screen.getByLabelText(/description/i);
 
-        await user.type(nameInput, 'Новая группа');
-        await user.type(descriptionInput, 'Описание новой группы');
+        await user.type(nameInput, 'New Group');
+        await user.type(descriptionInput, 'New group description');
 
-        await user.click(screen.getByRole('button', { name: /создать/i }));
+        await user.click(screen.getByRole('button', { name: /create/i }));
 
         await waitFor(() => {
-            expect(createGroupMock).toHaveBeenCalledWith('Новая группа', 'Описание новой группы', 'mock-token');
+            expect(createGroupMock).toHaveBeenCalledWith('New Group', 'New group description', 'mock-token');
         });
 
         await waitFor(() => {
             expect(getGroupsMock).toHaveBeenCalledTimes(2);
-            expect(screen.getByText('Новая группа')).toBeInTheDocument();
+            expect(screen.getByText('New Group')).toBeInTheDocument();
         });
 
-        expect(screen.queryByText(/создать новую группу/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/create new group/i)).not.toBeInTheDocument();
     });
 });

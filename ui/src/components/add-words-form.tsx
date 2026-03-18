@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { Trash2 } from 'lucide-react';
-import type { Language, WordPair } from '@/api/groups';
+import type { Language, WordPair } from '@/api/types';
 import { addWords, getAvailableLanguages } from '@/api/groups';
 import AddWordsFromJson from './add-words-from-json-modal';
 
@@ -26,7 +26,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
             .then((langs) => {
                 setLanguages(langs);
             })
-            .catch(() => setError('Не удалось загрузить список языков'));
+            .catch(() => setError('Failed to load language list'));
     }, [token]);
 
     const handleAddRow = () => {
@@ -69,7 +69,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
             setNewWords([]);
         } catch (err) {
             console.error(err);
-            setError('Не удалось сохранить слова. Попробуйте ещё раз.');
+            setError('Failed to save words. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -79,7 +79,7 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
         return (
             <>
                 <Card className="mt-6 w-full max-w-3xl">
-                    <CardContent className="flex justify-center gap-2">
+                    <CardContent className="flex flex-col sm:flex-row justify-center gap-2 p-4">
                         <Button
                             type="button"
                             variant="secondary"
@@ -91,16 +91,22 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                                     },
                                 ])
                             }
+                            className="w-full sm:w-auto"
                         >
-                            + Добавить слова
+                            + Add Words
                         </Button>
-                        <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
-                            Импортировать JSON
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => setImportOpen(true)}
+                            className="w-full sm:w-auto"
+                        >
+                            Import JSON
                         </Button>
                     </CardContent>
                 </Card>
 
-                {/* модалка всегда одна */}
+                {/* Modal is always singular */}
                 <AddWordsFromJson
                     open={importOpen}
                     onClose={() => setImportOpen(false)}
@@ -125,24 +131,38 @@ export default function AddWordsForm({ groupId, token, onWordsAdded }: AddWordsF
                             onRemove={handleRemoveRow}
                         />
 
-                        <div className="flex justify-between gap-2">
-                            <div className="flex gap-2">
-                                <Button type="button" variant="secondary" onClick={handleAddRow}>
-                                    + Добавить строку
+                        <div className="flex flex-col sm:flex-row justify-between gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={handleAddRow}
+                                    className="w-full sm:w-auto"
+                                >
+                                    + Add Row
                                 </Button>
-                                <Button type="button" variant="secondary" onClick={() => setImportOpen(true)}>
-                                    Импортировать JSON
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    onClick={() => setImportOpen(true)}
+                                    className="w-full sm:w-auto"
+                                >
+                                    Import JSON
                                 </Button>
                             </div>
-                            <Button type="submit" disabled={loading || languages.length === 0}>
-                                {loading ? 'Сохраняем...' : 'Сохранить'}
+                            <Button
+                                type="submit"
+                                disabled={loading || languages.length === 0}
+                                className="w-full sm:w-auto"
+                            >
+                                {loading ? 'Saving...' : 'Save'}
                             </Button>
                         </div>
                     </form>
                 </CardContent>
             </Card>
 
-            {/* модалка всегда одна */}
+            {/* Modal is always singular */}
             <AddWordsFromJson
                 open={importOpen}
                 onClose={() => setImportOpen(false)}
@@ -173,7 +193,7 @@ function WordPairsList({
                         <Input
                             value={pair.from.text}
                             onChange={(e) => onChange(index, 'from', 'text', e.target.value)}
-                            placeholder="Слово (из)"
+                            placeholder="Word (from)"
                             className="flex-1 min-w-0"
                         />
                         <Select
@@ -181,7 +201,7 @@ function WordPairsList({
                             onValueChange={(v) => onChange(index, 'from', 'language', v)}
                         >
                             <SelectTrigger className="min-w-[110px]">
-                                <SelectValue placeholder="Язык" />
+                                <SelectValue placeholder="Language" />
                             </SelectTrigger>
                             <SelectContent>
                                 {languages.map((lang) => (
@@ -198,12 +218,12 @@ function WordPairsList({
                         <Input
                             value={pair.to.text}
                             onChange={(e) => onChange(index, 'to', 'text', e.target.value)}
-                            placeholder="Слово (в)"
+                            placeholder="Word (to)"
                             className="flex-1 min-w-0"
                         />
                         <Select value={pair.to.language} onValueChange={(v) => onChange(index, 'to', 'language', v)}>
                             <SelectTrigger className="min-w-[110px]">
-                                <SelectValue placeholder="Язык" />
+                                <SelectValue placeholder="Language" />
                             </SelectTrigger>
                             <SelectContent>
                                 {languages.map((lang) => (
@@ -222,7 +242,7 @@ function WordPairsList({
                         size="icon"
                         className="text-destructive hover:bg-destructive/10 shrink-0 self-start md:self-center"
                         onClick={() => onRemove(index)}
-                        aria-label="Удалить строку"
+                        aria-label="Delete row"
                     >
                         <Trash2 size={18} />
                     </Button>

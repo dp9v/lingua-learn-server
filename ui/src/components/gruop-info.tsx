@@ -1,4 +1,4 @@
-import { Group } from '@/api/groups';
+import type { Group } from '@/api/types';
 import { Skeleton } from '@/components/ui/skeleton.tsx';
 
 interface GroupInfoProps {
@@ -10,7 +10,7 @@ export function GroupInfo({ group, wordsCount }: GroupInfoProps) {
     return (
         <div className="mb-4 space-y-1">
             <p className="text-muted-foreground">{group.description}</p>
-            <p className="text-sm text-muted-foreground">Всего слов: {wordsCount}</p>
+            <p className="text-sm text-muted-foreground">Total words: {wordsCount}</p>
         </div>
     );
 }

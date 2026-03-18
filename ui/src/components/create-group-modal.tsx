@@ -48,7 +48,7 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
             if (error instanceof ValidationError) {
                 setFieldErrors(error.validationErrors);
             } else {
-                setError('Ошибка при создании группы');
+                setError('Error creating group');
             }
             console.error(error);
         } finally {
@@ -58,13 +58,13 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="w-[calc(100%-2rem)] sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Создать новую группу</DialogTitle>
+                    <DialogTitle>Create New Group</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                     <div className="space-y-2">
-                        <Label htmlFor="name">Название</Label>
+                        <Label htmlFor="name">Name</Label>
                         <Input
                             id="name"
                             value={name}
@@ -75,7 +75,7 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="description">Описание</Label>
+                        <Label htmlFor="description">Description</Label>
                         <Textarea
                             id="description"
                             value={description}
@@ -85,8 +85,8 @@ export function CreateGroupModal({ open, onClose, onGroupCreated, token }: Creat
 
                     {error && <p className="text-red-500 text-sm">{error}</p>}
 
-                    <Button onClick={onSubmit} disabled={loading}>
-                        {loading ? 'Создание...' : 'Создать'}
+                    <Button onClick={onSubmit} disabled={loading} className="w-full sm:w-auto">
+                        {loading ? 'Creating...' : 'Create'}
                     </Button>
                 </div>
             </DialogContent>

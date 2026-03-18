@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.t
 import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { PasswordInput } from '@/components/ui/password-input.tsx';
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -55,7 +56,7 @@ export function LoginForm({ className, onFormSubmit, ...props }: LoginFormProps)
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input {...field} value={field.value} />
+                                            <Input {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -68,7 +69,7 @@ export function LoginForm({ className, onFormSubmit, ...props }: LoginFormProps)
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input {...field} value={field.value} />
+                                            <PasswordInput {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.tsx';
 import { me } from '../api/auth.ts';
-import { getUserGroups, Group } from '@/api/groups.ts';
+import { getUserGroups } from '@/api/groups.ts';
+import { Group } from '@/api/types.ts';
 import { useNavigate } from 'react-router-dom';
 import { GroupList, GroupListSkeleton } from '@/components/group-list.tsx';
 import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, DumbbellIcon } from 'lucide-react';
 import { CreateGroupModal } from '@/components/create-group-modal.tsx';
+import { useTrainingModal } from '@/hooks/use-training-modal';
+import { TrainingModal } from '@/components/training-modal/training-modal.tsx';
 
 export function HomePage() {
     const navigate = useNavigate();
+    const { isOpen, openTraining, closeTraining } = useTrainingModal();
     const [name, setName] = useState('');
     const [groups, setGroups] = useState<Group[]>([]);
     const [loading, setLoading] = useState(true);
@@ -27,7 +31,7 @@ export function HomePage() {
                 setName(meResponse.name);
                 setGroups(groupsResponse);
             })
-            .catch((error) => setError('Ошиба при загрузке данных:' + error))
+            .catch((error) => setError('Error loading data:' + error))
             .finally(() => setLoading(false));
     }, [navigate, token]);
 
@@ -35,7 +39,7 @@ export function HomePage() {
         setLoading(true);
         getUserGroups(token!)
             .then(setGroups)
-            .catch(() => setError('Ошибка при обновлении списка групп'))
+            .catch(() => setError('Error updating groups list'))
             .finally(() => setLoading(false));
     };
 
@@ -48,13 +52,23 @@ export function HomePage() {
     }
 
     return (
-        <main className="bg-muted/40 min-h-[calc(100vh-3rem)] p-6">
-            <div className="flex justify-between items-center mb-6">
-                <div className="text-xl font-semibold">Привет, {name ? name : 'Пользователь'} 👋</div>
-                <Button onClick={() => setModalOpen(true)} className="flex items-center gap-2">
-                    <PlusIcon className="w-4 h-4" />
-                    Добавить группу
-                </Button>
+        <main className="bg-muted/40 min-h-[100svh] lg:min-h-[calc(100vh-3rem)] p-3 sm:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+                <div className="text-lg sm:text-xl font-semibold">Hello, {name ? name : 'User'} 👋</div>
+                <div className="flex gap-2 w-full sm:w-auto">
+                    <Button
+                        onClick={openTraining}
+                        variant="outline"
+                        className="flex items-center gap-2 flex-1 sm:flex-none"
+                    >
+                        <DumbbellIcon className="w-4 h-4" />
+                        <span className="sm:inline">Training</span>
+                    </Button>
+                    <Button onClick={() => setModalOpen(true)} className="flex items-center gap-2 flex-1 sm:flex-none">
+                        <PlusIcon className="w-4 h-4" />
+                        <span className="sm:inline">Add Group</span>
+                    </Button>
+                </div>
             </div>
             {loading ? <GroupListSkeleton /> : <GroupList groups={groups} />}
             <CreateGroupModal
@@ -63,6 +77,7 @@ export function HomePage() {
                 onGroupCreated={onGroupCreated}
                 token={token!}
             />
+            <TrainingModal open={isOpen} onClose={closeTraining} />
         </main>
     );
 }

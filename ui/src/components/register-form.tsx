@@ -1,10 +1,11 @@
-import { RegisterRequestData } from '@/api/auth.ts';
+import { RegisterRequestData } from '@/api/types.ts';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { cn } from '@/lib/utils.ts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button.tsx';
+import { PasswordInput } from '@/components/ui/password-input.tsx';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -78,7 +79,7 @@ export function RegisterForm({ className, onFormSubmit, ...props }: RegisterForm
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input {...field} />
+                                            <PasswordInput {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

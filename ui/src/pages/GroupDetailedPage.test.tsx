@@ -3,18 +3,19 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import GroupDetailedPage from '@/pages/GroupDetailedPage';
 import { useAuth } from '@/context/AuthContext';
 import * as api from '@/api/groups';
-import { getAvailableLanguages, Language } from '@/api/groups';
+import { getAvailableLanguages } from '@/api/groups';
+import type { Language } from '@/api/types';
 
 const LANGS: Language[] = [
     { code: 'en', name: 'English' },
-    { code: 'ru', name: 'Русский' },
+    { code: 'ru', name: 'Russian' },
 ];
-// Мокаем useAuth
+// Mock useAuth
 jest.mock('@/context/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-// Мокаем API
+// Mock API
 jest.mock('@/api/groups', () => ({
     getGroupWords: jest.fn(),
     getAvailableLanguages: jest.fn(),
@@ -54,7 +55,7 @@ describe('GroupDetailedPage', () => {
             group: {
                 id: 1,
                 name: 'My Group',
-                description: 'Описание группы',
+                description: 'Group description',
                 isPublic: true,
                 wordsCount: 2,
             },
@@ -62,12 +63,12 @@ describe('GroupDetailedPage', () => {
                 {
                     id: 101,
                     from: { id: 1, text: 'Hello', language: 'EN' },
-                    to: { id: 2, text: 'Привет', language: 'RU' },
+                    to: { id: 2, text: 'Privet', language: 'RU' },
                 },
                 {
                     id: 102,
                     from: { id: 3, text: 'Bye', language: 'EN' },
-                    to: { id: 4, text: 'Пока', language: 'RU' },
+                    to: { id: 4, text: 'Poka', language: 'RU' },
                 },
             ],
         });
@@ -76,10 +77,10 @@ describe('GroupDetailedPage', () => {
 
         await waitFor(() => {
             expect(screen.getByText('My Group')).toBeInTheDocument();
-            expect(screen.getByText('Описание группы')).toBeInTheDocument();
-            expect(screen.getByText('Всего слов: 2')).toBeInTheDocument();
+            expect(screen.getByText('Group description')).toBeInTheDocument();
+            expect(screen.getByText('Total words: 2')).toBeInTheDocument();
             expect(screen.getByText(/Hello.*EN/)).toBeInTheDocument();
-            expect(screen.getByText(/Привет.*RU/)).toBeInTheDocument();
+            expect(screen.getByText(/Privet.*RU/)).toBeInTheDocument();
         });
     });
 
@@ -88,7 +89,7 @@ describe('GroupDetailedPage', () => {
             group: {
                 id: 1,
                 name: 'Empty Group',
-                description: 'Нет слов',
+                description: 'No words',
                 isPublic: true,
                 wordsCount: 0,
             },
@@ -97,7 +98,7 @@ describe('GroupDetailedPage', () => {
 
         renderWithRouter('1');
 
-        expect(await screen.findByText('Список слов в этой группе пуст.')).toBeInTheDocument();
+        expect(await screen.findByText('The word list in this group is empty.')).toBeInTheDocument();
     });
 
     it('shows error on API failure', async () => {
@@ -105,7 +106,7 @@ describe('GroupDetailedPage', () => {
 
         renderWithRouter('1');
 
-        expect(await screen.findByText('Ошибка при загрузке слов')).toBeInTheDocument();
+        expect(await screen.findByText('Error loading words')).toBeInTheDocument();
     });
 
     it('shows error if ID is missing', async () => {
