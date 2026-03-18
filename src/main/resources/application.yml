@@ -6,6 +6,11 @@ spring:
     username: ${JDBC_USER_NAME}
     password: ${JDBC_PASSWORD}
 
+jwt:
+  private-key: classpath:certs/app.key
+  public-key: classpath:certs/app.pub
+  ttl: 6H
+
 tg.bot:
   timeout: 10
   token: ${TG_BOT_TOKEN:"placeholder"}
