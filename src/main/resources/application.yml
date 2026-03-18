@@ -9,6 +9,7 @@ spring:
 jwt:
   private-key: classpath:certs/app.key
   public-key: classpath:certs/app.pub
+  ttl: 6H
 
 tg.bot:
   timeout: 10
