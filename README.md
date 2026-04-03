@@ -49,9 +49,33 @@ From the project root, run:
 ./gradlew bootRun
 ```
 
-### 5. Test Bot Functionality
-   
-To verify bot functionality and authentication, run the following script: `utils/registration.api`
+---
+
+## 🧪 Running Tests
+
+Tests can be run in two modes depending on whether you want to use a Docker container or an already running PostgreSQL server.
+
+### Option 1: Testcontainers (default)
+
+No additional setup required — a PostgreSQL container is started automatically via [Testcontainers](https://www.testcontainers.org/). Docker must be running.
+
+```bash
+./gradlew test
+```
+
+### Option 2: External PostgreSQL Server
+
+If the environment variable `JDBC_CONNECTION_STRING` is set, tests will **not** start a container. Instead, a temporary database will be created on the specified server, Flyway migrations will be applied, and the database will be automatically dropped after the test run.
+
+```bash
+# Format: jdbc:postgresql://host:port/?user=<user>&password=<password>
+export JDBC_CONNECTION_STRING="jdbc:postgresql://localhost:5432/?user=postgres&password=secret"
+./gradlew test
+```
+
+> **Note:** The connection string should point to the server **without** a database name (or with `/` after the port). A temporary database (`lingua_test_<uuid>`) will be created and removed automatically.
+
+---
 
 ## 📚 Additional Documentation
 

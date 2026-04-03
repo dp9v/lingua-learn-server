@@ -11,7 +11,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,23 +33,14 @@ public class BaseIT {
     @Autowired
     public JwtService jwtService;
 
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.0-alpine")
-            .withDatabaseName("lingua_learn_db")
-            .withUsername("postgres")
-            .withPassword("<PASSWORD>");
-
-    static {
-        postgres.start();
-    }
-
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.password", postgres::getPassword);
-        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.url", TestDatabaseProvider::getJdbcUrl);
+        registry.add("spring.datasource.username", TestDatabaseProvider::getUsername);
+        registry.add("spring.datasource.password", TestDatabaseProvider::getPassword);
     }
 
-    protected String getTestToken() throws Exception {
+    protected String getTestToken() {
         return jwtService.generateToken(User.builder()
                                             .id(TEST_USER_DTO.id())
                                             .email(TEST_USER_DTO.email())
