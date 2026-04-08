@@ -1,6 +1,6 @@
 # Lingua Learn — Multi-Module Setup
 
-Проект переведён на **Gradle multi-module architecture** с разделением на backend, frontend, bot и generated API client.
+The project has been migrated to **Gradle multi-module architecture** with separation into backend, frontend, bot and generated API client.
 
 ---
 
@@ -19,10 +19,10 @@
 
 ### Runtime model
 
-* **app-api** → backend + встроенный frontend
-* **app-ui** → собирается в static assets и встраивается в `app-api`
-* **app-bot** → отдельное Spring Boot приложение
-* **api-client** → typed REST client для bot
+* **app-api** → backend + embedded frontend
+* **app-ui** → builds into static assets and embeds into `app-api`
+* **app-bot** → separate Spring Boot application (not yet implemented)
+* **api-client** → typed REST client for bot
 
 ---
 
@@ -30,18 +30,18 @@
 
 ### 📦 Prerequisites
 
-Убедись, что установлены:
+Make sure you have installed:
 
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 * [Java 21](https://jdk.java.net/21/)
-* Node.js **не обязателен локально**, если используется Gradle Node plugin
+* Node.js **is not required locally** if using Gradle Node plugin
 
 ---
 
 ## 🔐 1. Generate Local Certificates
 
-Теперь сертификаты лежат внутри backend модуля:
+Certificates are now located inside the backend module:
 
 ```bash
 cd app-api/src/main/resources/certs
@@ -54,7 +54,7 @@ openssl rsa -pubout -in app.key -out app.pub
 
 ## 🐘 2. Start PostgreSQL
 
-Из корня проекта:
+From the project root:
 
 ```bash
 docker compose up -d
@@ -64,7 +64,7 @@ docker compose up -d
 
 ## 🌍 3. Set Environment Variables
 
-Перед запуском API:
+Before running the API:
 
 ```bash
 export JDBC_PASSWORD=pass
@@ -73,7 +73,7 @@ export JDBC_USER_NAME=user
 export TG_BOT_TOKEN=ANY
 ```
 
-Для Windows PowerShell:
+For Windows PowerShell:
 
 ```powershell
 $env:JDBC_PASSWORD="pass"
@@ -88,13 +88,13 @@ $env:TG_BOT_TOKEN="ANY"
 
 ## 🌐 Run API + UI together
 
-Frontend автоматически собирается из `app-ui` и встраивается в backend jar.
+Frontend is automatically built from `app-ui` and embedded into the backend jar.
 
 ```bash
 ./gradlew :app-api:bootRun
 ```
 
-После запуска доступны:
+After startup, available at:
 
 * UI → `http://localhost:8080`
 * API → `http://localhost:8080/api/...`
@@ -103,23 +103,25 @@ Frontend автоматически собирается из `app-ui` и вст
 
 ## 🤖 Run Bot separately
 
+> ⚠️ **Note:** The bot application is not yet implemented.
+
 ```bash
 ./gradlew :app-bot:bootRun
 ```
 
-Bot использует `api-client` для typed REST communication с API.
+Bot will use `api-client` for typed REST communication with the API.
 
 ---
 
 ## 🎨 Frontend only build
 
-Для отладки frontend pipeline:
+For debugging the frontend pipeline:
 
 ```bash
 ./gradlew :app-ui:uiNpmBuild
 ```
 
-Результат сборки:
+Build output:
 
 ```text
 app-ui/src/dist
@@ -135,7 +137,7 @@ app-ui/src/dist
 ./gradlew :app-api:test
 ```
 
-или полный build:
+or full build:
 
 ```bash
 ./gradlew clean build
@@ -145,9 +147,9 @@ app-ui/src/dist
 
 ## 🐳 Testcontainers (default)
 
-По умолчанию тесты используют PostgreSQL через Testcontainers.
+By default, tests use PostgreSQL via Testcontainers.
 
-Требуется только запущенный Docker.
+Only requires Docker to be running.
 
 ```bash
 ./gradlew :app-api:test
@@ -157,14 +159,14 @@ app-ui/src/dist
 
 ## 🗄️ External PostgreSQL Server
 
-Если указан `JDBC_CONNECTION_STRING`, Testcontainers не используются.
+If `JDBC_CONNECTION_STRING` is specified, Testcontainers are not used.
 
 ```bash
 export JDBC_CONNECTION_STRING="jdbc:postgresql://localhost:5432/?user=postgres&password=secret"
 ./gradlew :app-api:test
 ```
 
-> Будет создана временная БД `lingua_test_<uuid>` с автоматическим удалением.
+> A temporary database `lingua_test_<uuid>` will be created and automatically deleted.
 
 ---
 
@@ -176,13 +178,13 @@ export JDBC_CONNECTION_STRING="jdbc:postgresql://localhost:5432/?user=postgres&p
 ./gradlew :app-api:bootJar
 ```
 
-Jar будет содержать:
+The jar will contain:
 
 ```text
 BOOT-INF/classes/static/index.html
 ```
 
-что гарантирует совместный запуск UI и API.
+which ensures UI and API run together.
 
 ---
 
@@ -234,7 +236,7 @@ docker run -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 lingua-api
 ./gradlew :app-api:bootJar
 ```
 
-## Run bot
+## Run bot (not yet implemented)
 
 ```bash
 ./gradlew :app-bot:bootRun

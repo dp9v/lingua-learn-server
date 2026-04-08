@@ -8,3 +8,12 @@ plugins {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 }
+
+// Disable bootJar until main class is implemented
+tasks.bootJar {
+    enabled = false
+}
+
+tasks.jar {
+    enabled = true
+}
