@@ -1,0 +1,11 @@
+﻿.gradle
+**/build
+**/.gradle
+**/node_modules
+**/nodejs
+**/npm
+.idea
+.git
+.gitignore
+Dockerfile
+README.md
