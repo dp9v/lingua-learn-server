@@ -10,32 +10,32 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ui
-
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22.15.0
           cache: 'npm'
-          cache-dependency-path: ui/package-lock.json
+          cache-dependency-path: app-ui/src/package-lock.json
 
       - name: 📦 Install dependencies
+        working-directory: app-ui/src
         run: npm ci
 
       - name: 🧹 Run ESLint
+        working-directory: app-ui/src
         run: npm run lint
 
       - name: 🎨 Check formatting with Prettier
+        working-directory: app-ui/src
         run: npx prettier --check .
 
-      - name: 🛠 Build project
-        run: npm run build
+      - name: 🛠 Build frontend with Gradle
+        run: ./gradlew :app-ui:uiNpmBuild :app-ui:copyFrontend --no-daemon --stacktrace
 
-      - name: 🧪 Run tests
+      - name: 🧪 Run frontend tests
+        working-directory: app-ui/src
         run: npm test
