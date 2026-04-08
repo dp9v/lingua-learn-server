@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22.15.0
           cache: 'npm'
@@ -34,7 +34,7 @@ jobs:
         run: npx prettier --check .
 
       - name: 🛠 Build frontend with Gradle
-        run: ./gradlew :app-ui:uiNpmBuild :app-ui:uiCopyStatic --no-daemon --stacktrace
+        run: ./gradlew :app-ui:uiNpmBuild :app-ui:copyFrontend --no-daemon --stacktrace
 
       - name: 🧪 Run frontend tests
         working-directory: app-ui/src

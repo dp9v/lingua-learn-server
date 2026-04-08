@@ -200,7 +200,7 @@ docker build -t lingua-api .
 docker run -p 8080:8080 lingua-api
 ```
 
-С профилем:
+With profile:
 
 ```bash
 docker run -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 lingua-api
