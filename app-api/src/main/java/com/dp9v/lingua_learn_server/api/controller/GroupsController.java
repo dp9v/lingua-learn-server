@@ -38,8 +38,7 @@ public class GroupsController {
         return ResponseEntity.ok(groups);
     }
 
-    @GetMapping
-    @RequestMapping("/{groupId}/words")
+    @GetMapping("/{groupId}/words")
     public ResponseEntity<GroupWithWords> getWordsInGroup(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable long groupId
