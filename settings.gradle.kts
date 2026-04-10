@@ -4,5 +4,5 @@ include(
     "app-api",
     "app-ui",
     "app-bot",
-    "api-client",
+    "openapi-java-client",
 )

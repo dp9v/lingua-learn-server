@@ -3,6 +3,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
     id("io.freefair.lombok")
+    id("org.openapi.generator") version "7.5.0"
     java
 }
 
@@ -37,4 +38,20 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=local"))
     }
+}
+
+openApiGenerate {
+    generatorName.set("java")
+    inputSpec.set("${rootProject.projectDir}/app-api/src/main/resources/openapi.yaml")
+    outputDir.set("${rootProject.projectDir}/openapi-java-client")
+    apiPackage.set("com.dp9v.client.api")
+    modelPackage.set("com.dp9v.client.model")
+    generateModelTests.set(false)
+    generateApiTests.set(false)
+    generateModelDocumentation.set(false)
+    generateApiDocumentation.set(false)
+    supportingFilesConstrainedTo.set(listOf())
+    configOptions.set(mapOf(
+        "hideGenerationTimestamp" to "true"
+    ))
 }
