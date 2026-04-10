@@ -1,0 +1,11 @@
+﻿server:
+  port: 8081
+
+bot:
+  name: ${BOT_NAME:lingua_learn_bot}
+  token: ${BOT_TOKEN:}
+
+logging:
+  level:
+    com.dp9v.lingua_learn_server.bot: DEBUG
+

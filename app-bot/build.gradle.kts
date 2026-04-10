@@ -7,13 +7,8 @@ plugins {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-}
+    implementation("org.telegram:telegrambots-spring-boot-starter:6.9.7.1")
 
-// Disable bootJar until main class is implemented
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.jar {
-    enabled = true
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
