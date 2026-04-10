@@ -1,0 +1,12 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="API | local | RebuildUi | RegenerateApi" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="local" />
+    <module name="lingua-learn-server.app-api.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.dp9v.lingua_learn_server.LinguaLearnServerApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="copyFrontend" externalProjectPath="$PROJECT_DIR$/app-ui" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks=":app-api:generateOpenApiDocs" externalProjectPath="$PROJECT_DIR$/app-api" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
