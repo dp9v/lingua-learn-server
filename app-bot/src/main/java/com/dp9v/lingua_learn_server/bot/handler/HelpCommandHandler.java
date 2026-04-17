@@ -24,6 +24,8 @@ public class HelpCommandHandler implements CommandHandler {
                 📚 Available commands:
                 /start — start working with the bot
                 /help — show help
+                
+                🔤 Send any word in English or Czech to get a Russian translation.
                 """;
 
         var message = SendMessage.builder()

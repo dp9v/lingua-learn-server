@@ -5,6 +5,9 @@ bot:
   name: ${BOT_NAME:lingua_learn_bot}
   token: ${BOT_TOKEN:}
 
+libretranslate:
+  url: ${LIBRETRANSLATE_URL:http://10.0.0.153:5000}
+
 logging:
   level:
     com.dp9v.lingua_learn_server.bot: DEBUG
