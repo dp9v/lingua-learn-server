@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":libretranslate-client"))
+    implementation(project(":openapi-java-client"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.telegram:telegrambots-spring-boot-starter:6.9.7.1")

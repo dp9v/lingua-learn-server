@@ -14,3 +14,6 @@ jwt:
 tg.bot:
   timeout: 10
   token: ${TG_BOT_TOKEN:"placeholder"}
+
+bot:
+  api-key: ${BOT_API_KEY:}

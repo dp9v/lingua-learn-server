@@ -1,5 +1,6 @@
 package com.dp9v.lingua_learn_server.api.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final BotApiKeyFilter botApiKeyFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(botApiKeyFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2ResourceServer(s ->
                         s.jwt(Customizer.withDefaults())
                                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
