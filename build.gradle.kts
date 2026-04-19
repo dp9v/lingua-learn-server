@@ -1,6 +1,8 @@
 plugins {
 	java
 	id("io.freefair.lombok") version "8.6" apply false
+	kotlin("jvm") version "2.3.20" apply false
+	kotlin("plugin.spring") version "2.3.20" apply false
 }
 
 group = "com.dp9v"

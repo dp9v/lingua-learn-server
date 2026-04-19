@@ -1,0 +1,35 @@
+package com.dp9v.lingua_learn_server.bot.handler
+
+import com.dp9v.lingua_learn_server.bot.handlers.CommandHandler
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.bots.AbsSender
+
+@Component
+class HelpCommandHandler : CommandHandler {
+    private val log = LoggerFactory.getLogger(HelpCommandHandler::class.java)
+
+    override val command = "/help"
+
+    override fun handle(sender: AbsSender, update: Update) {
+        val chatId = update.message.chatId.toString()
+
+        val text = """
+            📚 Available commands:
+            /start — start working with the bot
+            /help — show help
+
+            🔤 Send any word in English or Czech to get a Russian translation.
+        """.trimIndent()
+
+        try {
+            sender.execute(
+                SendMessage.builder().chatId(chatId).text(text).build()
+            )
+        } catch (e: Exception) {
+            log.error("Failed to send /help response for chatId={}", chatId, e)
+        }
+    }
+}
