@@ -5,6 +5,13 @@ bot:
   name: ${BOT_NAME:lingua_learn_bot}
   token: ${BOT_TOKEN:}
 
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/lingua-learn-db}
+    username: ${DB_USER:user}
+    password: ${DB_PASSWORD:pass}
+    driver-class-name: org.postgresql.Driver
+
 libretranslate:
   url: ${LIBRETRANSLATE_URL:http://10.0.0.153:5000}
 

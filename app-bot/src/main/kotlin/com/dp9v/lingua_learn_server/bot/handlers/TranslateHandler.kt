@@ -2,22 +2,30 @@ package com.dp9v.lingua_learn_server.bot.handler
 
 import com.dp9v.libretranslate.LibreTranslateClient
 import com.dp9v.libretranslate.dto.LanguageCode
+import com.dp9v.lingua_learn_server.bot.db.dto.BotUserDto
+import com.dp9v.lingua_learn_server.bot.db.repository.BotUserRepository
 import com.dp9v.lingua_learn_server.bot.handlers.UpdateHandler
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 
 @Component
 class TranslateHandler(
-    private val libreTranslateClient: LibreTranslateClient
+    private val libreTranslateClient: LibreTranslateClient,
+    private val botUserRepository: BotUserRepository,
 ) : UpdateHandler {
 
     private val log = LoggerFactory.getLogger(TranslateHandler::class.java)
+    private val objectMapper = jacksonObjectMapper()
 
     companion object {
-        private val SUPPORTED_SOURCES = setOf(LanguageCode.ENGLISH, LanguageCode.CZECH)
+        private val SUPPORTED_LANGUAGES = setOf(LanguageCode.RUSSIAN, LanguageCode.CZECH)
+        const val STATE_AWAITING_SAVE = "AWAITING_SAVE_CONFIRMATION"
     }
 
     override fun canHandle(update: Update): Boolean =
@@ -28,8 +36,20 @@ class TranslateHandler(
     override fun handle(sender: AbsSender, update: Update) {
         val chatId = update.message.chatId.toString()
         val text = update.message.text.trim()
+        val tgUser = update.message.from
 
         try {
+            botUserRepository.ensureUser(
+                BotUserDto(
+                    id = tgUser.id,
+                    isBot = tgUser.isBot,
+                    firstName = tgUser.firstName,
+                    lastName = tgUser.lastName,
+                    username = tgUser.userName,
+                    languageCode = tgUser.languageCode,
+                )
+            )
+
             val detections = libreTranslateClient.detect(text)
             if (detections.isNullOrEmpty()) {
                 sendReply(sender, chatId, "❌ Не удалось определить язык.")
@@ -37,19 +57,58 @@ class TranslateHandler(
             }
 
             val detected = detections.first().language()
-            if (detected !in SUPPORTED_SOURCES) {
-                sendReply(sender, chatId, "⚠️ Поддерживается перевод только с английского и чешского.")
+            if (detected !in SUPPORTED_LANGUAGES) {
+                sendReply(sender, chatId, "⚠️ Поддерживается перевод только между русским и чешским языками.")
                 return
             }
 
-            val response = libreTranslateClient.translate(text, detected, LanguageCode.RUSSIAN)
-            val reply =
-                "🔤 *${detected.code.uppercase()}* → *${LanguageCode.RUSSIAN.code.uppercase()}*\n\n${response.translatedText()}"
-            sendReply(sender, chatId, reply)
+            val targetLang = if (detected == LanguageCode.RUSSIAN) LanguageCode.CZECH else LanguageCode.RUSSIAN
+
+            val response = libreTranslateClient.translate(text, detected, targetLang)
+            val translatedText = response.translatedText()
+
+            val pending = PendingTranslation(
+                sourceText = text,
+                sourceLang = detected.code,
+                translatedText = translatedText,
+                targetLang = targetLang.code,
+            )
+            botUserRepository.setState(tgUser.id, STATE_AWAITING_SAVE, objectMapper.writeValueAsString(pending))
+
+            val reply = "🔤 *${langName(detected)}* → *${langName(targetLang)}*\n\n" +
+                    "*${text}* → *${translatedText}*\n\n" +
+                    "Сохранить эту пару слов?"
+
+            val saveButton = InlineKeyboardButton.builder()
+                .text("✅ Сохранить")
+                .callbackData("save")
+                .build()
+            val cancelButton = InlineKeyboardButton.builder()
+                .text("❌ Отмена")
+                .callbackData("cancel")
+                .build()
+            val keyboard = InlineKeyboardMarkup.builder()
+                .keyboardRow(listOf(saveButton, cancelButton))
+                .build()
+
+            sender.execute(
+                SendMessage.builder()
+                    .chatId(chatId)
+                    .text(reply)
+                    .parseMode("Markdown")
+                    .replyMarkup(keyboard)
+                    .build()
+            )
         } catch (e: Exception) {
             log.error("Translation failed for chatId={}", chatId, e)
             sendReply(sender, chatId, "❌ Ошибка при переводе: ${e.message}")
         }
+    }
+
+    private fun langName(lang: LanguageCode): String = when (lang) {
+        LanguageCode.RUSSIAN -> "RU 🇷🇺"
+        LanguageCode.CZECH -> "CS 🇨🇿"
+        else -> lang.code.uppercase()
     }
 
     private fun sendReply(sender: AbsSender, chatId: String, text: String) {
@@ -66,3 +125,10 @@ class TranslateHandler(
         }
     }
 }
+
+data class PendingTranslation(
+    val sourceText: String,
+    val sourceLang: String,
+    val translatedText: String,
+    val targetLang: String,
+)
