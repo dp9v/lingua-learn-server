@@ -60,3 +60,44 @@ CREATE TABLE IF NOT EXISTS api__user_groups
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, group_id)
 );
+
+CREATE TABLE IF NOT EXISTS bot__fast_updates
+(
+    update_id INTEGER CONSTRAINT bot__fast_updates_pk PRIMARY KEY,
+    date      TIMESTAMP,
+    json      TEXT
+);
+
+CREATE TABLE IF NOT EXISTS bot__users
+(
+    id         INTEGER CONSTRAINT bot__users_pk PRIMARY KEY,
+    is_bot     BOOL DEFAULT TRUE NOT NULL,
+    first_name VARCHAR           NOT NULL,
+    last_name  VARCHAR,
+    username   VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS bot__updates
+(
+    update_id  INTEGER CONSTRAINT bot__updates_pk PRIMARY KEY,
+    message_id INTEGER               NOT NULL,
+    chat_id    INTEGER               NOT NULL,
+    user_id    INTEGER CONSTRAINT bot__updates_bot__users_id_fk REFERENCES bot__users,
+    date       TIMESTAMP,
+    text       TEXT,
+    status     VARCHAR DEFAULT 'NEW' NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS bot__user_statuses
+(
+    id                 BIGSERIAL CONSTRAINT bot__user_statuses_pk PRIMARY KEY,
+    user_id            INTEGER                      NOT NULL CONSTRAINT bot__user_statuses_bot__users_id_fk REFERENCES bot__users,
+    update_id          INTEGER                      NOT NULL CONSTRAINT bot__user_statuses_bot__updates_update_id_fk REFERENCES bot__updates,
+    pipeline_name      VARCHAR                      NOT NULL,
+    pipeline_step_name VARCHAR                      NOT NULL,
+    payload            JSON      DEFAULT '{}'::JSON NOT NULL,
+    created_time       TIMESTAMP DEFAULT NOW()      NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS bot__user_statuses_user_id_created_time_index
+    ON bot__user_statuses (user_id, created_time);
