@@ -2,7 +2,11 @@ package com.dp9v.lingua_learn_server.bot.handler
 
 import com.dp9v.libretranslate.LibreTranslateClient
 import com.dp9v.libretranslate.dto.LanguageCode
+import com.dp9v.lingua_learn_server.bot.callback.BotCallbackData
+import com.dp9v.lingua_learn_server.bot.callback.PendingTranslation
+import com.dp9v.lingua_learn_server.bot.callback.SaveTranslationCallbackAction
 import com.dp9v.lingua_learn_server.bot.db.dto.BotUserDto
+import com.dp9v.lingua_learn_server.bot.db.repository.BotCallbackActionRepository
 import com.dp9v.lingua_learn_server.bot.db.repository.BotUserRepository
 import com.dp9v.lingua_learn_server.bot.handlers.UpdateHandler
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -18,6 +22,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 class TranslateHandler(
     private val libreTranslateClient: LibreTranslateClient,
     private val botUserRepository: BotUserRepository,
+    private val botCallbackActionRepository: BotCallbackActionRepository,
 ) : UpdateHandler {
 
     private val log = LoggerFactory.getLogger(TranslateHandler::class.java)
@@ -25,7 +30,6 @@ class TranslateHandler(
 
     companion object {
         private val SUPPORTED_LANGUAGES = setOf(LanguageCode.RUSSIAN, LanguageCode.CZECH)
-        const val STATE_AWAITING_SAVE = "AWAITING_SAVE_CONFIRMATION"
     }
 
     override fun canHandle(update: Update): Boolean =
@@ -73,7 +77,17 @@ class TranslateHandler(
                 translatedText = translatedText,
                 targetLang = targetLang.code,
             )
-            botUserRepository.setState(tgUser.id, STATE_AWAITING_SAVE, objectMapper.writeValueAsString(pending))
+            val callbackPayload = objectMapper.writeValueAsString(pending)
+            val saveCallback = botCallbackActionRepository.create(
+                botUserId = tgUser.id,
+                action = SaveTranslationCallbackAction.SAVE.actionName,
+                payload = callbackPayload,
+            )
+            val cancelCallback = botCallbackActionRepository.create(
+                botUserId = tgUser.id,
+                action = SaveTranslationCallbackAction.CANCEL.actionName,
+                payload = callbackPayload,
+            )
 
             val reply = "🔤 *${langName(detected)}* → *${langName(targetLang)}*\n\n" +
                     "*${text}* → *${translatedText}*\n\n" +
@@ -81,11 +95,11 @@ class TranslateHandler(
 
             val saveButton = InlineKeyboardButton.builder()
                 .text("✅ Сохранить")
-                .callbackData("save")
+                .callbackData(BotCallbackData.pack(saveCallback.id))
                 .build()
             val cancelButton = InlineKeyboardButton.builder()
                 .text("❌ Отмена")
-                .callbackData("cancel")
+                .callbackData(BotCallbackData.pack(cancelCallback.id))
                 .build()
             val keyboard = InlineKeyboardMarkup.builder()
                 .keyboardRow(listOf(saveButton, cancelButton))
@@ -125,10 +139,3 @@ class TranslateHandler(
         }
     }
 }
-
-data class PendingTranslation(
-    val sourceText: String,
-    val sourceLang: String,
-    val translatedText: String,
-    val targetLang: String,
-)

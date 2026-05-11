@@ -1,7 +1,10 @@
 package com.dp9v.lingua_learn_server.bot.handler
 
+import com.dp9v.lingua_learn_server.bot.callback.BotCallbackData
+import com.dp9v.lingua_learn_server.bot.callback.PendingTranslation
+import com.dp9v.lingua_learn_server.bot.callback.SaveTranslationCallbackAction
+import com.dp9v.lingua_learn_server.bot.db.repository.BotCallbackActionRepository
 import com.dp9v.lingua_learn_server.bot.handlers.UpdateHandler
-import com.dp9v.lingua_learn_server.bot.db.repository.BotUserRepository
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.slf4j.LoggerFactory
@@ -13,7 +16,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 
 @Component
 class SaveWordCallbackHandler(
-    private val botUserRepository: BotUserRepository,
+    private val botCallbackActionRepository: BotCallbackActionRepository,
 ) : UpdateHandler {
 
     private val log = LoggerFactory.getLogger(SaveWordCallbackHandler::class.java)
@@ -22,29 +25,40 @@ class SaveWordCallbackHandler(
     override fun canHandle(update: Update): Boolean =
         update.hasCallbackQuery()
                 && update.callbackQuery.data != null
-                && update.callbackQuery.data in setOf("save", "cancel")
+                && BotCallbackData.unpack(update.callbackQuery.data) != null
 
     override fun handle(sender: AbsSender, update: Update) {
         val callback = update.callbackQuery
         val chatId = callback.message.chatId.toString()
         val messageId = callback.message.messageId
-        val action = callback.data
+        val callbackId = BotCallbackData.unpack(callback.data)
         val botUserId = callback.from.id
 
         try {
-            val state = botUserRepository.getState(botUserId)
+            if (callbackId == null) {
+                answerCallback(sender, callback.id)
+                return
+            }
 
-            if (state == null || state.stateName != TranslateHandler.STATE_AWAITING_SAVE || state.payload == null) {
+            val callbackAction = botCallbackActionRepository.consume(callbackId, botUserId)
+
+            if (callbackAction == null || callbackAction.payload == null) {
                 editMessage(sender, chatId, messageId, "⏰ Данные устарели. Попробуйте перевести слово заново.")
                 answerCallback(sender, callback.id)
                 return
             }
 
-            val pending = objectMapper.readValue<PendingTranslation>(state.payload.toString())
-            botUserRepository.clearState(botUserId)
+            val action = SaveTranslationCallbackAction.fromActionName(callbackAction.action)
+            if (action == null) {
+                editMessage(sender, chatId, messageId, "⚠️ Неизвестное callback-действие.")
+                answerCallback(sender, callback.id)
+                return
+            }
+
+            val pending = objectMapper.readValue<PendingTranslation>(callbackAction.payload)
 
             when (action) {
-                "save" -> {
+                SaveTranslationCallbackAction.SAVE -> {
                     // TODO: persist the word pair via API
                     log.info(
                         "User {} saved word pair: {} ({}) -> {} ({})",
@@ -58,7 +72,7 @@ class SaveWordCallbackHandler(
                     )
                 }
 
-                "cancel" -> {
+                SaveTranslationCallbackAction.CANCEL -> {
                     editMessage(
                         sender, chatId, messageId,
                         "❌ Отменено.\n\n~${pending.sourceText} → ${pending.translatedText}~"

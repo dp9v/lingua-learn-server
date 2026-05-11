@@ -1,4 +1,5 @@
 -- Clean Bot tables in the correct order (respecting foreign key constraints)
+DELETE FROM bot__callback_actions;
 DELETE FROM bot__user_settings;
 DELETE FROM bot__user_states;
 DELETE FROM bot__user_api_links;
