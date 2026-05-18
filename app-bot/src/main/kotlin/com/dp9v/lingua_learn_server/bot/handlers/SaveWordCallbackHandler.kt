@@ -41,8 +41,9 @@ class SaveWordCallbackHandler(
             }
 
             val callbackAction = botCallbackActionRepository.consume(callbackId, botUserId)
+            val payload = callbackAction?.payload
 
-            if (callbackAction == null || callbackAction.payload == null) {
+            if (callbackAction == null || payload == null) {
                 editMessage(sender, chatId, messageId, "⏰ Данные устарели. Попробуйте перевести слово заново.")
                 answerCallback(sender, callback.id)
                 return
@@ -55,7 +56,7 @@ class SaveWordCallbackHandler(
                 return
             }
 
-            val pending = objectMapper.readValue<PendingTranslation>(callbackAction.payload)
+            val pending = objectMapper.readValue<PendingTranslation>(payload)
 
             when (action) {
                 SaveTranslationCallbackAction.SAVE -> {
@@ -104,4 +105,3 @@ class SaveWordCallbackHandler(
         )
     }
 }
-
